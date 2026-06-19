@@ -6,8 +6,8 @@ function getScanData(data) {
   case 'user':
     gasMember(obj.c);
     break;
-  case value2:
-    // Code runs if expression === value2
+  case 'order':
+    gasOrder(obj.c);
     break;
   default:
     // Code runs if no cases match
@@ -25,6 +25,24 @@ function gasMember(code) {
       if (data.status=='0') {
         localStorage.setItem('member', JSON.stringify(data.res));
         createMemOperView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasOrder(code) {
+  var content = code;
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=order&content='+content+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        createOrderView(data.res);
       }else{
         createErrorView(data.error_msg);
       }

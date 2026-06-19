@@ -397,11 +397,27 @@ function createMemOperView() {
   if (!member.points && member.is_freeze) {
     body += '  <button class="btn btn-warning" type="button" id="btn_join_member" onclick="confirmJoinMember()">入會</button>';
   }else{
-    body += '沒有可選擇的操作'
+    body += '已經是會員'
   }
   
   body += '</div>';
-  showInputModal(member.name,body,'');
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeMemOper();">確定</button></div>';
+  showConfirmModal(member.name,body,footer);
+}
+
+function createOrderView(orderRes) {
+  var body = '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
+  body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+  body += '<div class="d-flex col flex-column align-items-center"><strong>';
+  body += orderRes.item;
+  body += ' <span class="badge rounded-pill bg-'+(orderRes.pref=='H'?'danger':'primary')+'">'+orderRes.pref+'</span>';
+  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success">自備杯</span></label>':'';
+  body += '</strong></div>';
+  body += '</li>';
+  body += '</ul>';
+  body += '</div>';
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeOrder();">確定</button></div>';
+  showConfirmModal('訂單', body, footer);
 }
 
 function createGLoginView() {

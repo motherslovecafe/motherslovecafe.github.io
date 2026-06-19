@@ -26,6 +26,16 @@ function submitJoin() {
   gasJoinMember();
 }
 
+function completeMemOper() {
+  confirmModal.hide();
+  createScanView();
+}
+
+function completeOrder() {
+  confirmModal.hide();
+  createScanView();
+}
+
 function selectPref() {
   orderForm.coffee_pref=(orderForm.coffee_pref=='H' && !prefHotOnlyList.includes(orderForm.coffee_id))?'C':'H';
   var btn = document.getElementById('btn_coffee_pref');

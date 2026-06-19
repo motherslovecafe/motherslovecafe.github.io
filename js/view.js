@@ -330,22 +330,27 @@ function createTxView() {
   var div = createCustomElement('div', 'container col_11');
   content.appendChild(div);
   div.id = 'txPage';
-  // var stamp = 1;
   var html = '<div class="container col-11 mt-5 pb-5">';
-  // html += '<div class="progress mb-4" style="height: 20px;">';
-  // for (var i = 1; i <= 10; i++) {
 
-  //   html += '  <div class="progress-bar '+((stamp>=i)?'bg-warning':'bg-secondary')+'" role="progressbar" style="width: 10%;" aria-valuenow="'+i+'" aria-valuemin="0" aria-valuemax="10">'+i+'</div>';
-    
-  // }
-  // html += '</div>';
+  
   html += '<ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  html += '<strong>交易記錄</strong>';
+  html += '<strong>交易記錄</strong><span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
   html += '</li>';
-  html += '<li class="list-group-item d-flex justify-content-between align-items-center ">';
-  html += '即將登場';
-  html += '</li>';
+  if (userinfo.tx) {
+    var txArr = userinfo.tx;
+    for (var i = txArr.length-1; i >= 0; i--) {
+      html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+      html += '<p>'+txArr[i].desc+'<br>';
+      html += '<small class="text-muted">'+txArr[i].timestamp+' </small></p><strong class="text-'+(txArr[i].points>0?'success">+':'dark">')+txArr[i].points+'</strong>';
+      html += '</li>';
+    }
+
+  }else{
+    html += '<li class="list-group-item d-flex justify-content-between align-items-center ">';
+    html += '即將登場';
+    html += '</li>';
+  }
   html += '</ul>';
   html += '</div>';
   div.innerHTML = html;

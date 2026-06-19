@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-  gid = localStorage.getItem('gid');
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -24,7 +22,6 @@ $(document).ready(function() {
           window.history.pushState({}, document.title, "?");
           localStorage.setItem('userinfo', JSON.stringify(data.res));
           localStorage.setItem('access_token', access_token);
-          console.log(JSON.stringify(data,0,2));
           createUserView();
           off();
         }else if (data.error_code=='106') {

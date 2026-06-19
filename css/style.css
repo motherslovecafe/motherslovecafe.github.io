@@ -1,0 +1,88 @@
+html, body {
+  /*background-image: url('../img/bg_01.jpg');*/
+  background-color: white;
+  background-size: '100%';
+  background-repeat: 'repeat';
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-size: 1rem;
+  color: #1B1725;
+  margin-bottom:50px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img {
+  pointer-events: none;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  cursor: none;
+}
+
+.centered {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+table {
+  position:  relative;
+}
+
+th {
+  background: white;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+}
+
+#container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+/*#container_header {
+  padding: 5%;
+}*/
+
+#container_footer {
+    position: fixed;
+    height: 70px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+}
+
+#container_content {
+  /*max-height: 70vh;*/
+  overflow: auto;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.fadein_1s {
+  opacity: 1;
+  animation: fadeIn 1s ease-in-out;
+}

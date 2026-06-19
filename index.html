@@ -101,7 +101,7 @@
                 // handle the scanned code as you like, for example:
                 html5QrcodeScanner.pause();
                 scanModal.hide();
-                gasAttend(decodedText);
+                getScanData(decodedText);
               }
               function onScanFailure(error) {
                 // handle scan failure, usually better to ignore and keep scanning.

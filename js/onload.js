@@ -1,4 +1,63 @@
+function getScanData(data) {
+  const dataStr = window.atob(data);
+  const params = new URLSearchParams(dataStr);
+  const obj = Object.fromEntries(params);
+  switch (obj.act) {
+  case 'user':
+    gasMember(obj.c);
+    break;
+  case value2:
+    // Code runs if expression === value2
+    break;
+  default:
+    // Code runs if no cases match
+  }
+}
+
+function gasMember(code) {
+  var content = code;
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  console.log(content);
+  var url = GAS_URL+'?action=mm&content='+content+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        console.log(data.res);
+        localStorage.setItem('member', JSON.stringify(data.res));
+        createMemOperView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasJoinMember() {
+  var member = getMember();
+  var content = member.ut;
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  console.log(content);
+  var url = GAS_URL+'?action=join&content='+content+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      console.log(data);
+      if (data.status=='0') {
+        createSuccessView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
 $(document).ready(function() {
+  getScanData('YWN0PXVzZXImYz0xMDIxNzk4NzMyMDYxMDI2NDQ4NjQ=');
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -19,11 +78,11 @@ $(document).ready(function() {
     $.getJSON(url, function(data) {
       if (data !== null) {
         if (data.status=='0') {
+          console.log(data.res);
           window.history.pushState({}, document.title, "?");
           localStorage.setItem('userinfo', JSON.stringify(data.res));
           localStorage.setItem('access_token', access_token);
-          console.log(JSON.stringify(data,0,2));
-          createUserView();
+          createMainView();
           off();
         }else if (data.error_code=='106') {
           alert('您需要存取權限。<br>請求存取權限，或切換具有存取權限的帳戶。');

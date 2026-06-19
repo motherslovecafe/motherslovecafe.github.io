@@ -65,22 +65,15 @@ function showScanModal() {
 
 function createErrorView(err_msg) {
   var contentHTML = '';
-  contentHTML += '<div class="text-center"><img class="img-fluid mt-5 mb-5" src="img/error.gif" class="d-block w-70" alt="">';
+  contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/error.png" class="d-block w-70" alt=""></div></div>';
   contentHTML += '<h3><span class="badge rounded-pill text-bg-danger'+'">'+err_msg+'</span></h3></div>';
-  showAlertModal('無法訪問', contentHTML, '');
+  showAlertModal('錯誤 Error', contentHTML, '');
 }
 
-function createRegErrorView(err_msg) {
+function createSuccessView() {
   var contentHTML = '';
-  contentHTML += '<div class="text-center"><img class="img-fluid mt-5 mb-5" src="img/error.gif" class="d-block w-70" alt="">';
-  contentHTML += '<h3><span class="badge rounded-pill text-bg-danger'+'">'+err_msg+'</span></h3></div>';
-  showAlertModal('錯誤', contentHTML, '');
-}
-
-function createAccessView(res) {
-  var contentHTML = '';
-  contentHTML += '<div class="text-center"><img class="mt-3 mb-3" src="img/'+(res)?'tick_sys':'error'+'.gif" class="d-block w-70" alt="">';
-  // contentHTML += '<h3><span class="badge rounded-pill text-bg-'+((res.type=='sys')?'success':'danger')+'">'+res.name+'</span></h3></div>';
+  contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/success.png" class="d-block w-70" alt=""></div></div>';
+  contentHTML += '<h3><span class="badge rounded-pill text-bg-success'+'">完成</span></h3></div>';
   showAlertModal('成功', contentHTML, '');
 }
 
@@ -255,7 +248,7 @@ function createUseVoucherView() {
   body += '</div>';
   body += '</div>';
 
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">確認</button></div>';
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">確定</button></div>';
   showInputModal('現場下單',body,footer);
 }
 
@@ -338,7 +331,7 @@ function createTxView() {
   content.appendChild(div);
   div.id = 'txPage';
   // var stamp = 1;
-  var html = '<div class="container col-11 mt-5">';
+  var html = '<div class="container col-11 mt-5 pb-5">';
   // html += '<div class="progress mb-4" style="height: 20px;">';
   // for (var i = 1; i <= 10; i++) {
 
@@ -346,7 +339,7 @@ function createTxView() {
     
   // }
   // html += '</div>';
-  html += '<ul class="list-group">';
+  html += '<ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
   html += '<strong>交易記錄</strong>';
   html += '</li>';
@@ -373,17 +366,43 @@ function createMainView() {
   var div = createCustomElement('div', 'container col_11');
   content.appendChild(div);
   div.id = 'mainPage';
-  var html = '<div class="container col-11 mt-5"><ul class="list-group">';
+  var html = '<div class="container col-11 mt-5 pb-5"><ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
   html += '<strong>公吿</strong>';
   html += '</li>';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center ">';
-  html += '即將登場';
+  html += (userinfo.noti.announcement?userinfo.noti.announcement:'沒有內容 No Content');
   html += '</li>';
   html += '</ul>';
   html += '</div>';
   div.innerHTML = html;
 
+}
+
+function confirmJoinMember() {
+  var member = getMember();
+  console.log(member);
+  var userinfo = getUserInfo();
+  var body = '';
+  body += '<span><strong>備註:</strong> <p class="text-primary">'+userinfo.noti.join_new_msg+'</p></span>';
+  // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="submitJoin('+id+');">確定</button></div>';
+  var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';
+  footer += '<button type="button" class="btn btn-danger" onclick="return submitJoin();">確定</button>';
+  showConfirmModal('新會員',body,footer);
+}
+
+function createMemOperView() {
+  var member = getMember();
+  var body = '';
+  body += '<div class="container col-11 mt-2 text-center">';
+  if (!member.points && member.is_freeze) {
+    body += '  <button class="btn btn-warning" type="button" id="btn_join_member" onclick="confirmJoinMember()">入會</button>';
+  }else{
+    body += '沒有可選擇的操作'
+  }
+  
+  body += '</div>';
+  showInputModal(member.name,body,'');
 }
 
 function createGLoginView() {

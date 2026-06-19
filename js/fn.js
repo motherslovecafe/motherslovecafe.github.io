@@ -16,6 +16,16 @@ function labArr(arr) {
   return res;
 }
 
+function backForm() {
+  confirmModal.hide();
+  inputModal.show();
+}
+
+function submitJoin() {
+  confirmModal.hide();
+  gasJoinMember();
+}
+
 function selectPref() {
   orderForm.coffee_pref=(orderForm.coffee_pref=='H' && !prefHotOnlyList.includes(orderForm.coffee_id))?'C':'H';
   var btn = document.getElementById('btn_coffee_pref');
@@ -109,45 +119,19 @@ function oauth2SignIn() {
   form.submit();
 }
 
-function gasUseVoucher() {
-  var customer = 'envose.au@gmail.com';
-  var content = window.btoa(unescape(encodeURIComponent(customer)));
-  on();
-  inputModal.hide();
-  var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=useVoucher&content='+content+'&id='+userinfo.id;
-  $.getJSON(url, function(data) {
-    if (data !== null) {
-      if (data.status=='0') {
-        createAccessView(data.res);
-      }else{
-        createRegErrorView(data.error_msg);
-      }
-    }
-    off();
-  });
+
+function getMember() {
+  
+  var data = localStorage.getItem('member');
+  if (data == null) {
+    return null;
+  }else{
+    var member = JSON.parse(data);
+    return member;    
+  }
+
 }
 
-function gasGetGiiftCode() {
-  var qty = document.getElementById('gift_qty').value;
-  var content = window.btoa(unescape(encodeURIComponent(qty)));
-  on();
-  inputModal.hide();
-  var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=getGiftCode&content='+content+'&id='+userinfo.id;
-  $.getJSON(url, function(data) {
-    if (data !== null) {
-      console.log(JSON.stringify(data));
-      if (data.status=='0') {
-        createGiftQRview(data.res);
-        // createAccessView(data.res);
-      }else{
-        createRegErrorView(data.error_msg);
-      }
-    }
-    off();
-  });
-}
 
 function getUserInfo() {
   

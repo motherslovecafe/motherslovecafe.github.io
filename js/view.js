@@ -381,7 +381,6 @@ function createMainView() {
 
 function confirmJoinMember() {
   var member = getMember();
-  console.log(member);
   var userinfo = getUserInfo();
   var body = '';
   body += '<span><strong>備註:</strong> <p class="text-primary">'+userinfo.noti.join_new_msg+'</p></span>';

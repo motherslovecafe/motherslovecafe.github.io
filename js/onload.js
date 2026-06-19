@@ -19,12 +19,10 @@ function gasMember(code) {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  console.log(content);
   var url = GAS_URL+'?action=mm&content='+content+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        console.log(data.res);
         localStorage.setItem('member', JSON.stringify(data.res));
         createMemOperView();
       }else{
@@ -41,11 +39,9 @@ function gasJoinMember() {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  console.log(content);
   var url = GAS_URL+'?action=join&content='+content+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
-      console.log(data);
       if (data.status=='0') {
         createSuccessView();
       }else{
@@ -57,7 +53,6 @@ function gasJoinMember() {
 }
 
 $(document).ready(function() {
-  getScanData('YWN0PXVzZXImYz0xMDIxNzk4NzMyMDYxMDI2NDQ4NjQ=');
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -78,7 +73,6 @@ $(document).ready(function() {
     $.getJSON(url, function(data) {
       if (data !== null) {
         if (data.status=='0') {
-          console.log(data.res);
           window.history.pushState({}, document.title, "?");
           localStorage.setItem('userinfo', JSON.stringify(data.res));
           localStorage.setItem('access_token', access_token);

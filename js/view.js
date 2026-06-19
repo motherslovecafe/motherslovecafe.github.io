@@ -290,9 +290,6 @@ function createVoucherView() {
   content.appendChild(div);
   div.id = 'ticketPage';
   var html = '<div class="container col-11 mt-5">';
-  // html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  // html += '<strong>咖啡餐飲券</strong><span class="badge rounded-pill bg-danger">99</span>';
-  // html += '</li>';
   html += '<div class="d-flex col flex-column align-items-center mt-3 mb-3">';
   html += '<div class="card text-white" onclick="return createUseVoucherView();" >';
   html += '  <img src="img/bg_coffee_6.jpeg" class="card-img" style="max-width:400px;">';
@@ -301,16 +298,6 @@ function createVoucherView() {
   html += '  </div>';
   html += '</div>';
   html += '</div>';
-  /*
-  html += '<div class="d-flex col flex-column align-items-center mt-3 mb-3">';
-  html += '<div class="card text-white disabled" onclick="return createGiftView();">';
-  html += '  <img src="img/bg_coffee_7.jpeg" class="card-img" style="max-width:400px;">';
-  html += '  <div class="card-img-overlay">';
-  html += '    <h4 class="card-title">贈送咖啡餐飲券</h4>';
-  html += '  </div>';
-  html += '</div>';
-  html += '</div>';
-  */
   html += '</div>';
   div.innerHTML = html;
 
@@ -439,9 +426,6 @@ function createGLoginView() {
   img.height = '200';
   div3.appendChild(img);
   div2.appendChild(div3);
-  // var h1 = createCustomElement('h1', 'h1 mb-5 font-weight-normal');
-  // h1.innerHTML = app_name;
-  // div3.appendChild(h1);
   var btn_glogin = createCustomElement('btn', 'btn btn-warning btn-block text-center align-self-center mt-3 mb-3');
   btn_glogin.innerHTML = 'Sign in with Google';
   btn_glogin.onclick = function() { oauth2SignIn(); };

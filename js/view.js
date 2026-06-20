@@ -322,7 +322,7 @@ function createTxView() {
   
   html += '<ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  html += '<strong>交易記錄</strong>';
+  html += '<strong>咖啡因補給日誌<br>Caffeine Refuel Log</strong>';
   if (userinfo.points){
     html+='<span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
   }

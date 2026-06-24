@@ -87,7 +87,7 @@ function getNavHtml() {
   html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
   html += '  <div class="container-fluid mx-4 my-1">';
   html += '    <a class="navbar-brand" href="#">';
-  html += '      <img src="img/icon.JPG" height="32" alt="">  ';
+  html += '      <img src="img/cafe_logo_2.png" height="32" alt="">  ';
   html += '<span class="mx-2">'+app_name+'</span>';
   html += '    </a>';
   /*

@@ -161,7 +161,7 @@ function createUserView() {
   div.id = 'userQrPage';
   var html = '<div class="container col-11 mt-5">';
   html += '<div class="card bg-white text-white" style="max-width: 24rem;" onclick="createUserQRView();">';
-  html += '  <img src="img/bg_coffee_6.jpeg" class="card-img" alt="...">';
+  html += '  <img src="img/member_bg.png" class="card-img" alt="...">';
   html += '  <div class="card-img-overlay">';
   html += '    <h6 class="card-title">'+userinfo.name+'</h6>';
   if (userinfo.points) {
@@ -424,7 +424,7 @@ function createGLoginView() {
   var div3 = createCustomElement('div', 'text-center mt-5');
   var img = document.createElement('img');
   img.classList.add('mt-5');
-  img.src = 'img/icon.JPG';
+  img.src = 'img/cafe_logo.png';
   // img.width = '150';
   img.height = '200';
   div3.appendChild(img);

@@ -6,8 +6,8 @@ function getScanData(data) {
   case 'user':
     gasMember(obj.c);
     break;
-  case 'order':
-    gasOrder(obj.c);
+  case 'o':
+    gasOrder(decodeForm(obj.c));
     break;
   default:
     // Code runs if no cases match

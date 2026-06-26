@@ -60,6 +60,21 @@ function selectCoffee() {
   }
 }
 
+function encodeFormStr() {
+  var str = '';
+  str += orderForm.ut + '|';
+  str += orderForm.coffee_id + '|';
+  str += orderForm.coffee_pref + '|';
+  str += (orderForm.byoc?'1':'0');
+  return str;
+}
+
+function decodeForm(str) {
+  var arr = str.split('|');
+  var form = {'ut':arr[0],'coffee_id':arr[1],'coffee_pref':arr[2],'byoc':(arr[3]=='1'?true:false)};
+  return form;
+}
+
 function getCSSClassStr(key) {
   return key.split(' ');
 }

@@ -86,9 +86,9 @@ function getNavHtml() {
   var html = '';
   html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
   html += '  <div class="container-fluid mx-4 my-1">';
-  html += '    <a class="navbar-brand" href="#">';
-  html += '      <img src="img/cafe_logo_2.png" height="32" alt="">  ';
-  html += '<span class="mx-2">'+app_name+'</span>';
+  html += '    <a class="navbar-brand" onclick="createMainView()">';
+  html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
+  // html += '<span class="mx-2">'+app_name+'</span>';
   html += '    </a>';
   /*
   html += '    <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">';
@@ -132,7 +132,7 @@ function getFooterHtml() {
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
   if (userinfo.acl && (userinfo.acl.includes('shopOper') || userinfo.acl.includes('memOper'))){
-    html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:28px;"></i></button></div>';
+    html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
   }
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;"></i></button></div>';
   html += '    </div>';
@@ -160,9 +160,9 @@ function createUserView() {
   content.appendChild(div);
   div.id = 'userQrPage';
   var html = '<div class="container col-11 mt-5">';
-  html += '<div class="card bg-white text-white" style="max-width: 24rem;" onclick="createUserQRView();">';
+  html += '<div class="card bg-white" style="max-width: 24rem; color:#733617" onclick="createUserQRView();">';
   html += '  <img src="img/member_bg.jpeg" class="card-img" alt="...">';
-  html += '  <div class="card-img-overlay">';
+  html += '  <div class="card-img-overlay m-1">';
   html += '    <h6 class="card-title">'+userinfo.name+'</h6>';
   if (userinfo.points) {
     html += '    <h1 class="card-text display-1">'+(userinfo.points?userinfo.points:'-')+'</h1>';
@@ -189,7 +189,7 @@ function createUserQRView() {
   body += '</li>';
   body += '</ul>';
   body += '</div>';
-  showInputModal('管理會籍',body,'');
+  showInputModal('My QR Code',body,'');
   var qrcode = new QRCode("qrcode",{"text": window.btoa('act=user&c='+userinfo.ut), "width":200, "height":200});
 
 }
@@ -212,7 +212,7 @@ function createMoreView() {
 
   var html = '<div class="container col-11 mt-5">';
   html += '<div class="d-flex col flex-column align-items-center">';
-  html += '<button type="button" class="btn btn-danger col-12 col-lg-4" onclick="return logout();">登出</button>';
+  html += '<button type="button" class="btn btn-danger col-12 col-lg-4" onclick="return logout();">下次見 See you soon</button>';
   html += '</div>';
   html += '</div>';
   div.innerHTML = html;
@@ -244,12 +244,12 @@ function createUseVoucherView() {
   body += '<div class="input-group mt-3">';
   body += '<div class="form-check form-switch">';
   body += '  <input class="form-check-input" type="checkbox" id="byoc_input">';
-  body += '  <label class="form-check-label" for="byoc_input">自備杯</label>';
+  body += '  <label class="form-check-label" for="byoc_input">自攜杯 BYOC</label>';
   body += '</div>';
   body += '</div>';
 
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">確定</button></div>';
-  showInputModal('現場下單',body,footer);
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">就咁話！👍 Espresso-ly Yes!</button></div>';
+  showInputModal('你的選擇 Your Choice',body,footer);
 }
 
 function createVoucherQRview() {
@@ -263,7 +263,7 @@ function createVoucherQRview() {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
-  body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success">自備杯</span></label>':'';
+  body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></span></label>':'';
   body += '</strong></div>';
   body += '</li>';
   body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
@@ -271,8 +271,8 @@ function createVoucherQRview() {
   body += '</li>';
   body += '</ul>';
   body += '</div>';
-  showInputModal('現場下單',body,'');
-  var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=order&c='+JSON.stringify(orderForm)), "width":200, "height":200});
+  showInputModal('你的選擇 Your Choice',body,'');
+  var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
 }
 
 function createVoucherView() {
@@ -363,7 +363,7 @@ function createMainView() {
   div.id = 'mainPage';
   var html = '<div class="container col-11 mt-5 pb-5"><ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  html += '<strong>公吿</strong>';
+  html += '<strong>咖啡密語<br>The Coffee Whisper</strong>';
   html += '</li>';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center ">';
   html += (userinfo.noti.announcement?userinfo.noti.announcement:'沒有內容 No Content');
@@ -406,12 +406,12 @@ function createOrderView(orderRes) {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += orderRes.item;
   body += ' <span class="badge rounded-pill bg-'+(orderRes.pref=='H'?'danger':'primary')+'">'+orderRes.pref+'</span>';
-  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success">自備杯</span></label>':'';
+  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success">自攜杯 Bring Your Own Cup</span></label>':'';
   body += '</strong></div>';
   body += '</li>';
   body += '</ul>';
   body += '</div>';
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeOrder();">確定</button></div>';
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeOrder();">就咁話！👍 Espresso-ly Yes!</button></div>';
   showConfirmModal('訂單', body, footer);
 }
 

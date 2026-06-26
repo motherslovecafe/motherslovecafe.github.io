@@ -26,6 +26,11 @@ function submitJoin() {
   gasJoinMember();
 }
 
+function submitTopUp() {
+  confirmModal.hide();
+  gasTopUp();
+}
+
 function completeMemOper() {
   confirmModal.hide();
   createScanView();
@@ -49,6 +54,13 @@ function selectPref() {
     btn.classList.add('btn-primary');
     btn.classList.remove('btn-danger');
   }
+  updateCurrentPrice();
+}
+
+function selectTopUp() {
+  var select = document.getElementById('input_top_up');
+  memForm.top_up=select.value;
+  console.log(memForm);
 }
 
 function selectCoffee() {
@@ -58,6 +70,11 @@ function selectCoffee() {
   if (prefHotOnlyList.includes(id)) {
     selectPref();
   }
+  updateCurrentPrice();
+}
+
+function updateCurrentPrice() {
+  setInnerHTMLById('current-price',coffeeList[orderForm.coffee_id]['price']+(orderForm.coffee_pref=='C'?2:0));
 }
 
 function encodeFormStr() {

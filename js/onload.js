@@ -35,6 +35,7 @@ function gasMember(code) {
 
 function gasOrder(code) {
   var content = code;
+  console.log(content);
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
@@ -58,6 +59,23 @@ function gasJoinMember() {
   inputModal.hide();
   var userinfo = getUserInfo();
   var url = GAS_URL+'?action=join&content='+content+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        createSuccessView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasTopUp() {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=topup&content='+memForm+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {

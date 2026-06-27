@@ -303,6 +303,44 @@ function createVoucherView() {
 
 }
 
+
+function createShopOrdersView() {
+
+  var allOrders = getAllOrders();
+  initViews();
+  var userinfo = getUserInfo();
+  if (userinfo.name == null){
+    setHeaderTitle('h2', 'Invalid User');
+    return;
+  }
+  header.innerHTML = getNavHtml();
+  footer.innerHTML = getFooterHtml();
+
+  var div = createCustomElement('div', 'container col_11');
+  content.appendChild(div);
+  div.id = 'txPage';
+  var html = '<div class="container col-11 mt-5 pb-5">';
+
+  
+  html += '<ul class="list-group pb-5 mb-5">';
+  html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
+  html += '<strong>All Orders</strong>';
+  html += '</li>';
+  Object.keys(allOrders).forEach(key => {
+    html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+    html += '<p><strong>'+allOrders[key].oid+': <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
+    html += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
+    html += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success">BYOC</span>':'';
+      html += '</p>';
+      html += '</li>';
+  });
+
+  html += '</ul>';
+  html += '</div>';
+  div.innerHTML = html;
+
+}
+
 function createTxView() {
 
   var userinfo = getUserInfo();

@@ -41,7 +41,9 @@ function gasOrder(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        createOrderView(data.res);
+        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        console.log(data.res);
+        createShopOrdersView();
       }else{
         createErrorView(data.error_msg);
       }
@@ -94,7 +96,8 @@ function gasGetOrders() {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        console.log(data.res);
+        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        createShopOrdersView();
       }else{
         createErrorView(data.error_msg);
       }

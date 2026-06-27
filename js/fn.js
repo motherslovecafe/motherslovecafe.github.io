@@ -162,6 +162,19 @@ function oauth2SignIn() {
 }
 
 
+function getAllOrders() {
+  
+  var data = localStorage.getItem('allOrders');
+  if (data == null) {
+    return null;
+  }else{
+    var allOrders = JSON.parse(data);
+    return allOrders;    
+  }
+
+}
+
+
 function getMember() {
   
   var data = localStorage.getItem('member');

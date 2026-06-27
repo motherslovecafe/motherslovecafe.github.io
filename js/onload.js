@@ -37,7 +37,7 @@ function gasOrder(code) {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=order&content='+JSON.stringify(content)+'&ut='+userinfo.ut;
+  var url = GAS_URL+'?action=order&content='+JSON.stringify(code)+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {

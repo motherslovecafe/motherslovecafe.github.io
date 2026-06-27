@@ -422,13 +422,13 @@ function createOrderView(orderRes) {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += orderRes.item;
   body += ' <span class="badge rounded-pill bg-'+(orderRes.pref=='H'?'danger':'primary')+'">'+orderRes.pref+'</span>';
-  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success">自攜杯 Bring Your Own Cup</span></label>':'';
+  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></span></label>':'';
   body += '</strong></div>';
   body += '</li>';
   body += '</ul>';
   body += '</div>';
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeOrder();">就咁話！👍 Espresso-ly Yes!</button></div>';
-  showConfirmModal('訂單', body, footer);
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeOrder();">確定</button></div>';
+  showConfirmModal('訂單: '+orderRes.oid, body, footer);
 }
 
 function createGLoginView() {

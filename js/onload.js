@@ -1,6 +1,5 @@
 function getScanData(data) {
   const dataStr = window.atob(data);
-  console.log(dataStr);
   const params = new URLSearchParams(dataStr);
   const obj = Object.fromEntries(params);
   switch (obj.act) {
@@ -35,11 +34,10 @@ function gasMember(code) {
 }
 
 function gasOrder(code) {
-  console.log(content);
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=order&content='+content+'&ut='+userinfo.ut;
+  var url = GAS_URL+'?action=order&content='+JSON.stringify(content)+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
@@ -80,6 +78,23 @@ function gasTopUp() {
     if (data !== null) {
       if (data.status=='0') {
         createSuccessView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasGetOrders() {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=getorders&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        console.log(data.res);
       }else{
         createErrorView(data.error_msg);
       }

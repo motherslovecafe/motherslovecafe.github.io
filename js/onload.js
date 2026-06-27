@@ -42,13 +42,30 @@ function gasOrder(code) {
     if (data !== null) {
       if (data.status=='0') {
         localStorage.setItem('allOrders', JSON.stringify(data.res));
-        console.log(data.res);
         createShopOrdersView();
       }else{
         createErrorView(data.error_msg);
       }
     }
     off();
+  });
+}
+
+function gasCompleteOrder(code) {
+  // on();
+  // inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=co&content='+code+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        createShopOrdersView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    // off();
   });
 }
 
@@ -88,9 +105,9 @@ function gasTopUp() {
   });
 }
 
-function gasGetOrders() {
-  on();
-  inputModal.hide();
+function gasGetAllOrders() {
+  // on();
+  // inputModal.hide();
   var userinfo = getUserInfo();
   var url = GAS_URL+'?action=getorders&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
@@ -98,11 +115,9 @@ function gasGetOrders() {
       if (data.status=='0') {
         localStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
-      }else{
-        createErrorView(data.error_msg);
       }
     }
-    off();
+    // off();
   });
 }
 

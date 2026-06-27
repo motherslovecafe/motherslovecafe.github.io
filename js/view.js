@@ -196,7 +196,7 @@ function createUserQRView() {
 
 function createMoreView() {
 
-  // var userinfo = getUserInfo();
+  var userinfo = getUserInfo();
   initViews();
   // if (userinfo.name == null){
   //   setHeaderTitle('h2', 'Invalid User');
@@ -210,8 +210,11 @@ function createMoreView() {
   div.id = 'morePage';
   // div.innerHTML = '<div class="d-flex col flex-column align-items-center mt-5 mb-5"><div id="qrcode"></div></div>';
 
-  var html = '<div class="container col-11 mt-5">';
+  var html = '<div class="container col-11 my-5">';
   html += '<div class="d-flex col flex-column align-items-center">';
+  if (userinfo.acl && (userinfo.acl.includes('memOper'))){
+    html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="return createShopOrdersView();">All Orders</button>';
+  }
   html += '<button type="button" class="btn btn-danger col-12 col-lg-4" onclick="return logout();">下次見 See you soon</button>';
   html += '</div>';
   html += '</div>';
@@ -305,7 +308,7 @@ function createVoucherView() {
 
 
 function createShopOrdersView() {
-
+  gasGetAllOrders();
   var allOrders = getAllOrders();
   initViews();
   var userinfo = getUserInfo();
@@ -326,14 +329,22 @@ function createShopOrdersView() {
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
   html += '<strong>All Orders</strong>';
   html += '</li>';
+  var orderHtmlStr = '';
   Object.keys(allOrders).forEach(key => {
-    html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-    html += '<p><strong>'+allOrders[key].oid+': <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
-    html += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-    html += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success">BYOC</span>':'';
-      html += '</p>';
-      html += '</li>';
+    var li = '';
+    li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+    if (allOrders[key].status == 'P') {
+      li += '<p><button class="btn btn-warning" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
+    }else{
+      li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
+    }
+    li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
+    li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success">BYOC</span>':'';
+    li += '</p>';
+    li += '</li>';
+    orderHtmlStr = li + orderHtmlStr;
   });
+  html += orderHtmlStr;
 
   html += '</ul>';
   html += '</div>';

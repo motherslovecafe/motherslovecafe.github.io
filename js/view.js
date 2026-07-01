@@ -274,7 +274,7 @@ function createVoucherQRview() {
   body += '</li>';
   body += '</ul>';
   body += '</div>';
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">OK!</button></div>';
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">睇睇專屬號碼➡️Show my Brew Code</button></div>';
   showConfirmModal('你的選擇 Your Choice',body,footer);
   var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
 }

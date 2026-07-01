@@ -14,6 +14,24 @@ function getScanData(data) {
   }
 }
 
+function gasRefresh() {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=mm&content='+userinfo.ut+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('userinfo', JSON.stringify(data.res));
+        createTxView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
 function gasMember(code) {
   var content = code;
   on();
@@ -122,6 +140,7 @@ function gasGetAllOrders() {
 }
 
 $(document).ready(function() {
+  
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -142,6 +161,7 @@ $(document).ready(function() {
     $.getJSON(url, function(data) {
       if (data !== null) {
         if (data.status=='0') {
+          console.log(data.res)
           window.history.pushState({}, document.title, "?");
           localStorage.setItem('userinfo', JSON.stringify(data.res));
           localStorage.setItem('access_token', access_token);
@@ -160,4 +180,5 @@ $(document).ready(function() {
     off();
     createGLoginView();
   }
+
 });

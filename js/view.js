@@ -370,15 +370,17 @@ function createTxView() {
   var html = '<div class="container col-11 mt-5 pb-5">';
 
   var o = userinfo.orders;
+  if (o) {
+    Object.keys(o).forEach(oid => {
+      html += '<div class="alert alert-warning" role="alert">';
+      html += '<strong>['+oid+']</strong> ';
+      html += o[oid].item;
+      html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
+      html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+      html += '</div>';
+    });
+  }
 
-  Object.keys(o).forEach(oid => {
-    html += '<div class="alert alert-warning" role="alert">';
-    html += '<strong>['+oid+']</strong> ';
-    html += o[oid].item;
-    html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
-    html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-    html += '</div>';
-  });
 
   
   html += '<ul class="list-group pb-5 mb-5">';

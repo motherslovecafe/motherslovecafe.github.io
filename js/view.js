@@ -236,7 +236,7 @@ function createUseVoucherView() {
   orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false}; // set default
 
   var body = '';
-  body += '<div class="input-group mb-3">';
+  body += '<div class="input-group my-3 mb-5">';
   body += '  <button class="btn btn-danger" type="button" id="btn_coffee_pref" onclick="selectPref()">熱 Hot</button>';
   body += '  <select class="form-select" id="input_select_coffee" onchange="selectCoffee()">';
   Object.keys(coffeeList).forEach(key => {
@@ -244,7 +244,7 @@ function createUseVoucherView() {
   });
   body += '  </select>';
   body += '</div>';
-  body += '<div class="input-group mt-3">';
+  body += '<div class="input-group my-3 mt-5">';
   body += '<div class="form-check form-switch">';
   body += '  <input class="form-check-input" type="checkbox" id="byoc_input">';
   body += '  <label class="form-check-label" for="byoc_input">自攜杯 BYOC</label>';
@@ -266,7 +266,7 @@ function createVoucherQRview() {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
-  body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></span></label>':'';
+  body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
   body += '</strong></div>';
   body += '</li>';
   body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
@@ -274,7 +274,8 @@ function createVoucherQRview() {
   body += '</li>';
   body += '</ul>';
   body += '</div>';
-  showInputModal('你的選擇 Your Choice',body,'');
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">OK!</button></div>';
+  showConfirmModal('你的選擇 Your Choice',body,footer);
   var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
 }
 
@@ -339,7 +340,7 @@ function createShopOrdersView() {
       li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
     }
     li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-    li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success">BYOC</span>':'';
+    li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
     li += '</p>';
     li += '</li>';
     orderHtmlStr = li + orderHtmlStr;
@@ -367,6 +368,17 @@ function createTxView() {
   content.appendChild(div);
   div.id = 'txPage';
   var html = '<div class="container col-11 mt-5 pb-5">';
+
+  var o = userinfo.orders;
+
+  Object.keys(o).forEach(oid => {
+    html += '<div class="alert alert-warning" role="alert">';
+    html += '<strong>['+oid+']</strong> ';
+    html += o[oid].item;
+    html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
+    html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+    html += '</div>';
+  });
 
   
   html += '<ul class="list-group pb-5 mb-5">';
@@ -471,7 +483,7 @@ function createOrderView(orderRes) {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += orderRes.item;
   body += ' <span class="badge rounded-pill bg-'+(orderRes.pref=='H'?'danger':'primary')+'">'+orderRes.pref+'</span>';
-  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></span></label>':'';
+  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
   body += '</strong></div>';
   body += '</li>';
   body += '</ul>';

@@ -140,7 +140,7 @@ function gasGetAllOrders() {
 }
 
 $(document).ready(function() {
-  
+
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -161,7 +161,6 @@ $(document).ready(function() {
     $.getJSON(url, function(data) {
       if (data !== null) {
         if (data.status=='0') {
-          console.log(data.res)
           window.history.pushState({}, document.title, "?");
           localStorage.setItem('userinfo', JSON.stringify(data.res));
           localStorage.setItem('access_token', access_token);

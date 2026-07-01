@@ -31,6 +31,11 @@ function submitTopUp() {
   gasTopUp();
 }
 
+function submitRefresh() {
+  confirmModal.hide();
+  gasRefresh();
+}
+
 function completeMemOper() {
   confirmModal.hide();
   createScanView();

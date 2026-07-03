@@ -110,7 +110,7 @@ function gasTopUp() {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=topup&content='+JSON.stringgify(memForm)+'&ut='+userinfo.ut;
+  var url = GAS_URL+'?action=topup&content='+JSON.stringify(memForm)+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
@@ -140,7 +140,10 @@ function gasGetAllOrders() {
 }
 
 $(document).ready(function() {
-
+  console.log(window.atob("YWN0PXVzZXImYz0xMDIxNzk4NzMyMDYxMDI2NDQ4NjQ="));
+  console.log(getUserInfo());
+  getScanData("YWN0PXVzZXImYz0xMDIxNzk4NzMyMDYxMDI2NDQ4NjQ=");
+/*
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -179,5 +182,5 @@ $(document).ready(function() {
     off();
     createGLoginView();
   }
-
+*/
 });

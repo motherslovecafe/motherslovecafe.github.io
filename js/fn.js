@@ -64,7 +64,26 @@ function selectPref() {
 
 function selectTopUp() {
   var select = document.getElementById('input_top_up');
-  memForm.top_up=select.value;
+  var item = select.value;
+  memForm.item=item;
+  memForm.desc=ptlist[item].desc;
+  memForm.pt=ptlist[item].default_pt;
+  memForm.remarks=ptlist[item].remarks;
+
+  var new_desc = document.getElementById('input_top_up_remarks');
+  if (ptlist[item].remarks) {
+    new_desc.setAttribute('required','true');
+    new_desc.removeAttribute('disabled');
+  }else{
+    new_desc.value = null;
+    new_desc.setAttribute('disabled', 'disabled'); 
+  }
+
+  var pt = document.getElementById('input_top_up_pt');
+  pt.value = ptlist[item].default_pt;
+
+  pt.setAttribute('required','true');
+
   console.log(memForm);
 }
 

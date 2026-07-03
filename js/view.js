@@ -335,7 +335,7 @@ function createShopOrdersView() {
     var li = '';
     li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
     if (allOrders[key].status == 'P') {
-      li += '<p><button class="btn btn-warning" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
+      li += '<p><button class="btn btn-warning" id="'+allOrders[key].oid+'" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
     }else{
       li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
     }
@@ -450,16 +450,36 @@ function confirmJoinMember() {
 
 function createMemOperView() {
   var member = getMember();
-  memForm.ut = member.ut;
+  if (member && member.ut) {
+    memForm.ut = member.ut;
+  }else{
+    showAlertModal('錯誤','未能取得用戶資料','');
+    return;
+  }
+  var userinfo = getUserInfo();
+  if (userinfo && userinfo.m_config && userinfo.m_config.pt_list) {
+    ptlist = userinfo.m_config.pt_list;
+  }else{
+    showAlertModal('錯誤','未能取得選項','');
+    return;
+  }
   var memTagStr = member.name+': '+member.points;
+  var userinfo = getUserInfo();
   var body = '';
   body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
-  body += '<div class="input-group mb-3">';
-  body += '  <span class="input-group-text" id="addon-wrapping">Top up</span>';
+  body += '<div class="input-group mb-3" role="alert">';
+  body += '<label class="input-group-text">Top-Up</label>';
   body += '  <select class="form-select" id="input_top_up" onchange="selectTopUp()">';
-  body += '    <option value=50>50</option>';
-  body += '    <option value=120>120</option>';
+  Object.keys(ptlist).forEach(key => {
+    body += '    <option value='+`${key}`+'>'+`${ptlist[key]['desc']}`+'</option>';
+  });
   body += '  </select>';
+  body += '  <input class="form-control" id="input_top_up_remarks" type="text" placeholder="請註明 Desc" disabled></input>';
+  body += '</div>';
+  body += '<div class="input-group mb-3">';
+  body += '<label class="input-group-text">Points</label>';
+  body += '  <input class="form-control" id="input_top_up_pt" type="text" value = "50" placeholder="請註明 Points" required></input>';
+  body += '</div>';
   body += '</div>';
   body += '</div>';
   var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="confirmTopUpView();">確定</button></div>';
@@ -468,11 +488,21 @@ function createMemOperView() {
 
 function confirmTopUpView() {
   var member = getMember();
-  memForm.ut = member.ut;
-  var memTagStr = member.name+': '+member.points;
+  if (member && member.ut) {
+    memForm.ut = member.ut;
+  }else{
+    showAlertModal('錯誤','未能取得用戶資料','');
+    return;
+  }
+
+  var new_desc = document.getElementById('input_top_up_remarks');
+  if (memForm.remarks && new_desc.value) {
+    memForm.desc = new_desc.value;
+  }
+
   var body = '';
   body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
-  body += '<span class="text-primary"><strong>Top up:</strong> <p>'+memForm.top_up+'</p></span>';
+  body += '<span class="text-primary"><strong>Top up:</strong> <p>'+memForm.desc+' '+memForm.pt+'</p></span>';
   // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="submitJoin('+id+');">確定</button></div>';
   var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';
   footer += '<button type="button" class="btn btn-danger" onclick="return submitTopUp();">確定</button>';

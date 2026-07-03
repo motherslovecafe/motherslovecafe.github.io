@@ -83,8 +83,6 @@ function selectTopUp() {
   pt.value = ptlist[item].default_pt;
 
   pt.setAttribute('required','true');
-
-  console.log(memForm);
 }
 
 function selectCoffee() {

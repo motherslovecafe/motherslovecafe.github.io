@@ -140,10 +140,6 @@ function gasGetAllOrders() {
 }
 
 $(document).ready(function() {
-  console.log(window.atob("YWN0PXVzZXImYz0xMDIxNzk4NzMyMDYxMDI2NDQ4NjQ="));
-  console.log(getUserInfo());
-  getScanData("YWN0PXVzZXImYz0xMDIxNzk4NzMyMDYxMDI2NDQ4NjQ=");
-/*
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
@@ -182,5 +178,4 @@ $(document).ready(function() {
     off();
     createGLoginView();
   }
-*/
 });

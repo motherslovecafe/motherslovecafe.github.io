@@ -500,6 +500,11 @@ function confirmTopUpView() {
     memForm.desc = new_desc.value;
   }
 
+  var new_pt = document.getElementById('input_top_up_pt');
+  if (new_pt.value) {
+    memForm.pt = new_pt.value;
+  }
+
   var body = '';
   body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
   body += '<span class="text-primary"><strong>Top up:</strong> <p>'+memForm.desc+' '+memForm.pt+'</p></span>';

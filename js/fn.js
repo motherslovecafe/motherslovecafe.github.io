@@ -73,7 +73,7 @@ function selectExtra() {
     btn.classList.add('btn-light');
     btn.classList.remove('btn-dark');
   }
-  if (extraNAList.includes(id)) {
+  if (extraNAList.includes(orderForm.coffee_id)) {
     btn.setAttribute('hidden','true');
   }else {
     btn.removeAttribute('hidden');

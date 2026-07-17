@@ -62,6 +62,20 @@ function selectPref() {
   updateCurrentPrice();
 }
 
+function selectExtra() {
+  orderForm.coffee_extra=(!orderForm.coffee_extra && !extraNAList.includes(orderForm.coffee_id))?true:false;
+  var btn = document.getElementById('btn_coffee_extra');
+  if (orderForm.coffee_extra) {
+    btn.classList.remove('btn-outline-dark');
+    btn.classList.add('btn-dark');
+  }
+  if (!orderForm.coffee_extra) {
+    btn.classList.add('btn-outline-dark');
+    btn.classList.remove('btn-dark');
+  }
+  updateCurrentPrice();
+}
+
 function selectTopUp() {
   var select = document.getElementById('input_top_up');
   var item = select.value;

@@ -66,11 +66,11 @@ function selectExtra() {
   orderForm.coffee_extra=(!orderForm.coffee_extra && !extraNAList.includes(orderForm.coffee_id))?true:false;
   var btn = document.getElementById('btn_coffee_extra');
   if (orderForm.coffee_extra) {
-    btn.classList.remove('btn-outline-dark');
-    btn.classList.add('btn-dark');
+    btn.classList.remove('btn-dark');
+    btn.classList.add('btn-light');
   }
   if (!orderForm.coffee_extra) {
-    btn.classList.add('btn-outline-dark');
+    btn.classList.add('btn-light');
     btn.classList.remove('btn-dark');
   }
   updateCurrentPrice();

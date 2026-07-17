@@ -114,6 +114,9 @@ function selectCoffee() {
   }
   if (extraNAList.includes(id)) {
     selectExtra();
+  }else{
+    var btn = document.getElementById('btn_coffee_extra');
+    btn.classList.remove('d-none');
   }
   updateCurrentPrice();
 }

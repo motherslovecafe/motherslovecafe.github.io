@@ -244,7 +244,7 @@ function createUseVoucherView() {
   });
   body += '  </select>';
   body += '</div>';
-  body += '<button type="button" class="btn btn-outline-dark" id="btn_coffee_extra" onclick="selectExtra()">Extra Shot</button>';
+  body += '<button type="button" class="btn btn-light" id="btn_coffee_extra" onclick="selectExtra()">Extra Shot</button>';
   body += '<div class="input-group my-3 mt-5">';
   body += '<div class="form-check form-switch">';
   body += '  <input class="form-check-input" type="checkbox" id="byoc_input">';

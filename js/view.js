@@ -244,7 +244,7 @@ function createUseVoucherView() {
   });
   body += '  </select>';
   body += '</div>';
-  body += '<button type="button" class="btn btn-outline-dark" onclick="selectExtra()">Extra Shot</button>';
+  body += '<button type="button" class="btn btn-outline-dark" id="btn_coffee_extra" onclick="selectExtra()">Extra Shot</button>';
   body += '<div class="input-group my-3 mt-5">';
   body += '<div class="form-check form-switch">';
   body += '  <input class="form-check-input" type="checkbox" id="byoc_input">';
@@ -267,6 +267,7 @@ function createVoucherQRview() {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
+  body += (orderForm.extra)?'  <span class="badge rounded-pill bg-dark">ext.</span></label>':'';
   body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
   body += '</strong></div>';
   body += '</li>';

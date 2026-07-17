@@ -106,6 +106,14 @@ function selectCoffee() {
   if (prefHotOnlyList.includes(id)) {
     selectPref();
   }
+
+  var btn = document.getElementById('btn_coffee_extra');
+  if (extraNAList.includes(id)) {
+    orderForm.coffee_extra=false;
+    btn.setAttribute('hidden','true');
+  }else {
+    btn.setAttribute('hidden','true');
+  }
   updateCurrentPrice();
 }
 
@@ -118,13 +126,14 @@ function encodeFormStr() {
   str += orderForm.ut + '|';
   str += orderForm.coffee_id + '|';
   str += orderForm.coffee_pref + '|';
+  str += (orderForm.coffee_extra?'1':'0');
   str += (orderForm.byoc?'1':'0');
   return str;
 }
 
 function decodeForm(str) {
   var arr = str.split('|');
-  var form = {'ut':arr[0],'coffee_id':arr[1],'coffee_pref':arr[2],'byoc':(arr[3]=='1'?true:false)};
+  var form = {'ut':arr[0],'coffee_id':arr[1],'coffee_pref':arr[2],'coffee_extra':(arr[3]=='1'?true:false),'byoc':(arr[4]=='1'?true:false)};
   return form;
 }
 

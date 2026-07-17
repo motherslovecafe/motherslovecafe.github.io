@@ -73,10 +73,9 @@ function selectExtra() {
     btn.classList.add('btn-light');
     btn.classList.remove('btn-dark');
   }
+  btn.removeAttribute('hidden');
   if (extraNAList.includes(orderForm.coffee_id)) {
     btn.setAttribute('hidden','true');
-  }else {
-    btn.removeAttribute('hidden');
   }
   updateCurrentPrice();
 }

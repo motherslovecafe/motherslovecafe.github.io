@@ -73,6 +73,11 @@ function selectExtra() {
     btn.classList.add('btn-light');
     btn.classList.remove('btn-dark');
   }
+  if (extraNAList.includes(id)) {
+    btn.setAttribute('hidden','true');
+  }else {
+    btn.removeAttribute('hidden');
+  }
   updateCurrentPrice();
 }
 
@@ -106,13 +111,8 @@ function selectCoffee() {
   if (prefHotOnlyList.includes(id)) {
     selectPref();
   }
-
-  var btn = document.getElementById('btn_coffee_extra');
   if (extraNAList.includes(id)) {
-    orderForm.coffee_extra=false;
-    btn.setAttribute('hidden','true');
-  }else {
-    btn.removeAttribute('hidden');
+    selectExtra();
   }
   updateCurrentPrice();
 }

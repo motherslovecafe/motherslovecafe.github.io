@@ -267,7 +267,7 @@ function createVoucherQRview() {
   body += '<div class="d-flex col flex-column align-items-center"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
-  body += (orderForm.extra)?'  <span class="badge rounded-pill bg-dark">ext.</span></label>':'';
+  body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">ext.</span></label>':'';
   body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
   body += '</strong></div>';
   body += '</li>';

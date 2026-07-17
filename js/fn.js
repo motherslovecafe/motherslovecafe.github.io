@@ -112,7 +112,7 @@ function selectCoffee() {
     orderForm.coffee_extra=false;
     btn.setAttribute('hidden','true');
   }else {
-    btn.setAttribute('hidden','true');
+    btn.removeAttribute('hidden');
   }
   updateCurrentPrice();
 }

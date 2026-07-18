@@ -342,6 +342,7 @@ function createShopOrdersView() {
       li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
     }
     li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
+    li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
     li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
     li += '</p>';
     li += '</li>';
@@ -372,12 +373,14 @@ function createTxView() {
   var html = '<div class="container col-11 mt-5 pb-5">';
 
   var o = userinfo.orders;
+  console.log(o);
   if (o) {
     Object.keys(o).forEach(oid => {
       html += '<div class="alert alert-warning" role="alert">';
       html += '<strong>['+oid+']</strong> ';
       html += o[oid].item;
       html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
+      html += (o[oid].extra)?'  <span class="badge rounded-pill bg-dark">EX</span>':'';
       html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
       html += '</div>';
     });

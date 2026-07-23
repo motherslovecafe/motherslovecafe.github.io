@@ -327,6 +327,10 @@ function createShopOrdersView() {
   div.id = 'txPage';
   var html = '<div class="container col-11 mt-5 pb-5">';
 
+  html += '<div class="alert alert-danger" role="alert">';
+      html += '<strong>[通知] 系統維護：Jul 23 12:30 - Jul 24 13:00</strong> ';
+      html += 'Send Email 暫時停止服務';
+      html += '</div>';
   
   html += '<ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';

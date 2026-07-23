@@ -318,6 +318,7 @@ function createVoucherView() {
 
 
 function createShopOrdersView() {
+  localStorage.setItem('callback', 'createShopOrdersView');
   gasGetAllOrders();
   var allOrders = getAllOrders();
   initViews();

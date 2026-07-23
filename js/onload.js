@@ -196,11 +196,13 @@ container.addEventListener('touchend', () => {
 // Mocking an API data refresh
 function simulateDataFetch() {
   setTimeout(() => {
-    gasRefresh();
-
+    if (refreshViews.includes(localStorage.getItem('callback'))) {
+      gasRefresh();
+    }
     // Hide indicator after completion
     indicator.style.transform = 'translateY(-50px)';
-  }, 1500); 
+
+  }, 100); 
 }
 
 

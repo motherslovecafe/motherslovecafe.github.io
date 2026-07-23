@@ -19,3 +19,4 @@ var footer = document.getElementById('container_footer');
 var sysRec = {};
 var s_code = '';
 var app_name = "Mother's Love Café";
+var refreshViews = ['createUserView', 'createMainView', 'createTxView'];

@@ -36,6 +36,11 @@ function submitRefresh() {
   gasRefresh();
 }
 
+function submitOrder() {
+  confirmModal.hide();
+  gasOrder();
+}
+
 function completeMemOper() {
   confirmModal.hide();
   createScanView();
@@ -130,7 +135,7 @@ function encodeFormStr() {
   str += orderForm.ut + '|';
   str += orderForm.coffee_id + '|';
   str += orderForm.coffee_pref + '|';
-  str += (orderForm.coffee_extra?'1':'0')+'|';
+  str += (orderForm.coffee_extra?'1':'0'+'|');
   str += (orderForm.byoc?'1':'0');
   return str;
 }

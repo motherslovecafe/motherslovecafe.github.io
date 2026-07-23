@@ -131,7 +131,7 @@ function getFooterHtml() {
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning  position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
-  if (userinfo.acl && (userinfo.acl.includes('shopOper') || userinfo.acl.includes('memOper'))){
+  if (userinfo.acl && userinfo.acl.includes('memOper')){
     html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
   }
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;"></i></button></div>';
@@ -146,6 +146,7 @@ function getFooterHtml() {
 
 
 function createUserView() {
+  localStorage.setItem('callback', 'createUserView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -195,6 +196,7 @@ function createUserQRView() {
 }
 
 function createMoreView() {
+  localStorage.setItem('callback', 'createMoreView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -262,23 +264,28 @@ function createVoucherQRview() {
   orderForm.ut = userinfo.ut;
   var pref = orderForm.coffee_pref;
   var userinfo = getUserInfo();
-  var body = '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
-  body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  body += '<div class="d-flex col flex-column align-items-center"><strong>';
+  var body = '';
+  // body += '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
+  // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+  body += '<strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
   body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">EX</span></label>':'';
   body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
-  body += '</strong></div>';
-  body += '</li>';
-  body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  body += '<div class="d-flex col flex-column align-items-center mt-3 mb-3"><div id="qrcode_useVoucher"></div></div>';
-  body += '</li>';
-  body += '</ul>';
-  body += '</div>';
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">睇睇專屬號碼➡️Show my Brew Code</button></div>';
+  body += '</strong>';
+  // body += '</li>';
+  // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+  // body += '<div class="d-flex col flex-column align-items-center mt-3 mb-3"><div id="qrcode_useVoucher"></div></div>';
+  // body += '</li>';
+  // body += '</ul>';
+  // body += '</div>';
+  // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">睇睇專屬號碼➡️Show my Brew Code</button></div>';
+
+  var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';
+  footer += '<button type="button" class="btn btn-warning" onclick="return submitOrder();">確定落單</button>';
+
   showConfirmModal('你的選擇 Your Choice',body,footer);
-  var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
+  // var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
 }
 
 function createVoucherView() {
@@ -327,10 +334,6 @@ function createShopOrdersView() {
   div.id = 'txPage';
   var html = '<div class="container col-11 mt-5 pb-5">';
 
-  html += '<div class="alert alert-danger" role="alert">';
-      html += '<strong>[通知] 系統維護：Jul 23 12:30 - Jul 24 13:00</strong> ';
-      html += 'Send Email 暫時停止服務';
-      html += '</div>';
   
   html += '<ul class="list-group pb-5 mb-5">';
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
@@ -361,6 +364,7 @@ function createShopOrdersView() {
 }
 
 function createTxView() {
+  localStorage.setItem('callback', 'createTxView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -377,11 +381,11 @@ function createTxView() {
   var html = '<div class="container col-11 mt-5 pb-5">';
 
   var o = userinfo.orders;
-  console.log(o);
   if (o) {
     Object.keys(o).forEach(oid => {
-      html += '<div class="alert alert-warning" role="alert">';
-      html += '<strong>['+oid+']</strong> ';
+      var isPend = o[oid].status == 'P';
+      html += '<div class="alert alert-'+(isPend?'warning':'success')+'" role="alert">';
+      html += '<strong>'+(isPend?'⏳':'✅')+' ['+oid+'] </strong><br>';
       html += o[oid].item;
       html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
       html += (o[oid].extra)?'  <span class="badge rounded-pill bg-dark">EX</span>':'';
@@ -420,6 +424,7 @@ function createTxView() {
 }
 
 function createMainView() {
+  localStorage.setItem('callback', 'createMainView');
 
   var userinfo = getUserInfo();
   initViews();

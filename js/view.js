@@ -267,12 +267,12 @@ function createVoucherQRview() {
   var body = '';
   // body += '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
   // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  body += '<strong>';
+  body += '<div class="container col-11 mt-3 mb-3"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
   body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">EX</span></label>':'';
   body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
-  body += '</strong>';
+  body += '</strong></div>';
   // body += '</li>';
   // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
   // body += '<div class="d-flex col flex-column align-items-center mt-3 mb-3"><div id="qrcode_useVoucher"></div></div>';
@@ -281,8 +281,9 @@ function createVoucherQRview() {
   // body += '</div>';
   // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">睇睇專屬號碼➡️Show my Brew Code</button></div>';
 
-  var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';
-  footer += '<button type="button" class="btn btn-warning" onclick="return submitOrder();">確定落單</button>';
+  var footer = '';
+  footer += '<button type="button" class="btn btn-secondary mx-2" onclick="return backForm();">返回 Back</button>';
+  footer += '<button type="button" class="btn btn-warning mx-2" onclick="return submitOrder();">確定落單 Confirm Order</button>';
 
   showConfirmModal('你的選擇 Your Choice',body,footer);
   // var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});

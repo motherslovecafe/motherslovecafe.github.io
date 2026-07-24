@@ -379,6 +379,7 @@ function createTxView() {
 
   var div = createCustomElement('div', 'container col_11');
   content.appendChild(div);
+  content.scrollTop = 0;
   div.id = 'txPage';
   var html = '<div class="container col-11 mt-5 pb-5">';
 

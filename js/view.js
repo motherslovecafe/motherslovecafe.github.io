@@ -214,7 +214,7 @@ function createMoreView() {
 
   var html = '<div class="container col-11 my-5">';
   html += '<div class="d-flex col flex-column align-items-center">';
-  if (userinfo.acl && (userinfo.acl.includes('memOper'))){
+  if (userinfo.acl && (userinfo.acl.includes('shopOper'))){
     html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="return createShopOrdersView();">All Orders</button>';
   }
   html += '<button type="button" class="btn btn-danger col-12 col-lg-4" onclick="return logout();">下次見 See you soon</button>';

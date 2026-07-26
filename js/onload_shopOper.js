@@ -16,7 +16,7 @@ $(document).ready(function() {
     access_token = localStorage.getItem('access_token');
   }
   if (access_token !== null) {
-          createShopOrdersView();
+    createShopOrdersView();
   }else{
     off();
     createGLoginView();

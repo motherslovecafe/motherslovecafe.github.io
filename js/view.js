@@ -373,21 +373,26 @@ function createShopOrdersView() {
     html += '<strong>All Orders</strong>';
     html += '</li>';
     var orderHtmlStr = '';
-    Object.keys(allOrders).forEach(key => {
-      var li = '';
-      li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-      if (allOrders[key].status == 'P') {
-        li += '<p><button class="btn btn-warning" id="'+allOrders[key].oid+'" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
-      }else{
-        li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
-      }
-      li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-      li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
-      li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-      li += '</p>';
-      li += '</li>';
-      orderHtmlStr = li + orderHtmlStr;
-    });
+    if (allOrders="No Orders") {
+      orderHtmlStr = '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
+    }else{
+
+      Object.keys(allOrders).forEach(key => {
+        var li = '';
+        li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+        if (allOrders[key].status == 'P') {
+          li += '<p><button class="btn btn-warning" id="'+allOrders[key].oid+'" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
+        }else{
+          li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
+        }
+        li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
+        li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
+        li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+        li += '</p>';
+        li += '</li>';
+        orderHtmlStr = li + orderHtmlStr;
+      });
+    }
     html += orderHtmlStr;
 
     html += '</ul>';

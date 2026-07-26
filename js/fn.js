@@ -253,3 +253,127 @@ function getUserInfo() {
   }
 
 }
+
+function getScanData(data) {
+  const dataStr = window.atob(data);
+  const params = new URLSearchParams(dataStr);
+  const obj = Object.fromEntries(params);
+  switch (obj.act) {
+  case 'user':
+    gasMember(obj.c);
+    break;
+  case 'o':
+    gasOrder(decodeForm(obj.c));
+    break;
+  default:
+    // Code runs if no cases match
+  }
+}
+
+function gasRefresh() {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=mm&content='+userinfo.ut+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('userinfo', JSON.stringify(data.res));
+        var callback = localStorage.getItem('callback');
+        window[callback](); 
+        // createTxView();
+      // }else{
+      //   createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasMember(code) {
+  var content = code;
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=mm&content='+content+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('member', JSON.stringify(data.res));
+        createMemOperView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasOrder(code) {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=order&content='+JSON.stringify(orderForm)+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('userinfo', JSON.stringify(data.res));
+        createTxView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasCompleteOrder(code) {
+  // on();
+  // inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=co&content='+code+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        createShopOrdersView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    // off();
+  });
+}
+
+function gasTopUp() {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=topup&content='+JSON.stringify(memForm)+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        createSuccessView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasGetAllOrders() {
+  // on();
+  // inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=getorders&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        createShopOrdersView();
+      }
+    }
+    // off();
+  });
+}

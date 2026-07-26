@@ -120,6 +120,37 @@ function getNavHtml() {
   return html;
 }
 
+function getNavHtml_shopOper() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-4 my-1">';
+  html += '    <a class="navbar-brand" onclick="createShopOrdersView()">';
+  html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
+  html += '    </a>';
+  html += '    </div>';
+  
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+}
+function getFooterHtml_shopOper() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-1 my-1">';
+  html += '    <div class="container navbar-brand col-12">';
+  html += '    <div class="row">';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-reply" style="font-size:36px;" onclick="window.location.href = &#39;index.html&#39;"></i></button></div>';
+  html += '    </div>';
+  html += '    </div>';
+
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+
+}
+
 function getFooterHtml() {
   var userinfo = getUserInfo();
   var html = '';
@@ -131,7 +162,7 @@ function getFooterHtml() {
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning  position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
-  if (userinfo.acl && userinfo.acl.includes('memOper')){
+  if (userinfo.acl && userinfo.acl.includes('shopOper')){
     html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
   }
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;"></i></button></div>';
@@ -215,7 +246,7 @@ function createMoreView() {
   var html = '<div class="container col-11 my-5">';
   html += '<div class="d-flex col flex-column align-items-center">';
   if (userinfo.acl && (userinfo.acl.includes('shopOper'))){
-    html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="return createShopOrdersView();">All Orders</button>';
+    html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="window.location.href = &#39;shopOper.html&#39;">All Orders</button>';
   }
   html += '<button type="button" class="btn btn-danger col-12 col-lg-4" onclick="return logout();">下次見 See you soon</button>';
   html += '</div>';
@@ -319,49 +350,52 @@ function createVoucherView() {
 
 
 function createShopOrdersView() {
-  localStorage.setItem('callback', 'createShopOrdersView');
-  gasGetAllOrders();
-  var allOrders = getAllOrders();
-  initViews();
   var userinfo = getUserInfo();
-  if (userinfo.name == null){
-    setHeaderTitle('h2', 'Invalid User');
-    return;
-  }
-  header.innerHTML = getNavHtml();
-  footer.innerHTML = getFooterHtml();
-
-  var div = createCustomElement('div', 'container col_11');
-  content.appendChild(div);
-  div.id = 'txPage';
-  var html = '<div class="container col-11 mt-5 pb-5">';
-
-  
-  html += '<ul class="list-group pb-5 mb-5">';
-  html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  html += '<strong>All Orders</strong>';
-  html += '</li>';
-  var orderHtmlStr = '';
-  Object.keys(allOrders).forEach(key => {
-    var li = '';
-    li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-    if (allOrders[key].status == 'P') {
-      li += '<p><button class="btn btn-warning" id="'+allOrders[key].oid+'" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
-    }else{
-      li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
+  if (userinfo.acl && userinfo.acl.includes('shopOper')){
+    gasGetAllOrders();
+    var allOrders = getAllOrders();
+    initViews();
+    if (userinfo.name == null){
+      setHeaderTitle('h2', 'Invalid User');
+      return;
     }
-    li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-    li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
-    li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-    li += '</p>';
-    li += '</li>';
-    orderHtmlStr = li + orderHtmlStr;
-  });
-  html += orderHtmlStr;
+    header.innerHTML = getNavHtml_shopOper();
+    footer.innerHTML = getFooterHtml_shopOper();
 
-  html += '</ul>';
-  html += '</div>';
-  div.innerHTML = html;
+    var div = createCustomElement('div', 'container col_11');
+    content.appendChild(div);
+    div.id = 'txPage';
+    var html = '<div class="container col-11 mt-5 pb-5">';
+
+    
+    html += '<ul class="list-group pb-5 mb-5">';
+    html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
+    html += '<strong>All Orders</strong>';
+    html += '</li>';
+    var orderHtmlStr = '';
+    Object.keys(allOrders).forEach(key => {
+      var li = '';
+      li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+      if (allOrders[key].status == 'P') {
+        li += '<p><button class="btn btn-warning" id="'+allOrders[key].oid+'" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
+      }else{
+        li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
+      }
+      li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
+      li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
+      li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+      li += '</p>';
+      li += '</li>';
+      orderHtmlStr = li + orderHtmlStr;
+    });
+    html += orderHtmlStr;
+
+    html += '</ul>';
+    html += '</div>';
+    div.innerHTML = html;
+  }else{
+    window.location.href = 'index.html';
+  }
 
 }
 

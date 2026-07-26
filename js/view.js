@@ -128,6 +128,7 @@ function getNavHtml_shopOper() {
   html += '    <a class="navbar-brand" onclick="createShopOrdersView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0">Shop</span>';
   html += '    </div>';
   
   html += '  </div>';

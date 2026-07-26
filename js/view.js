@@ -374,7 +374,7 @@ function createShopOrdersView() {
     html += '<strong>All Orders</strong>';
     html += '</li>';
     var orderHtmlStr = '';
-    if (allOrders="No Orders") {
+    if (allOrders=="No Orders") {
       orderHtmlStr = '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
     }else{
 

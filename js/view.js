@@ -62,7 +62,6 @@ function showScanModal() {
   
 }
 
-
 function createErrorView(err_msg) {
   var contentHTML = '';
   contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/error.png" class="d-block w-70" alt=""></div></div>';

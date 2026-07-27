@@ -390,7 +390,7 @@ function createShopOrdersView() {
         li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
         li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
         li += '</p>';
-        li += (allOrders[key].ts)?' <p><small class="text-secondary">'+allOrders[key].ts.split(' ')[1]+'</small></p>':'';
+        li += (allOrders[key].ts)?' <br><small class="text-secondary">'+allOrders[key].ts.split(' ')[1]+'</small>':'';
         li += '</li>';
         orderHtmlStr = li + orderHtmlStr;
       });

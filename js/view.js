@@ -162,7 +162,7 @@ function getFooterHtml() {
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning  position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
-  if (userinfo.acl && userinfo.acl.includes('shopOper')){
+  if (userinfo.acl && userinfo.acl.includes('memOper')){
     html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
   }
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;"></i></button></div>';

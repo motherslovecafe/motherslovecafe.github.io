@@ -377,3 +377,23 @@ function gasGetAllOrders() {
     // off();
   });
 }
+
+
+
+function gasAcceptOrder(code) {
+  // on();
+  // inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=ao&content='+code+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        createShopOrdersView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    // off();
+  });
+}

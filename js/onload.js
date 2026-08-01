@@ -196,9 +196,7 @@ container.addEventListener('touchend', () => {
 // Mocking an API data refresh
 function simulateDataFetch() {
   setTimeout(() => {
-    if (refreshViews.includes(localStorage.getItem('callback'))) {
-      gasRefresh();
-    }
+    gasRefresh();
     // Hide indicator after completion
     indicator.style.transform = 'translateY(-50px)';
 

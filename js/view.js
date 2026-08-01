@@ -159,7 +159,7 @@ function getFooterHtml() {
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-home" style="font-size:36px;" onclick="return createMainView();"></i></button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning  position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
   if (userinfo.acl && userinfo.acl.includes('memOper')){
@@ -260,6 +260,10 @@ function createUseVoucherView() {
     showAlertModal('沒有服務 No Services','請聯絡我們的工作人員管理您的會籍。<br>Please contact our staff to manage your membership.','');
     return;
   }
+  if (!userinfo.acceptOrder) {
+    showAlertModal('沒有服務 No Services','請留意最新的營業時間，謝謝。<br>Please note the latest operating hours. Thanks.','');
+    return;
+  }
   if (userinfo.menu) {
     coffeeList = userinfo.menu;
   }else{
@@ -353,7 +357,9 @@ function createShopOrdersView() {
   var userinfo = getUserInfo();
   if (userinfo.acl && userinfo.acl.includes('shopOper')){
     gasGetAllOrders();
-    var allOrders = getAllOrders();
+    var allOrdersJson = getAllOrders();
+    var allOrders = allOrdersJson.orders?allOrdersJson.orders:null;
+    var acceptOrder = allOrdersJson.acceptOrder;
     initViews();
     if (userinfo.name == null){
       setHeaderTitle('h2', 'Invalid User');
@@ -369,10 +375,20 @@ function createShopOrdersView() {
 
     
     html += '<ul class="list-group pb-5 mb-5">';
-    html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-    html += '<strong>All Orders</strong>';
-    html += '</li>';
     var orderHtmlStr = '';
+
+    if (acceptOrder) {
+      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
+      html += '<strong>All Orders</strong>';
+      html += '<button type="button" class="btn btn-light btn-sm text-danger" onclick="return gasAcceptOrder(0);">截止訂單</button>';
+      html += '</li>';
+    }else{
+      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
+      html += '<strong>All Orders</strong>';
+      html += '<button type="button" class="btn btn-light btn-sm" onclick="return gasAcceptOrder(1);">開始接單</button>';
+      html += '</li>';
+    }
+
     if (allOrders=="No Orders" || !allOrders) {
       orderHtmlStr = '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
     }else{

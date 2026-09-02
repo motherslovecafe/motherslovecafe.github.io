@@ -22,8 +22,8 @@ function gasRefresh() {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('userinfo', JSON.stringify(data.res));
-        var callback = localStorage.getItem('callback');
+        sessionStorage.setItem('userinfo', JSON.stringify(data.res));
+        var callback = sessionStorage.getItem('callback');
         window[callback](); 
         // createTxView();
       // }else{
@@ -43,7 +43,7 @@ function gasMember(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('member', JSON.stringify(data.res));
+        sessionStorage.setItem('member', JSON.stringify(data.res));
         createMemOperView();
       }else{
         createErrorView(data.error_msg);
@@ -61,7 +61,7 @@ function gasOrder(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('userinfo', JSON.stringify(data.res));
+        sessionStorage.setItem('userinfo', JSON.stringify(data.res));
         createTxView();
       }else{
         createErrorView(data.error_msg);
@@ -79,7 +79,7 @@ function gasCompleteOrder(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        sessionStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
       }else{
         createErrorView(data.error_msg);
@@ -133,7 +133,7 @@ function gasGetAllOrders() {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        sessionStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
       }
     }
@@ -217,7 +217,7 @@ $(document).ready(function() {
   if (Object.keys(params).length > 0 && params['state'] && params['access_token']) {
     access_token = params['access_token'];
   }else{
-    access_token = localStorage.getItem('access_token');
+    access_token = sessionStorage.getItem('access_token');
   }
   if (access_token !== null) {
     on();
@@ -226,8 +226,9 @@ $(document).ready(function() {
       if (data !== null) {
         if (data.status=='0') {
           window.history.pushState({}, document.title, "?");
-          localStorage.setItem('userinfo', JSON.stringify(data.res));
-          localStorage.setItem('access_token', access_token);
+          sessionStorage.setItem('userinfo', JSON.stringify(data.res));
+          sessionStorage.setItem('access_token', access_token);
+          console.log(getUserInfo());
           createMainView();
           off();
         }else if (data.error_code=='106') {

@@ -177,7 +177,7 @@ function getFooterHtml() {
 
 
 function createUserView() {
-  localStorage.setItem('callback', 'createUserView');
+  sessionStorage.setItem('callback', 'createUserView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -227,7 +227,7 @@ function createUserQRView() {
 }
 
 function createMoreView() {
-  localStorage.setItem('callback', 'createMoreView');
+  sessionStorage.setItem('callback', 'createMoreView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -422,7 +422,7 @@ function createShopOrdersView() {
 }
 
 function createTxView() {
-  localStorage.setItem('callback', 'createTxView');
+  sessionStorage.setItem('callback', 'createTxView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -483,7 +483,7 @@ function createTxView() {
 }
 
 function createMainView() {
-  localStorage.setItem('callback', 'createMainView');
+  sessionStorage.setItem('callback', 'createMainView');
 
   var userinfo = getUserInfo();
   initViews();

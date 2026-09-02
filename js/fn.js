@@ -165,7 +165,7 @@ function createCustomElement(ele, cssClassKey='') {
 }
 
 function logout() {
-  localStorage.clear();
+  sessionStorage.clear();
   window.location.replace(YOUR_REDIRECT_URI);
 }
 
@@ -188,7 +188,7 @@ function generateCryptoRandomState() {
 function oauth2SignIn() {
   // create random state value and store in local storage
   var state = generateCryptoRandomState();
-  localStorage.setItem('state', state);
+  sessionStorage.setItem('state', state);
   // Google's OAuth 2.0 endpoint for requesting an access token
   var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
   // Create element to open OAuth 2.0 endpoint in new window.
@@ -218,7 +218,7 @@ function oauth2SignIn() {
 
 function getAllOrders() {
   
-  var data = localStorage.getItem('allOrders');
+  var data = sessionStorage.getItem('allOrders');
   if (data == null) {
     return null;
   }else{
@@ -231,7 +231,7 @@ function getAllOrders() {
 
 function getMember() {
   
-  var data = localStorage.getItem('member');
+  var data = sessionStorage.getItem('member');
   if (data == null) {
     return null;
   }else{
@@ -244,7 +244,7 @@ function getMember() {
 
 function getUserInfo() {
   
-  var data = localStorage.getItem('userinfo');
+  var data = sessionStorage.getItem('userinfo');
   if (data == null) {
     return null;
   }else{
@@ -278,8 +278,8 @@ function gasRefresh() {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('userinfo', JSON.stringify(data.res));
-        var callback = localStorage.getItem('callback');
+        sessionStorage.setItem('userinfo', JSON.stringify(data.res));
+        var callback = sessionStorage.getItem('callback');
         window[callback](); 
         // createTxView();
       // }else{
@@ -299,7 +299,7 @@ function gasMember(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('member', JSON.stringify(data.res));
+        sessionStorage.setItem('member', JSON.stringify(data.res));
         createMemOperView();
       }else{
         createErrorView(data.error_msg);
@@ -317,7 +317,7 @@ function gasOrder(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('userinfo', JSON.stringify(data.res));
+        sessionStorage.setItem('userinfo', JSON.stringify(data.res));
         createTxView();
       }else{
         createErrorView(data.error_msg);
@@ -335,7 +335,7 @@ function gasCompleteOrder(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        sessionStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
       }else{
         createErrorView(data.error_msg);
@@ -370,7 +370,7 @@ function gasGetAllOrders() {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        sessionStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
       }
     }
@@ -388,7 +388,7 @@ function gasAcceptOrder(code) {
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
-        localStorage.setItem('allOrders', JSON.stringify(data.res));
+        sessionStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
       }else{
         createErrorView(data.error_msg);

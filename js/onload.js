@@ -206,6 +206,7 @@ function simulateDataFetch() {
 
 $(document).ready(function() {
   // login
+  localStorage.clear();
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.
   var fragmentString = location.hash.substring(1);

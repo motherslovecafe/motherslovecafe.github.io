@@ -13,7 +13,7 @@ $(document).ready(function() {
   if (Object.keys(params).length > 0 && params['state'] && params['access_token']) {
     access_token = params['access_token'];
   }else{
-    access_token = sessionStorage.getItem('access_token');
+    access_token = localStorage.getItem('access_token');
   }
   if (access_token !== null) {
     createShopOrdersView();

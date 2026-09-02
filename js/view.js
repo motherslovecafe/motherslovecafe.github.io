@@ -60,18 +60,19 @@ function showScanModal() {
     if (html5QrcodeScanner.getState() == Html5QrcodeScannerState.PAUSED) html5QrcodeScanner.resume();
   }, 1000);
   
+
 }
 
 function createErrorView(err_msg) {
   var contentHTML = '';
-  contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/error.png" class="d-block w-70" alt=""></div></div>';
+  contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/error.png" class="d-block w-70" alt=""></div></div>'[...]
   contentHTML += '<h3><span class="badge rounded-pill text-bg-danger'+'">'+err_msg+'</span></h3></div>';
   showAlertModal('錯誤 Error', contentHTML, '');
 }
 
 function createSuccessView() {
   var contentHTML = '';
-  contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/success.png" class="d-block w-70" alt=""></div></div>';
+  contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/success.png" class="d-block w-70" alt=""></div></div[...]
   contentHTML += '<h3><span class="badge rounded-pill text-bg-success'+'">完成</span></h3></div>';
   showAlertModal('成功', contentHTML, '');
 }
@@ -83,14 +84,14 @@ function createScanView() {
 function getNavHtml() {
   var userinfo = getUserInfo();
   var html = '';
-  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary'">';
   html += '  <div class="container-fluid mx-4 my-1">';
   html += '    <a class="navbar-brand" onclick="createMainView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   // html += '<span class="mx-2">'+app_name+'</span>';
   html += '    </a>';
   /*
-  html += '    <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">';
+  html += '    <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria[...]
   html += '      <span class="navbar-toggler-icon"></span>';
   html += '    </button>';
   html += '    <div class="collapse navbar-collapse" id="navbarSupportedContent">';
@@ -108,7 +109,7 @@ function getNavHtml() {
   html += '          <a class="nav-link" onclick="return createTodayAttendView();">禮拜出席</a>';
   html += '        </li>';
   html += '      </ul>';
-*/
+ */
   // html += '    <form class="form-inline my-2 my-lg-0">';
   html += '      <button class="btn btn-light text-warning my-2 my-sm-0"><i class="fa fa-user-circle-o" style="font-size:32px;" onclick="return createUserView();"></i></button>';
   // html += '    </form>';
@@ -141,7 +142,7 @@ function getFooterHtml_shopOper() {
   html += '  <div class="container-fluid mx-1 my-1">';
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-reply" style="font-size:36px;" onclick="window.location.href = &#39;index.html&#39;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-reply" style="font-size:36px;" onclick="window.location.href = &#39;ind[...]
   html += '    </div>';
   html += '    </div>';
 
@@ -158,14 +159,14 @@ function getFooterHtml() {
   html += '  <div class="container-fluid mx-1 my-1">';
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-home" style="font-size:36px;" onclick="return createMainView();"></i></button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-home" style="font-size:36px;" onclick="return createMainView();"></i></[...]
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" styl[...]
   html += '</button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i>[...]
   if (userinfo.acl && userinfo.acl.includes('memOper')){
-    html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
+    html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></[...]
   }
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;">[...]
   html += '    </div>';
   html += '    </div>';
 
@@ -177,7 +178,7 @@ function getFooterHtml() {
 
 
 function createUserView() {
-  sessionStorage.setItem('callback', 'createUserView');
+  localStorage.setItem('callback', 'createUserView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -227,7 +228,7 @@ function createUserQRView() {
 }
 
 function createMoreView() {
-  sessionStorage.setItem('callback', 'createMoreView');
+  localStorage.setItem('callback', 'createMoreView');
 
   var userinfo = getUserInfo();
   initViews();
@@ -300,340 +301,4 @@ function createVoucherQRview() {
   var pref = orderForm.coffee_pref;
   var userinfo = getUserInfo();
   var body = '';
-  // body += '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
-  // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  body += '<div class="container col-11 mt-3 mb-3"><strong>';
-  body += coffeeList[orderForm.coffee_id]['name'];
-  body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
-  body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">EX</span></label>':'';
-  body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
-  body += '</strong></div>';
-  // body += '</li>';
-  // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  // body += '<div class="d-flex col flex-column align-items-center mt-3 mb-3"><div id="qrcode_useVoucher"></div></div>';
-  // body += '</li>';
-  // body += '</ul>';
-  // body += '</div>';
-  // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">睇睇專屬號碼➡️Show my Brew Code</button></div>';
-
-  var footer = '';
-  footer += '<button type="button" class="btn btn-secondary mx-2" onclick="return backForm();">返回 Back</button>';
-  footer += '<button type="button" class="btn btn-warning mx-2" onclick="return submitOrder();">確定落單 Confirm Order</button>';
-
-  showConfirmModal('你的選擇 Your Choice',body,footer);
-  // var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
-}
-
-function createVoucherView() {
-
-  var userinfo = getUserInfo();
-  initViews();
-  if (userinfo.name == null){
-    setHeaderTitle('h2', 'Invalid User');
-    return;
-  }
-  header.innerHTML = getNavHtml();
-  footer.innerHTML = getFooterHtml();
-
-  var div = createCustomElement('div', 'container col_11');
-  content.appendChild(div);
-  div.id = 'ticketPage';
-  var html = '<div class="container col-11 mt-5">';
-  html += '<div class="d-flex col flex-column align-items-center mt-3 mb-3">';
-  html += '<div class="card text-white" onclick="return createUseVoucherView();" >';
-  html += '  <img src="img/bg_coffee_6.jpeg" class="card-img" style="max-width:400px;">';
-  html += '  <div class="card-img-overlay">';
-  html += '    <h4 class="card-title">使用咖啡餐飲券</h4>';
-  html += '  </div>';
-  html += '</div>';
-  html += '</div>';
-  html += '</div>';
-  div.innerHTML = html;
-
-}
-
-
-function createShopOrdersView() {
-  var userinfo = getUserInfo();
-  if (userinfo.acl && userinfo.acl.includes('shopOper')){
-    gasGetAllOrders();
-    var allOrdersJson = getAllOrders();
-    var allOrders = allOrdersJson.orders?allOrdersJson.orders:null;
-    var acceptOrder = allOrdersJson.acceptOrder;
-    initViews();
-    if (userinfo.name == null){
-      setHeaderTitle('h2', 'Invalid User');
-      return;
-    }
-    header.innerHTML = getNavHtml_shopOper();
-    footer.innerHTML = getFooterHtml_shopOper();
-
-    var div = createCustomElement('div', 'container col_11');
-    content.appendChild(div);
-    div.id = 'txPage';
-    var html = '<div class="container col-11 mt-5 pb-5">';
-
-    
-    html += '<ul class="list-group pb-5 mb-5">';
-    var orderHtmlStr = '';
-
-    if (acceptOrder) {
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-      html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light btn-sm text-danger" onclick="return gasAcceptOrder(0);">截止訂單</button>';
-      html += '</li>';
-    }else{
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-      html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light btn-sm" onclick="return gasAcceptOrder(1);">開始接單</button>';
-      html += '</li>';
-    }
-
-    if (allOrders=="No Orders" || !allOrders) {
-      orderHtmlStr = '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
-    }else{
-
-      Object.keys(allOrders).forEach(key => {
-        var li = '';
-        li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-        if (allOrders[key].status == 'P') {
-          li += '<p><button class="btn btn-warning" id="'+allOrders[key].oid+'" onclick="return gasCompleteOrder(&#39;'+allOrders[key].oid+'&#39;);"><strong>'+allOrders[key].oid+'</strong></button> <br> <strong class="text-warning">'+allOrders[key].user+'</strong><br>'+allOrders[key].item;
-        }else{
-          li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
-        }
-        li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-        li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
-        li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-        li += (allOrders[key].ts)?' <br><small class="text-secondary">'+allOrders[key].ts.split(' ')[1]+'</small>':'';
-        li += '</p>';
-        li += '</li>';
-        orderHtmlStr = li + orderHtmlStr;
-      });
-    }
-    html += orderHtmlStr;
-
-    html += '</ul>';
-    html += '</div>';
-    div.innerHTML = html;
-  }else{
-    window.location.href = 'index.html';
-  }
-
-}
-
-function createTxView() {
-  sessionStorage.setItem('callback', 'createTxView');
-
-  var userinfo = getUserInfo();
-  initViews();
-  if (userinfo.name == null){
-    setHeaderTitle('h2', 'Invalid User');
-    return;
-  }
-  header.innerHTML = getNavHtml();
-  footer.innerHTML = getFooterHtml();
-
-  var div = createCustomElement('div', 'container col_11');
-  content.appendChild(div);
-  content.scrollTop = 0;
-  div.id = 'txPage';
-  var html = '<div class="container col-11 mt-5 pb-5">';
-
-  var o = userinfo.orders;
-  if (o) {
-    Object.keys(o).forEach(oid => {
-      var isPend = o[oid].status == 'P';
-      html += '<div class="alert alert-'+(isPend?'warning':'success')+'" role="alert">';
-      html += '<strong>'+(isPend?'⏳':'✅')+' ['+oid+'] </strong><br>';
-      html += o[oid].item;
-      html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
-      html += (o[oid].extra)?'  <span class="badge rounded-pill bg-dark">EX</span>':'';
-      html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-      html += '</div>';
-    });
-  }
-
-
-  
-  html += '<ul class="list-group pb-5 mb-5">';
-  html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  html += '<strong>咖啡因補給日誌<br>Caffeine Refuel Log</strong>';
-  if (userinfo.points){
-    html+='<span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
-  }
-  html += '</li>';
-  if (userinfo.tx) {
-    var txArr = userinfo.tx;
-    for (var i = txArr.length-1; i >= 0; i--) {
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-      html += '<p>'+txArr[i].desc+'<br>';
-      html += '<small class="text-muted">'+txArr[i].timestamp+' </small></p><strong class="text-'+(txArr[i].points>0?'success">+':'dark">')+txArr[i].points+'</strong>';
-      html += '</li>';
-    }
-
-  }else{
-    html += '<li class="list-group-item d-flex justify-content-between align-items-center ">';
-    html += '即將登場';
-    html += '</li>';
-  }
-  html += '</ul>';
-  html += '</div>';
-  div.innerHTML = html;
-
-}
-
-function createMainView() {
-  sessionStorage.setItem('callback', 'createMainView');
-
-  var userinfo = getUserInfo();
-  initViews();
-  if (userinfo.name == null){
-    setHeaderTitle('h2', 'Invalid User');
-    return;
-  }
-  header.innerHTML = getNavHtml();
-  footer.innerHTML = getFooterHtml();
-
-  var div = createCustomElement('div', 'container col_11');
-  content.appendChild(div);
-  div.id = 'mainPage';
-  var html = '<div class="container col-11 mt-5 pb-5"><ul class="list-group pb-5 mb-5">';
-  html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-  html += '<strong>咖啡密語<br>The Coffee Whisper</strong>';
-  html += '</li>';
-  html += '<li class="list-group-item d-flex justify-content-between align-items-center ">';
-  html += (userinfo.noti.announcement?userinfo.noti.announcement:'沒有內容 No Content');
-  html += '</li>';
-  html += '</ul>';
-  html += '</div>';
-  div.innerHTML = html;
-
-}
-
-function confirmJoinMember() {
-  var member = getMember();
-  var userinfo = getUserInfo();
-  var body = '';
-  body += '<span><strong>備註:</strong> <p class="text-primary">'+userinfo.noti.join_new_msg+'</p></span>';
-  // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="submitJoin('+id+');">確定</button></div>';
-  var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';
-  footer += '<button type="button" class="btn btn-danger" onclick="return submitJoin();">確定</button>';
-  showConfirmModal('新會員',body,footer);
-}
-
-function createMemOperView() {
-  var member = getMember();
-  if (member && member.ut) {
-    memForm.ut = member.ut;
-  }else{
-    showAlertModal('錯誤','未能取得用戶資料','');
-    return;
-  }
-  var userinfo = getUserInfo();
-  if (userinfo && userinfo.m_config && userinfo.m_config.pt_list) {
-    ptlist = userinfo.m_config.pt_list;
-  }else{
-    showAlertModal('錯誤','未能取得選項','');
-    return;
-  }
-  var memTagStr = member.name+': '+member.points;
-  var userinfo = getUserInfo();
-  var body = '';
-  body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
-  body += '<div class="input-group mb-3" role="alert">';
-  body += '<label class="input-group-text">Top-Up</label>';
-  body += '  <select class="form-select" id="input_top_up" onchange="selectTopUp()">';
-  Object.keys(ptlist).forEach(key => {
-    body += '    <option value='+`${key}`+'>'+`${ptlist[key]['desc']}`+'</option>';
-  });
-  body += '  </select>';
-  body += '  <input class="form-control" id="input_top_up_remarks" type="text" placeholder="請註明 Desc" disabled></input>';
-  body += '</div>';
-  body += '<div class="input-group mb-3">';
-  body += '<label class="input-group-text">Points</label>';
-  body += '  <input class="form-control" id="input_top_up_pt" type="text" value = "50" placeholder="請註明 Points" required></input>';
-  body += '</div>';
-  body += '</div>';
-  body += '</div>';
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="confirmTopUpView();">確定</button></div>';
-  showInputModal('會員管理',body,footer);
-}
-
-function confirmTopUpView() {
-  var member = getMember();
-  if (member && member.ut) {
-    memForm.ut = member.ut;
-  }else{
-    showAlertModal('錯誤','未能取得用戶資料','');
-    return;
-  }
-
-  var new_desc = document.getElementById('input_top_up_remarks');
-  if (memForm.remarks && new_desc.value) {
-    memForm.desc = new_desc.value;
-  }
-
-  var new_pt = document.getElementById('input_top_up_pt');
-  if (new_pt.value) {
-    memForm.pt = new_pt.value;
-  }
-
-  var body = '';
-  body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
-  body += '<span class="text-primary"><strong>Top up:</strong> <p>'+memForm.desc+' '+memForm.pt+'</p></span>';
-  // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="submitJoin('+id+');">確定</button></div>';
-  var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';
-  footer += '<button type="button" class="btn btn-danger" onclick="return submitTopUp();">確定</button>';
-  showConfirmModal('會員管理',body,footer);
-}
-
-function createOrderView(orderRes) {
-  var body = '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
-  body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  body += '<div class="d-flex col flex-column align-items-center"><strong>';
-  body += orderRes.item;
-  body += ' <span class="badge rounded-pill bg-'+(orderRes.pref=='H'?'danger':'primary')+'">'+orderRes.pref+'</span>';
-  body += (orderRes.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
-  body += '</strong></div>';
-  body += '</li>';
-  body += '</ul>';
-  body += '</div>';
-  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="completeOrder();">確定</button></div>';
-  showConfirmModal('訂單: '+orderRes.oid, body, footer);
-}
-
-function createGLoginView() {
-  initViews();
-  setHeaderTitle('h2', '  ');
-  var div = createCustomElement('div', 'd-flex col flex-column align-items-center py-5');
-  div.id='signin';
-  var div2 = createCustomElement('form', 'form-signin');
-  var div3 = createCustomElement('div', 'text-center mt-5');
-  var img = document.createElement('img');
-  img.classList.add('mt-5');
-  img.src = 'img/cafe_logo.png';
-  // img.width = '150';
-  img.height = '200';
-  div3.appendChild(img);
-  div2.appendChild(div3);
-  var btn_glogin = createCustomElement('btn', 'btn btn-warning btn-block text-center align-self-center mt-3 mb-3');
-  btn_glogin.innerHTML = 'Sign in with Google';
-  btn_glogin.onclick = function() { oauth2SignIn(); };
-  div.appendChild(div2);
-  div.appendChild(btn_glogin);
-  content.appendChild(div);
-}
-
-function initViews() {
-  header.innerHTML = '';
-  content.innerHTML = '';
-  footer.innerHTML = '';
-}
-
-function setHeaderTitle(ele, text) {
-  header.innerHTML = '';
-
-  var title = createCustomElement(ele, 'title');
-  title.innerHTML = text;
-  header.appendChild(title);
-}
+  // body += '<div class="container col-11 mt-3 mb-3"><ul class="list-group'",...

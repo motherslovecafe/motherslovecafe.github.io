@@ -62,6 +62,7 @@ function showScanModal() {
   
 }
 
+
 function createErrorView(err_msg) {
   var contentHTML = '';
   contentHTML += '<div class="text-center"><div class="row justify-content-center"><div class="col-6"><img class="img-fluid mt-5 mb-5" src="img/error.png" class="d-block w-70" alt=""></div></div>';
@@ -127,7 +128,6 @@ function getNavHtml_shopOper() {
   html += '    <a class="navbar-brand" onclick="createShopOrdersView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
-  html += '<span class="badge text-bg-warning my-2 my-sm-0">Shop</span>';
   html += '    </div>';
   
   html += '  </div>';
@@ -159,10 +159,10 @@ function getFooterHtml() {
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-home" style="font-size:36px;" onclick="return createMainView();"></i></button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning  position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
-  if (userinfo.acl && userinfo.acl.includes('memOper')){
+  if (userinfo.acl && userinfo.acl.includes('shopOper')){
     html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
   }
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa fa-ellipsis-h" style="font-size:32px;"></i></button></div>';
@@ -260,10 +260,6 @@ function createUseVoucherView() {
     showAlertModal('沒有服務 No Services','請聯絡我們的工作人員管理您的會籍。<br>Please contact our staff to manage your membership.','');
     return;
   }
-  if (!userinfo.acceptOrder) {
-    showAlertModal('沒有服務 No Services','請留意最新的營業時間，謝謝。<br>Please note the latest operating hours. Thanks.','');
-    return;
-  }
   if (userinfo.menu) {
     coffeeList = userinfo.menu;
   }else{
@@ -357,9 +353,7 @@ function createShopOrdersView() {
   var userinfo = getUserInfo();
   if (userinfo.acl && userinfo.acl.includes('shopOper')){
     gasGetAllOrders();
-    var allOrdersJson = getAllOrders();
-    var allOrders = allOrdersJson.orders?allOrdersJson.orders:null;
-    var acceptOrder = allOrdersJson.acceptOrder;
+    var allOrders = getAllOrders();
     initViews();
     if (userinfo.name == null){
       setHeaderTitle('h2', 'Invalid User');
@@ -375,21 +369,11 @@ function createShopOrdersView() {
 
     
     html += '<ul class="list-group pb-5 mb-5">';
+    html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
+    html += '<strong>All Orders</strong>';
+    html += '</li>';
     var orderHtmlStr = '';
-
-    if (acceptOrder) {
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-      html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light btn-sm text-danger" onclick="return gasAcceptOrder(0);">截止訂單</button>';
-      html += '</li>';
-    }else{
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-      html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light btn-sm" onclick="return gasAcceptOrder(1);">開始接單</button>';
-      html += '</li>';
-    }
-
-    if (allOrders=="No Orders" || !allOrders) {
+    if (allOrders="No Orders") {
       orderHtmlStr = '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
     }else{
 
@@ -404,7 +388,6 @@ function createShopOrdersView() {
         li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
         li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
         li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-        li += (allOrders[key].ts)?' <br><small class="text-secondary">'+allOrders[key].ts.split(' ')[1]+'</small>':'';
         li += '</p>';
         li += '</li>';
         orderHtmlStr = li + orderHtmlStr;

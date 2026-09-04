@@ -141,7 +141,7 @@ function getFooterHtml_shopOper() {
   html += '  <div class="container-fluid mx-1 my-1">';
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-reply" style="font-size:36px;" onclick="window.location.href = &#39;index.html&#39;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa-solid fa-circle-arrow-left" style="font-size:36px;" onclick="window.location.href = &#39;index.html&#39;"></i></button></div>';
   html += '    </div>';
   html += '    </div>';
 
@@ -161,7 +161,7 @@ function getFooterHtml() {
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa fa-home" style="font-size:36px;" onclick="return createMainView();"></i></button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:32px;"></i>';
   html += '</button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa fa-calendar" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa-regular fa-calendar-days" style="font-size:28px;"></i></button></div>';
   if (userinfo.acl && userinfo.acl.includes('memOper')){
     html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:32px;"></i></button></div>';
   }

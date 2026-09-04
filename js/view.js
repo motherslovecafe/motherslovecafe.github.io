@@ -141,7 +141,7 @@ function getFooterHtml_shopOper() {
   html += '  <div class="container-fluid mx-1 my-1">';
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa-regular fa-circle-chevron-left" style="font-size:28px;" onclick="window.location.href = &#39;index.html&#39;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;">Back</button></div>';
   html += '    </div>';
   html += '    </div>';
 

@@ -127,7 +127,7 @@ function getNavHtml_shopOper() {
   html += '    <a class="navbar-brand" onclick="createShopOrdersView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
-  html += '<span class="badge text-bg-warning my-2 my-sm-0">Shop</span>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0">Order</span>';
   html += '    </div>';
   
   html += '  </div>';
@@ -141,7 +141,7 @@ function getFooterHtml_shopOper() {
   html += '  <div class="container-fluid mx-1 my-1">';
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;"><i class="fa-regular fa-circle-left" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;"><i class="fa-solid fa-circle-chevron-left" style="font-size:28px;"></i></button></div>';
   html += '    </div>';
   html += '    </div>';
 

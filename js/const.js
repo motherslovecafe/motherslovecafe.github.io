@@ -1,4 +1,4 @@
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwKk-Xh7XVyNnCPrcWzF_qraEVEnxBOgpaMNjDprDYFpKCWnHieh_j7Wa4cYpKqC-nf/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzY8iHHuefPFi-HErLWuLFr5hKMsoNGF_qk5WoAAstb1EwLMkRG4CxxpHNOfhJBORuG/exec';
 const YOUR_CLIENT_ID = '223887521833-37kdjp7rfucrpsidm1acciabl1soeegq.apps.googleusercontent.com'; 
 const YOUR_REDIRECT_URI = 'https://motherslovecafe.github.io';
 const lang_op = {
@@ -10,3 +10,4 @@ const alertModal = new bootstrap.Modal(document.getElementById('alertModal'), {b
 const inputModal = new bootstrap.Modal(document.getElementById('inputModal'), {backdrop: 'static', keyboard: false});
 const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'), {backdrop: 'static', keyboard: false});
 const scanModal = new bootstrap.Modal(document.getElementById('scanModal'), {backdrop: 'static', keyboard: false});
+const byocFreeModal = new bootstrap.Modal(document.getElementById('byocFreeModal'), {backdrop: 'static', keyboard: false});

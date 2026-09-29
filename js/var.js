@@ -6,11 +6,14 @@ var gid = '';
 var coffeeList = {};
 var prefHotOnlyList = [
   'cf002',
-  'cf004'
+  'cf004',
+  'cf012'
 ];
 var extraNAList = [
   'cf009',
-  'cf010'
+  'cf010',
+  'cf011',
+  'cf012'
 ];
 var ptlist = {};
 var header = document.getElementById('container_header');

@@ -505,7 +505,7 @@ function createTxView() {
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
   html += '<strong>咖啡因補給日誌<br>Caffeine Refuel Log</strong>';
   if (userinfo.points){
-    html+='<span class="badge rounded-pill bg-secondary"><i class="fa fa-coffee"></i> '+userinfo.byoc+'</span><span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
+    html+='<span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i> '+userinfo.byoc+'</span><span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
   }
   html += '</li>';
   if (userinfo.tx) {

@@ -52,7 +52,8 @@ function completeOrder() {
 }
 
 function selectPref() {
-  orderForm.coffee_pref=(orderForm.coffee_pref=='H' && !prefHotOnlyList.includes(orderForm.coffee_id))?'C':'H';
+  // orderForm.coffee_pref=(orderForm.coffee_pref=='H' && !prefHotOnlyList.includes(orderForm.coffee_id))?'C':'H';
+  orderForm.coffee_pref=(orderForm.coffee_pref=='H' && getDefaultOpt().hasOwnProperty('opt_ice'))?'C':'H';
   var btn = document.getElementById('btn_coffee_pref');
   if (orderForm.coffee_pref=='H') {
     btn.innerHTML='熱 Hot';
@@ -65,6 +66,7 @@ function selectPref() {
     btn.classList.remove('btn-danger');
   }
   updateCurrentPrice();
+  setOptInput();
 }
 
 function selectExtra() {
@@ -113,17 +115,83 @@ function selectTopUp() {
 function selectCoffee() {
   var select = document.getElementById('input_select_coffee');
   var id = select.value;
-  orderForm.coffee_id=id;
+  // orderForm.coffee_id=id;
+  setDefaultOderForm(id);
+  setOptInput();
   if (prefHotOnlyList.includes(id)) {
     selectPref();
   }
-  if (extraNAList.includes(id)) {
-    selectExtra();
-  }else{
-    var btn = document.getElementById('btn_coffee_extra');
-    btn.classList.remove('d-none');
-  }
+  // if (extraNAList.includes(id)) {
+  //   selectExtra();
+  // }else{
+  //   var btn = document.getElementById('btn_coffee_extra');
+  //   btn.classList.remove('d-none');
+  // }
   updateCurrentPrice();
+}
+
+function tapOpt(value) {
+  var optarr = value.split('|');
+  orderForm.opt[optarr[0]] = optarr[1];
+}
+
+function setOptInput() {
+  var opts = getDefaultOpt();
+  var coffee_opt_input = document.getElementById('coffee_opt_input');
+  var html = '';
+  for (var opt in opts) {
+    if ((opt=='opt_ice' && orderForm.coffee_pref=='C') || opt!='opt_ice') {
+      html += '<div class="btn-group my-3" role="group" aria-label="Small button group" id="'+opt+'">';
+
+
+    for (var i = 0; i < opts[opt].choice_list.length; i++) {
+      orderForm.opt[opt] = coffeeList[orderForm.coffee_id].opt[opt].default;
+      var optid = opt+'_'+i;
+      var value = opt+'|'+i;
+      var label_arr = opts[opt].choice_list[i].replace(/\s/, "||__||").split("||__||");
+      var label = label_arr[0]+'<br>'+label_arr[1];
+      html += '  <input type="radio" class="btn-check" name="'+opt+'" id="'+optid+'" autocomplete="off" onclick="tapOpt(&#39;'+value+'&#39;)" '+(orderForm.opt[opt]==i?'checked':'')+'>';
+      html += '  <label class="btn btn-outline-secondary" for="'+optid+'"><small>'+label+'</small></label>';
+    }
+    }else{
+      delete orderForm.opt.opt_ice;
+    }
+
+
+    html += '</div>';
+  }
+  coffee_opt_input.innerHTML = html;
+}
+
+function setDefaultOderForm(cid) {
+  var userinfo = getUserInfo();
+  if (userinfo.menu) {
+    coffeeList = userinfo.menu;
+    if (coffeeList.hasOwnProperty(cid)) {
+      orderForm.coffee_id = cid;
+      var d_opt = coffeeList[cid].opt;
+      orderForm.opt = null;
+      for (var o in d_opt) {
+        if (!orderForm.opt) {
+          orderForm.opt = {};
+        }
+        orderForm.opt[o] = d_opt[o].default;
+      }
+    }
+  }
+}
+
+function getDefaultOpt() {
+  var cid = orderForm.coffee_id;
+  var userinfo = getUserInfo();
+  var opt = {};
+  if (userinfo.menu) {
+    coffeeList = userinfo.menu;
+    if (coffeeList.hasOwnProperty(cid)) {
+      var opt = coffeeList[cid].opt;
+    }
+  }
+  return opt;
 }
 
 function updateCurrentPrice() {

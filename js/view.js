@@ -299,18 +299,21 @@ function createUseVoucherView() {
     showAlertModal('錯誤','未能取得餐牌','');
     return;
   }
-  orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false}; // set default
 
   var body = '';
   body += '<div class="input-group my-3 mb-5">';
   body += '  <button class="btn btn-danger" type="button" id="btn_coffee_pref" onclick="selectPref()">熱 Hot</button>';
   body += '  <select class="form-select" id="input_select_coffee" onchange="selectCoffee()">';
   Object.keys(coffeeList).forEach(key => {
-    body += '    <option value='+`${key}`+'>'+`${coffeeList[key]['name']}`+' '+coffeeList[key]['price']+'</option>';
+    if (coffeeList[key]['active']) {
+      body += '    <option value='+`${key}`+'>'+`${coffeeList[key]['name']}`+' '+coffeeList[key]['points']+'</option>';
+    }
   });
   body += '  </select>';
   body += '</div>';
-  body += '<button type="button" class="btn btn-light" id="btn_coffee_extra" onclick="selectExtra()">Extra Shot</button>';
+  // body += '<button type="button" class="btn btn-light" id="btn_coffee_extra" onclick="selectExtra()">Extra Shot</button>';
+  body += '<div id="coffee_opt_input"></div>';
+
   body += '<div class="input-group my-3 mt-5">';
   body += '<div class="form-check form-switch">';
   body += '  <input class="form-check-input" type="checkbox" id="byoc_input">';
@@ -319,7 +322,10 @@ function createUseVoucherView() {
   body += '</div>';
 
   var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">就咁話！👍 Espresso-ly Yes!</button></div>';
+
   showInputModal('你的選擇 Your Choice',body,footer);
+  orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false, 'opt':null}; // set default
+  selectCoffee();
 }
 
 function createVoucherQRview() {
@@ -329,28 +335,26 @@ function createVoucherQRview() {
   var pref = orderForm.coffee_pref;
   var userinfo = getUserInfo();
   var body = '';
-  // body += '<div class="container col-11 mt-3 mb-3"><ul class="list-group">';
-  // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
   body += '<div class="container col-11 mt-3 mb-3"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
-  body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">EX</span></label>':'';
+  // body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">EX</span></label>':'';
   body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
-  body += '</strong></div>';
-  // body += '</li>';
-  // body += '<li class="list-group-item d-flex justify-content-between align-items-center">';
-  // body += '<div class="d-flex col flex-column align-items-center mt-3 mb-3"><div id="qrcode_useVoucher"></div></div>';
-  // body += '</li>';
-  // body += '</ul>';
-  // body += '</div>';
-  // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="return submitRefresh();">睇睇專屬號碼➡️Show my Brew Code</button></div>';
+  body += '</strong>';
+  if (orderForm.opt) {
+    body += '<ul>';
+    Object.keys(orderForm.opt).forEach(key => {
+      body += '<li><small>'+coffeeList[orderForm.coffee_id].opt[key].choice_list[orderForm.opt[key]]+'</small></li>';
+    });
+    body += '</ul>';
+  }
+  body += '</div>';
 
   var footer = '';
   footer += '<button type="button" class="btn btn-secondary mx-2" onclick="return backForm();">返回 Back</button>';
   footer += '<button type="button" class="btn btn-warning mx-2" onclick="return submitOrder();">確定落單 Confirm Order</button>';
 
   showConfirmModal('你的選擇 Your Choice',body,footer);
-  // var qrcode = new QRCode("qrcode_useVoucher", {"text": window.btoa('act=o&c='+encodeFormStr()), "width":200, "height":200});
 }
 
 function createVoucherView() {
@@ -431,9 +435,15 @@ function createShopOrdersView() {
           li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
         }
         li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-        li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
+        // li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
         li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
-        li += (allOrders[key].ts)?' <br><small class="text-secondary">'+allOrders[key].ts.split(' ')[1]+'</small>':'';
+
+        if (allOrders[key].opt) {
+          for (var opt in allOrders[key].opt) {
+            li += '<br><small class="text-secondary"> - '+allOrders[key].opt[opt]+'</small>';
+          }
+        }
+        li += (allOrders[key].ts)?'<br><br><small class="text-secondary">'+allOrders[key].ts.split(' ')[1]+'</small>':'';
         li += '</p>';
         li += '</li>';
         orderHtmlStr = li + orderHtmlStr;
@@ -476,8 +486,15 @@ function createTxView() {
       html += '<strong>'+(isPend?'⏳':'✅')+' ['+oid+'] </strong><br>';
       html += o[oid].item;
       html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
-      html += (o[oid].extra)?'  <span class="badge rounded-pill bg-dark">EX</span>':'';
+      // html += (o[oid].extra)?'  <span class="badge rounded-pill bg-dark">EX</span>':'';
       html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+      if (o[oid].opt) {
+        html += '<ul>';
+        for (var opt in o[oid].opt) {
+          html += '<li><small>'+o[oid].opt[opt]+'</small></li>';
+        }
+        html += '</ul>';
+      }
       html += '</div>';
     });
   }

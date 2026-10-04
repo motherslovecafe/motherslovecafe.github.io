@@ -205,9 +205,6 @@ function simulateDataFetch() {
 
 
 $(document).ready(function() {
-  // createMainView();
-  // createFreeForBYOCView();
-  // /*
   localStorage.clear();
   // login
   var access_token = '';
@@ -247,5 +244,5 @@ $(document).ready(function() {
     off();
     createGLoginView();
   }
-  // */
+  
 });

@@ -413,12 +413,12 @@ function createShopOrdersView() {
     if (acceptOrder) {
       html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
       html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light btn-sm text-danger" onclick="return gasAcceptOrder(0);">截止訂單</button>';
+      html += '<button type="button" class="btn btn-light text-danger" onclick="return gasAcceptOrder(0);"><strong>截單 Cut</strong></button>';
       html += '</li>';
     }else{
       html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
       html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light btn-sm" onclick="return gasAcceptOrder(1);">開始接單</button>';
+      html += '<button type="button" class="btn btn-light" onclick="return gasAcceptOrder(1);"><strong>接單 Accept</strong></button>';
       html += '</li>';
     }
 

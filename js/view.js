@@ -448,22 +448,20 @@ function createMemEnquiryView() {
 
     html += '<div class="input-group mb-3">';
     html += '  <input type="email" class="form-control" placeholder="Member&#39;s Email" aria-label="member" aria-describedby="basic-addon2" id="mem_enq_input">';
-    html += '<button class="btn btn-warning" type="button" id="button-addon2" onclick="return submitEnquiry();">Enquiry</button>';
+    html += '<button class="btn btn-warning" type="button" id="button-addon2" onclick="return submitEnquiry();">Enquire</button>';
     html += '</div>';
 
     if (member) {
       html += '<ul class="list-group pb-5 mb-5">';
       html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-light text-dark">';
       html += '<strong>'+member.email+'</strong>';
-      if (member.is_freeze){
-        html += '<li class="list-group-item d-flex justify-content-between align-items-center">Non-Member</li>'
-      }else{
+      if (member.tx) {
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-ticket"></i> '+member.available_coupons+'</span>';
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-coffee"></i> '+member.byoc+'</span>';
         html+='<span class="badge rounded-pill bg-light text-dark"><strong>'+member.points+'</strong></span>';
 
         html += '</li>';
-        if (member.tx) {
+        // if (member.tx) {
           for (var i = member.tx.length-1; i >= 0; i--) {
             var txArr = member.tx[i].split('|');
             html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
@@ -471,7 +469,9 @@ function createMemEnquiryView() {
             html += '<small class="text-muted">'+txArr[0]+' </small></p><strong class="text-'+(Number(txArr[2])>0?'success">+':'dark">')+Number(txArr[2])+'</strong>';
             html += '</li>';
           }
-        }
+        // }
+      } else {
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">Non-Member</li>'
       }
       html += '</ul>';
 

@@ -698,7 +698,7 @@ function createMemOperView() {
   body += '</div>';
   body += '<div class="input-group mb-3">';
   body += '<label class="input-group-text">Points</label>';
-  body += '  <input class="form-control" id="input_top_up_pt" type="text" value = "50" placeholder="請註明 Points" required></input>';
+  body += '  <input class="form-control" id="input_top_up_pt" type="text" value = "'+ptlist[0].default_pt+'" placeholder="請註明 Points" required></input>';
   body += '</div>';
   body += '</div>';
   body += '</div>';

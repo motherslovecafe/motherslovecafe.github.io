@@ -447,7 +447,7 @@ function createMemEnquiryView() {
     var html = '<div class="container col-11 mt-5 pb-5">';
 
     html += '<div class="input-group mb-3">';
-    html += '  <input type="text" class="form-control" placeholder="member" aria-label="member" aria-describedby="basic-addon2" id="mem_enq_input">';
+    html += '  <input type="email" class="form-control" placeholder="Member&#39;s Email" aria-label="member" aria-describedby="basic-addon2" id="mem_enq_input">';
     html += '<button class="btn btn-warning" type="button" id="button-addon2" onclick="return submitEnquiry();">Enquiry</button>';
     html += '</div>';
 

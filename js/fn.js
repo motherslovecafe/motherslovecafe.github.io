@@ -45,7 +45,7 @@ function submitEnquiry() {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   var input = document.getElementById('mem_enq_input').value;
   if (emailRegex.test(input)) {
-    gasMemberEnquiry(input);
+    gasMemberEnquiry(window.btoa(input));
   }else{
     alert('Invalid Email');
   }

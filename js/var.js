@@ -6,6 +6,7 @@ var gid = '';
 var coffeeList = {};
 var prefHotOnlyList = [];
 var ptlist = {};
+var member = null;
 var header = document.getElementById('container_header');
 var content = document.getElementById('container_content');
 var footer = document.getElementById('container_footer');

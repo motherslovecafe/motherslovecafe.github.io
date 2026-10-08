@@ -99,36 +99,47 @@ function getNavHtml() {
   html += '  <div class="container-fluid mx-4 my-1">';
   html += '    <a class="navbar-brand" onclick="createMainView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
-  // html += '<span class="mx-2">'+app_name+'</span>';
   html += '    </a>';
-  /*
-  html += '    <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">';
-  html += '      <span class="navbar-toggler-icon"></span>';
-  html += '    </button>';
-  html += '    <div class="collapse navbar-collapse" id="navbarSupportedContent">';
-  html += '      <ul class="navbar-nav me-auto mb-2 mb-lg-0">';
-  html += '        <li class="nav-item">';
-  html += '          <a class="nav-link" onclick="return createMainView();">主頁</a>';
-  html += '        </li>';
-  html += '        <li class="nav-item">';
-  html += '          <a class="nav-link" onclick="return createRecordView();">名單(內部)</a>';
-  html += '        </li>';
-  html += '        <li class="nav-item">';
-  html += '          <a class="nav-link" onclick="return createUserRecordView();">名單(外部)</a>';
-  html += '        </li>';
-  html += '        <li class="nav-item">';
-  html += '          <a class="nav-link" onclick="return createTodayAttendView();">禮拜出席</a>';
-  html += '        </li>';
-  html += '      </ul>';
-*/
-  // html += '    <form class="form-inline my-2 my-lg-0">';
   html += '      <button class="btn btn-light text-warning my-2 my-sm-0"><i class="fa-regular fa-circle-user" style="font-size:28px;" onclick="return createUserView();"></i></button>';
-  // html += '    </form>';
   html += '    </div>';
   
   html += '  </div>';
   html += '</nav>';
   return html;
+}
+
+function getNavHtml_memEnq() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-4 my-1">';
+  html += '    <a class="navbar-brand" onclick="createMemEnquiryView()">';
+  html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
+  html += '    </a>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0">Member</span>';
+  html += '    </div>';
+  
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+}
+
+function getFooterHtml_memEnq() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-1 my-1">';
+  html += '    <div class="container navbar-brand col-12">';
+  html += '    <div class="row">';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;"><i class="fa-solid fa-circle-chevron-left" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:28px;"></i></button></div>';
+  html += '    </div>';
+  html += '    </div>';
+
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+
 }
 
 function getNavHtml_shopOper() {
@@ -146,6 +157,7 @@ function getNavHtml_shopOper() {
   html += '</nav>';
   return html;
 }
+
 function getFooterHtml_shopOper() {
   var userinfo = getUserInfo();
   var html = '';
@@ -174,9 +186,6 @@ function getFooterHtml() {
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:28px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa-regular fa-calendar-days" style="font-size:28px;"></i></button></div>';
-  if (userinfo.acl && userinfo.acl.includes('memOper')){
-    html += '      <div class="col text-center px-0"><button class="btn btn-warning text-light" type="button" onclick="return createScanView();"><i class="fa fa-qrcode" style="font-size:28px;"></i></button></div>';
-  }
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa-solid fa-ellipsis" style="font-size:28px;"></i></button></div>';
   html += '    </div>';
   html += '    </div>';
@@ -246,10 +255,6 @@ function createFreeForBYOCView() {
   body += '<div class="text-end">';
   body += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
   body += '</div></div>';
-  // body += '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
-  // body += '<div class="text-center">';
-  // body += '<img src="img/byoc_free.gif" class="text-center img-thumbnail w-75" alt="byoc_free">';
-  // body += '</div>';
 
   showByocFreeModal('',body,'');
 
@@ -277,7 +282,10 @@ function createMoreView() {
   if (userinfo.acl && (userinfo.acl.includes('shopOper'))){
     html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="window.location.href = &#39;shopOper.html&#39;">All Orders</button>';
   }
-  html += '<button type="button" class="btn btn-danger col-12 col-lg-4" onclick="return logout();">下次見 See you soon</button>';
+  if (userinfo.acl && (userinfo.acl.includes('memOper'))){
+    html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="window.location.href = &#39;memOper.html&#39;">All Members</button>';
+  }
+  html += '<button type="button" class="btn btn-danger col-12 col-lg-4 my-3" onclick="return logout();">下次見 See you soon</button>';
   html += '</div>';
   html += '</div>';
   div.innerHTML = html;
@@ -417,6 +425,63 @@ function createVoucherView() {
   html += '</div>';
   html += '</div>';
   div.innerHTML = html;
+
+}
+
+
+function createMemEnquiryView() {
+  var userinfo = getUserInfo();
+  if (userinfo.acl && userinfo.acl.includes('memOper')){
+
+    initViews();
+    if (userinfo.name == null){
+      setHeaderTitle('h2', 'Invalid User');
+      return;
+    }
+    header.innerHTML = getNavHtml_memEnq();
+    footer.innerHTML = getFooterHtml_memEnq();
+
+    var div = createCustomElement('div', 'container col_11');
+    content.appendChild(div);
+    div.id = 'txPage';
+    var html = '<div class="container col-11 mt-5 pb-5">';
+
+    html += '<div class="input-group mb-3">';
+    html += '  <input type="text" class="form-control" placeholder="member" aria-label="member" aria-describedby="basic-addon2" id="mem_enq_input">';
+    html += '<button class="btn btn-warning" type="button" id="button-addon2" onclick="return submitEnquiry();">Enquiry</button>';
+    html += '</div>';
+
+    if (member) {
+      html += '<ul class="list-group pb-5 mb-5">';
+      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-light text-dark">';
+      html += '<strong>'+member.email+'</strong>';
+      if (member.is_freeze){
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">Non-Member</li>'
+      }else{
+        html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-ticket"></i> '+member.available_coupons+'</span>';
+        html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-coffee"></i> '+member.byoc+'</span>';
+        html+='<span class="badge rounded-pill bg-light text-dark"><strong>'+member.points+'</strong></span>';
+
+        html += '</li>';
+        if (member.tx) {
+          for (var i = member.tx.length-1; i >= 0; i--) {
+            var txArr = member.tx[i].split('|');
+            html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+            html += '<p>'+txArr[1]+'<br>';
+            html += '<small class="text-muted">'+txArr[0]+' </small></p><strong class="text-'+(Number(txArr[2])>0?'success">+':'dark">')+Number(txArr[2])+'</strong>';
+            html += '</li>';
+          }
+        }
+      }
+      html += '</ul>';
+
+    }
+    html += '</div>';
+    div.innerHTML = html;
+    
+  }else{
+    window.location.href = 'index.html';
+  }
 
 }
 

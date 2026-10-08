@@ -41,6 +41,16 @@ function submitOrder() {
   gasOrder();
 }
 
+function submitEnquiry() {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  var input = document.getElementById('mem_enq_input').value;
+  if (emailRegex.test(input)) {
+    gasMemberEnquiry(input);
+  }else{
+    alert('Invalid Email');
+  }
+}
+
 function completeMemOper() {
   confirmModal.hide();
   createScanView();
@@ -428,6 +438,24 @@ function gasTopUp() {
     if (data !== null) {
       if (data.status=='0') {
         createSuccessView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
+  });
+}
+
+function gasMemberEnquiry(code) {
+  var content = code;
+  on();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=mem_enq&content='+content+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        member = data.res;
+        createMemEnquiryView();
       }else{
         createErrorView(data.error_msg);
       }

@@ -63,6 +63,9 @@ function gasOrder(code) {
       if (data.status=='0') {
         sessionStorage.setItem('userinfo', JSON.stringify(data.res));
         createTxView();
+        if (data.res.hasOwnProperty('earnedByocCoupon')) {
+          createFreeForBYOCView();
+        }
       }else{
         createErrorView(data.error_msg);
       }
@@ -230,6 +233,10 @@ $(document).ready(function() {
           sessionStorage.setItem('userinfo', JSON.stringify(data.res));
           sessionStorage.setItem('access_token', access_token);
           createMainView();
+          var userinfo = getUserInfo();
+          if (userinfo.available_coupons > 0) {
+            createFreeForBYOCView();
+          }
           off();
         }else if (data.error_code=='106') {
           alert('您需要存取權限。<br>請求存取權限，或切換具有存取權限的帳戶。');

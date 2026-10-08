@@ -295,13 +295,14 @@ function createUseVoucherView() {
   }
   if (userinfo.menu) {
     coffeeList = userinfo.menu;
+    getPrefHotOnlyList();
   }else{
     showAlertModal('錯誤','未能取得餐牌','');
     return;
   }
 
   var body = '';
-  body += '<div class="input-group my-3 mb-5">';
+  body += '<div class="input-group my-3 mb-3">';
   body += '  <button class="btn btn-danger" type="button" id="btn_coffee_pref" onclick="selectPref()">熱 Hot</button>';
   body += '  <select class="form-select" id="input_select_coffee" onchange="selectCoffee()">';
   Object.keys(coffeeList).forEach(key => {
@@ -311,35 +312,25 @@ function createUseVoucherView() {
   });
   body += '  </select>';
   body += '</div>';
-  // body += '<button type="button" class="btn btn-light" id="btn_coffee_extra" onclick="selectExtra()">Extra Shot</button>';
-  body += '<div id="coffee_opt_input"></div>';
-
-  body += '<div class="input-group my-3 mt-5">';
-  body += '<div class="form-check form-switch">';
-  body += '  <input class="form-check-input" type="checkbox" id="byoc_input">';
-  body += '  <label class="form-check-label" for="byoc_input">自攜杯 BYOC</label>';
-  body += '</div>';
-  body += '</div>';
+  body += '<div class="mb-3" id="coffee_opt_input"></div>';
 
   var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">就咁話！👍 Espresso-ly Yes!</button></div>';
 
   showInputModal('你的選擇 Your Choice',body,footer);
-  orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false, 'opt':null}; // set default
+  orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false, 'opt':null, 'useCoupon':false, 'add_on':null}; // set default
   selectCoffee();
 }
 
 function createVoucherQRview() {
   var userinfo = getUserInfo();
-  orderForm.byoc = document.getElementById('byoc_input').checked;
+  // orderForm.byoc = document.getElementById('byoc_input').checked;
   orderForm.ut = userinfo.ut;
   var pref = orderForm.coffee_pref;
   var userinfo = getUserInfo();
   var body = '';
-  body += '<div class="container col-11 mt-3 mb-3"><strong>';
+  body += '<div class="container col-12 mt-3 mb-3"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
   body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
-  // body += (orderForm.coffee_extra)?'  <span class="badge rounded-pill bg-dark">EX</span></label>':'';
-  body += (orderForm.byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span></label>':'';
   body += '</strong>';
   if (orderForm.opt) {
     body += '<ul>';
@@ -348,6 +339,49 @@ function createVoucherQRview() {
     });
     body += '</ul>';
   }
+
+
+  body += '<div class="text-center"><p>Points: <strong id="calcPoints"></strong></p></div>';
+
+  body += '<div class="alert alert-success" role="alert">';
+
+  body += '<div class="form-check">';
+  body += '  <input class="form-check-input" type="checkbox" value="" id="byoc" onclick="calcPoints()">';
+  body += '  <label class="form-check-label" for="byoc">';
+  body += '    自攜杯 Bring Your Own Cup';
+  body += '  </label>';
+  body += '</div>';
+
+  if (userinfo.available_coupons > 0) {
+    body += '<div class="form-check">';
+    body += '  <input class="form-check-input" type="checkbox" value="" id="useCoupon" onclick="calcPoints()" checked>';
+    body += '  <label class="form-check-label" for="useCoupon">';
+    body += '    享用免費咖啡 Enjoy Free Coffee';
+    body += '  </label>';
+    body += '</div>';
+  }
+
+  body += '</div>';
+
+  if (userinfo.add_on) {
+
+    body += '<div class="alert alert-primary" role="alert">';
+
+    Object.keys(userinfo.add_on).forEach(key => {
+
+      body += '<div class="form-check">';
+      body += '  <input class="form-check-input" type="checkbox" value="" id="'+key+'" onclick="calcPoints()">';
+      body += '  <label class="form-check-label" for="'+key+'">';
+      body += '    +'+userinfo.add_on[key].points+' pt '+userinfo.add_on[key].name;
+      body += '  </label>';
+      body += '</div>';
+      
+      body += '</div>';
+    });
+
+  }
+
+
   body += '</div>';
 
   var footer = '';
@@ -355,6 +389,7 @@ function createVoucherQRview() {
   footer += '<button type="button" class="btn btn-warning mx-2" onclick="return submitOrder();">確定落單 Confirm Order</button>';
 
   showConfirmModal('你的選擇 Your Choice',body,footer);
+  calcPoints();
 }
 
 function createVoucherView() {
@@ -486,7 +521,6 @@ function createTxView() {
       html += '<strong>'+(isPend?'⏳':'✅')+' ['+oid+'] </strong><br>';
       html += o[oid].item;
       html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
-      // html += (o[oid].extra)?'  <span class="badge rounded-pill bg-dark">EX</span>':'';
       html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
       if (o[oid].opt) {
         html += '<ul>';
@@ -505,7 +539,9 @@ function createTxView() {
   html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
   html += '<strong>咖啡因補給日誌<br>Caffeine Refuel Log</strong>';
   if (userinfo.points){
-    html+='<span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i> '+userinfo.byoc+'</span><span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
+    html+='<span class="badge rounded-pill bg-'+(userinfo.available_coupons>0?'info':'secondary')+'"><i class="fa fa-ticket"></i> '+userinfo.available_coupons+'</span>';
+    html+='<span class="badge rounded-pill bg-'+(userinfo.byoc>0?'success':'secondary')+'"><i class="fa fa-coffee"></i> '+userinfo.byoc+'</span>';
+    html+='<span class="badge rounded-pill bg-light text-dark"><strong>'+userinfo.points+'</strong></span>';
   }
   html += '</li>';
   if (userinfo.tx) {

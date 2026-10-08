@@ -4,17 +4,7 @@ var orderForm = {'ut':'','coffee_id':'cf001','coffee_pref':'H','extra':false,'by
 var memForm = {'ut':'', 'item' : 'pi01', 'pt':50, 'desc':'愛心 Points', 'remarks' : false};
 var gid = '';
 var coffeeList = {};
-var prefHotOnlyList = [
-  'cf002',
-  'cf004',
-  'cf012'
-];
-var extraNAList = [
-  'cf009',
-  'cf010',
-  'cf011',
-  'cf012'
-];
+var prefHotOnlyList = [];
 var ptlist = {};
 var header = document.getElementById('container_header');
 var content = document.getElementById('container_content');

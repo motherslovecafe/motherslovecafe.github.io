@@ -51,6 +51,16 @@ function completeOrder() {
   createScanView();
 }
 
+function getPrefHotOnlyList() {
+  var userinfo = getUserInfo();
+
+  Object.keys(coffeeList).forEach(k => {
+    if (!coffeeList[k].opt.hasOwnProperty('opt_ice')) {
+      prefHotOnlyList.push(k);
+    }
+  });
+}
+
 function selectPref() {
   // orderForm.coffee_pref=(orderForm.coffee_pref=='H' && !prefHotOnlyList.includes(orderForm.coffee_id))?'C':'H';
   orderForm.coffee_pref=(orderForm.coffee_pref=='H' && getDefaultOpt().hasOwnProperty('opt_ice'))?'C':'H';
@@ -65,28 +75,7 @@ function selectPref() {
     btn.classList.add('btn-primary');
     btn.classList.remove('btn-danger');
   }
-  updateCurrentPrice();
   setOptInput();
-}
-
-function selectExtra() {
-  orderForm.coffee_extra=(!orderForm.coffee_extra && !extraNAList.includes(orderForm.coffee_id))?true:false;
-  var btn = document.getElementById('btn_coffee_extra');
-  if (orderForm.coffee_extra) {
-    btn.classList.remove('btn-light');
-    btn.classList.add('btn-dark');
-  }
-  if (!orderForm.coffee_extra) {
-    btn.classList.add('btn-light');
-    btn.classList.remove('btn-dark');
-  }
-  
-  if (extraNAList.includes(orderForm.coffee_id)) {
-    btn.classList.add('d-none');
-  }else{
-    btn.classList.remove('d-none');
-  }
-  updateCurrentPrice();
 }
 
 function selectTopUp() {
@@ -115,19 +104,11 @@ function selectTopUp() {
 function selectCoffee() {
   var select = document.getElementById('input_select_coffee');
   var id = select.value;
-  // orderForm.coffee_id=id;
   setDefaultOderForm(id);
   setOptInput();
   if (prefHotOnlyList.includes(id)) {
     selectPref();
   }
-  // if (extraNAList.includes(id)) {
-  //   selectExtra();
-  // }else{
-  //   var btn = document.getElementById('btn_coffee_extra');
-  //   btn.classList.remove('d-none');
-  // }
-  updateCurrentPrice();
 }
 
 function tapOpt(value) {
@@ -194,8 +175,33 @@ function getDefaultOpt() {
   return opt;
 }
 
-function updateCurrentPrice() {
-  setInnerHTMLById('current-price',coffeeList[orderForm.coffee_id]['price']+(orderForm.coffee_pref=='C'?2:0));
+function calcPoints() {
+  var cid = orderForm.coffee_id;
+  var userinfo = getUserInfo();
+  var byoc = document.getElementById('byoc').checked;
+  var useCoupon = (userinfo.available_coupons > 0) ? document.getElementById('useCoupon').checked : false;
+  var points = useCoupon ? 0 : coffeeList[cid].points;
+  var userinfo = getUserInfo();
+  if (userinfo.add_on) {
+    var arr = [];
+    Object.keys(userinfo.add_on).forEach(key => {
+      var add_on = document.getElementById(key).checked;
+      points += add_on ? userinfo.add_on[key].points : 0;
+      if (add_on) {
+        arr.push(key);
+      }
+    });
+    if (arr.length>0) {
+      orderForm.add_on = arr;
+    }else{
+      delete orderForm.add_on; 
+    }
+  }
+
+  orderForm.byoc = byoc;
+  orderForm.useCoupon = useCoupon;
+
+  document.getElementById('calcPoints').innerHTML = points;
 }
 
 function encodeFormStr() {

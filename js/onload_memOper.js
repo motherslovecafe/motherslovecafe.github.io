@@ -1,6 +1,7 @@
 
 
 $(document).ready(function() {
+  
   // login
   var access_token = '';
   // Parse query string to see if page request is coming from OAuth 2.0 server.

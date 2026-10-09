@@ -45,7 +45,9 @@ function submitEnquiry() {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   var input = document.getElementById('mem_enq_input').value;
   if (emailRegex.test(input)) {
-    gasMemberEnquiry(window.btoa(input));
+    var topup_code = window.btoa(input);
+    sessionStorage.setItem('topup_code', topup_code);
+    gasMemberEnquiry(topup_code);
   }else{
     alert('Invalid Email');
   }
@@ -344,7 +346,9 @@ function getScanData(data) {
   const obj = Object.fromEntries(params);
   switch (obj.act) {
   case 'user':
-    gasMember(obj.c);
+    var topup_code = window.btoa(obj.c);
+    sessionStorage.setItem('topup_code', topup_code);
+    gasMemberEnquiry(topup_code);
     break;
   case 'o':
     gasOrder(decodeForm(obj.c));
@@ -432,11 +436,14 @@ function gasCompleteOrder(code) {
 function gasTopUp() {
   on();
   inputModal.hide();
+  memForm.topup_code = sessionStorage.getItem('topup_code');
   var userinfo = getUserInfo();
   var url = GAS_URL+'?action=topup&content='+JSON.stringify(memForm)+'&ut='+userinfo.ut;
   $.getJSON(url, function(data) {
     if (data !== null) {
       if (data.status=='0') {
+        member = data.res;
+        createMemEnquiryView();
         createSuccessView();
       }else{
         createErrorView(data.error_msg);

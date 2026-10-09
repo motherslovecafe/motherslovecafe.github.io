@@ -243,7 +243,7 @@ function createUserQRView() {
   body += '</ul>';
   body += '</div>';
   showInputModal('My QR Code',body,'');
-  var qrcode = new QRCode("qrcode",{"text": window.btoa('act=user&c='+userinfo.ut), "width":200, "height":200});
+  var qrcode = new QRCode("qrcode",{"text": window.btoa('act=user&c='+userinfo.email), "width":200, "height":200});
 
 }
 
@@ -458,7 +458,7 @@ function createMemEnquiryView() {
       if (member.tx) {
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-ticket"></i> '+member.available_coupons+'</span>';
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-coffee"></i> '+member.byoc+'</span>';
-        html+='<span class="badge rounded-pill bg-light text-dark"><strong>'+member.points+'</strong></span>';
+        html+='<button class="btn btn-warning btn-sm rounded-pill" onclick="return createMemOperView();"><strong><small>'+member.points+'</small></strong></button>';
 
         html += '</li>';
         // if (member.tx) {
@@ -471,7 +471,9 @@ function createMemEnquiryView() {
           }
         // }
       } else {
-        html += '<li class="list-group-item d-flex justify-content-between align-items-center">Non-Member</li>'
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+        html+='Non-Member <button class="btn btn-warning btn-sm rounded-pill" onclick="return createMemOperView();"><strong><small>Top-Up</small></strong></button>';
+        html += '</li>'
       }
       html += '</ul>';
 
@@ -669,13 +671,13 @@ function confirmJoinMember() {
 }
 
 function createMemOperView() {
-  var member = getMember();
-  if (member && member.ut) {
-    memForm.ut = member.ut;
-  }else{
-    showAlertModal('錯誤','未能取得用戶資料','');
-    return;
-  }
+  // var member = getMember();
+  // if (member && member.ut) {
+  //   memForm.ut = member.ut;
+  // }else{
+  //   showAlertModal('錯誤','未能取得用戶資料','');
+  //   return;
+  // }
   var userinfo = getUserInfo();
   if (userinfo && userinfo.m_config && userinfo.m_config.pt_list) {
     ptlist = userinfo.m_config.pt_list;
@@ -683,10 +685,11 @@ function createMemOperView() {
     showAlertModal('錯誤','未能取得選項','');
     return;
   }
-  var memTagStr = member.name+': '+member.points;
-  var userinfo = getUserInfo();
+
+  var memTagStr = member.email+': '+member.points;
+  // var userinfo = getUserInfo();
   var body = '';
-  body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
+  body += '<span><strong>'+member.email+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
   body += '<div class="input-group mb-3" role="alert">';
   body += '<label class="input-group-text">Top-Up</label>';
   body += '  <select class="form-select" id="input_top_up" onchange="selectTopUp()">';
@@ -698,7 +701,7 @@ function createMemOperView() {
   body += '</div>';
   body += '<div class="input-group mb-3">';
   body += '<label class="input-group-text">Points</label>';
-  body += '  <input class="form-control" id="input_top_up_pt" type="text" value = "'+ptlist[0].default_pt+'" placeholder="請註明 Points" required></input>';
+  body += '  <input class="form-control" id="input_top_up_pt" type="text" value = "'+ptlist[Object.keys(ptlist)[0]].default_pt+'" placeholder="請註明 Points" required></input>';
   body += '</div>';
   body += '</div>';
   body += '</div>';
@@ -707,13 +710,13 @@ function createMemOperView() {
 }
 
 function confirmTopUpView() {
-  var member = getMember();
-  if (member && member.ut) {
-    memForm.ut = member.ut;
-  }else{
-    showAlertModal('錯誤','未能取得用戶資料','');
-    return;
-  }
+  // var member = getMember();
+  // if (member && member.ut) {
+  //   memForm.ut = member.ut;
+  // }else{
+  //   showAlertModal('錯誤','未能取得用戶資料','');
+  //   return;
+  // }
 
   var new_desc = document.getElementById('input_top_up_remarks');
   if (memForm.remarks && new_desc.value) {
@@ -726,7 +729,7 @@ function confirmTopUpView() {
   }
 
   var body = '';
-  body += '<span><strong>'+member.name+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
+  body += '<span><strong>'+member.email+'</strong> <p class="text-danger">現有 points: '+member.points+'</p></span>';
   body += '<span class="text-primary"><strong>Top up:</strong> <p>'+memForm.desc+' '+memForm.pt+'</p></span>';
   // var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="submitJoin('+id+');">確定</button></div>';
   var footer = footer = '<button type="button" class="btn btn-secondary" onclick="return backForm();">返回</button>';

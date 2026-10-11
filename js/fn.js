@@ -151,7 +151,7 @@ function setOptInput() {
     }
 
 
-    html += '</div>';
+    html += '</div><br>';
   }
   coffee_opt_input.innerHTML = html;
 }

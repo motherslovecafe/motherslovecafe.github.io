@@ -515,7 +515,7 @@ function createShopOrdersView() {
 
     html += '<li class="list-group-item text-bg-light"><div class="btn-toolbar justify-content-between"><div class="btn-group">';
     for (var i = 0; i < o_flag_list.length; i++) {
-      html += '<button class="btn mx-1 btn'+(o_flag==i?'':'-outline')+'-warning btn-sm rounded-pill" onclick="return selectOrderFlag('+i+');" id="order_flag_'+i+'"><strong><small>'+o_flag_list[i]+'</small></strong></button>';
+      html += '<button class="btn mx-1 btn-outline-warning'+(o_flag==i?' active':'')+' btn-sm rounded-pill" onclick="return selectOrderFlag('+i+');" id="order_flag_'+i+'"><strong><small>'+o_flag_list[i]+'</small></strong></button>';
     }
     html += '</div>';
 

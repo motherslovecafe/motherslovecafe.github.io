@@ -116,7 +116,7 @@ function getNavHtml_memEnq() {
   html += '    <a class="navbar-brand" onclick="createMemEnquiryView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
-  html += '<span class="badge text-bg-warning my-2 my-sm-0">Member</span>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('memOper'))?'onclick="window.location.href = &#39;shopOper.html&#39;"':'')+'>Member</span>';
   html += '    </div>';
   
   html += '  </div>';
@@ -150,7 +150,7 @@ function getNavHtml_shopOper() {
   html += '    <a class="navbar-brand" onclick="createShopOrdersView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
-  html += '<span class="badge text-bg-warning my-2 my-sm-0">Order</span>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('memOper'))?'onclick="window.location.href = &#39;memOper.html&#39;"':'')+'>Order</span>';
   html += '    </div>';
   
   html += '  </div>';
@@ -183,7 +183,7 @@ function getFooterHtml() {
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa-regular fa-house" style="font-size:28px;" onclick="return createMainView();"></i></button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return createUseVoucherView();"><i class="fa fa-coffee" style="font-size:28px;"></i>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return gasMenu();"><i class="fa fa-coffee" style="font-size:28px;"></i>';
   html += '</button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa-regular fa-calendar-days" style="font-size:28px;"></i></button></div>';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa-solid fa-ellipsis" style="font-size:28px;"></i></button></div>';
@@ -458,7 +458,7 @@ function createMemEnquiryView() {
       if (member.tx) {
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-ticket"></i> '+member.available_coupons+'</span>';
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-coffee"></i> '+member.byoc+'</span>';
-        html+='<button class="btn btn-warning btn-sm rounded-pill" onclick="return createMemOperView();"><strong><small>'+member.points+'</small></strong></button>';
+        html+='<span class="badge rounded-pill bg-warning text-dark"onclick="return createMemOperView();">'+member.points+'</span>';
 
         html += '</li>';
         // if (member.tx) {
@@ -512,23 +512,32 @@ function createShopOrdersView() {
     html += '<ul class="list-group pb-5 mb-5">';
     var orderHtmlStr = '';
 
-    if (acceptOrder) {
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-      html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light text-danger" onclick="return gasAcceptOrder(0);"><strong>截單 Cut</strong></button>';
-      html += '</li>';
-    }else{
-      html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-warning">';
-      html += '<strong>All Orders</strong>';
-      html += '<button type="button" class="btn btn-light" onclick="return gasAcceptOrder(1);"><strong>接單 Accept</strong></button>';
-      html += '</li>';
+
+    html += '<li class="list-group-item text-bg-light"><div class="btn-toolbar justify-content-between"><div class="btn-group">';
+    for (var i = 0; i < o_flag_list.length; i++) {
+      html += '<button class="btn mx-1 btn'+(o_flag==i?'':'-outline')+'-warning btn-sm rounded-pill" onclick="return selectOrderFlag('+i+');" id="order_flag_'+i+'"><strong><small>'+o_flag_list[i]+'</small></strong></button>';
     }
+    html += '</div>';
+
+    if (acceptOrder) {
+      html += '<div class="btn-group"><button type="button" class="btn btn-warning" onclick="return gasAcceptOrder(0);"><small><strong>截單 Cut</strong></small></button></div>';
+    }else{
+      html += '<button type="button" class="btn btn-warning text-end" onclick="return gasAcceptOrder(1);"><small><strong>接單 Accept</strong></small></button>';
+    }
+    html += '</div></li>';
 
     if (allOrders=="No Orders" || !allOrders) {
       orderHtmlStr = '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
     }else{
-
+      var count = 0;
       Object.keys(allOrders).forEach(key => {
+        if (allOrders[key].status == 'P' && o_flag==2) {
+          return;
+        }
+        if (allOrders[key].status != 'P' && o_flag==1) {
+          return;
+        }
+        count++;
         var li = '';
         li += '<li class="list-group-item d-flex justify-content-between align-items-center">';
         if (allOrders[key].status == 'P') {
@@ -550,6 +559,9 @@ function createShopOrdersView() {
         li += '</li>';
         orderHtmlStr = li + orderHtmlStr;
       });
+      if (count < 1) {
+        orderHtmlStr += '<li class="list-group-item d-flex justify-content-between align-items-center">No Orders</li>';
+      }
     }
     html += orderHtmlStr;
 

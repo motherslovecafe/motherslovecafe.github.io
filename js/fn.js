@@ -50,6 +50,8 @@ function submitEnquiry() {
     gasMemberEnquiry(topup_code);
   }else{
     alert('Invalid Email');
+    member = null;
+    createMemEnquiryView();
   }
 }
 
@@ -71,6 +73,11 @@ function getPrefHotOnlyList() {
       prefHotOnlyList.push(k);
     }
   });
+}
+
+function selectOrderFlag(flag) {
+  o_flag = flag;
+  createShopOrdersView();
 }
 
 function selectPref() {
@@ -378,6 +385,22 @@ function gasRefresh() {
   });
 }
 
+function gasMenu() {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=mm&content='+userinfo.ut+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        sessionStorage.setItem('userinfo', JSON.stringify(data.res));
+        createUseVoucherView();
+      }
+    }
+    off();
+  });
+}
+
 function gasMember(code) {
   var content = code;
   on();
@@ -416,7 +439,7 @@ function gasOrder(code) {
 }
 
 function gasCompleteOrder(code) {
-  // on();
+  on();
   // inputModal.hide();
   var userinfo = getUserInfo();
   var url = GAS_URL+'?action=co&content='+code+'&ut='+userinfo.ut;
@@ -429,7 +452,7 @@ function gasCompleteOrder(code) {
         createErrorView(data.error_msg);
       }
     }
-    // off();
+    off();
   });
 }
 
@@ -465,6 +488,8 @@ function gasMemberEnquiry(code) {
         createMemEnquiryView();
       }else{
         createErrorView(data.error_msg);
+        member = null;
+        createMemEnquiryView();
       }
     }
     off();

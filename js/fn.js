@@ -151,7 +151,7 @@ function setOptInput() {
       var label_arr = opts[opt].choice_list[i].replace(/\s/, "||__||").split("||__||");
       var label = label_arr[0]+'<br>'+label_arr[1];
       html += '  <input type="radio" class="btn-check" name="'+opt+'" id="'+optid+'" autocomplete="off" onclick="tapOpt(&#39;'+value+'&#39;)" '+(orderForm.opt[opt]==i?'checked':'')+'>';
-      html += '  <label class="btn btn-outline-secondary" for="'+optid+'"><small>'+label+'</small></label>';
+      html += '  <label class="btn btn-outline-secondary" for="'+optid+'"><small><small><small>'+label+'</small></small></small></label>';
     }
     }else{
       delete orderForm.opt.opt_ice;

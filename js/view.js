@@ -92,6 +92,92 @@ function createScanView() {
   showScanModal();
 }
 
+function selectConfig() {
+  selected_config = document.getElementById('selected_config').value;
+
+  var config_table = document.getElementById('config_table');
+  var html = "";
+
+  var config = a_config[selected_config];
+
+  if (config) {
+
+    var ind = selected_config+'|new';
+    html += '<ul class="list-group pb-5 mb-5">';
+    html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-light text-dark">';
+    html += '<strong>'+selected_config+'</strong>';
+    html += selected_config=="menu"?'<i class="fa-solid fa-circle-plus text-warning" onclick="createEditConfigView(&#39;'+ind+'&#39;)"></i>':'';
+
+    if (selected_config=='menu') {
+
+
+      for (var i = 0; i < config.length; i++) {
+
+        ind = selected_config+'|'+i;
+;
+        if (config[i].active) {
+
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center">'
+          html += '<p><strong>'+config[i].name+'</strong> <span class="badge rounded-pill  bg-light text-dark">'+config[i].points+' pt</span><br><br>';
+        } else {
+
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center bg-light">'
+          html += '<p><span class="text-muted">'+config[i].name+'</span> <span class="badge rounded-pill bg-light text-dark">'+config[i].points+' pt</span><br><br>';
+        }
+        html += '<small class="text-muted">';
+
+        Object.keys(config[i]).forEach(k => {
+          if (k.startsWith('opt_') && config[i][k] && menu_opt[k]) {
+            html += '|';
+            for (var j = 0; j < menu_opt[k].choice_list.length; j++){
+
+              var label_arr = menu_opt[k].choice_list[j].replace(/\s/, "||__||").split("||__||");
+              if (menu_opt[k].default == j) {
+
+                html += '<small><span class="badge bg-transparent text-dark">**'+label_arr[0] + '**</span></small>|';
+              }else{
+
+                html += '<small><span class="badge bg-transparent text-dark">'+label_arr[0] + '</span></small>|';
+              }
+            }
+            html += '<br>';
+          }
+        });
+        html += ' </small></p>';
+        html += '<i class="fa-solid fa-pen-to-square text-warning" onclick="createEditConfigView(&#39;'+ind+'&#39;)"></i>';
+        html += '</li>';
+      }
+
+    }
+
+    if (selected_config=='menu_opt') {
+
+
+      for (var i = 0; i < config.length; i++) {
+
+        ind = selected_config+'|'+i;
+;
+
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">'
+        html += '<p><strong>'+config[i].option+'</strong><br><br>';
+
+        html += '<span class="text-muted">';
+        for (var j = 0; j < config[i].choice_list.length; j++) {
+          var label_arr = config[i].choice_list[j].replace(/\s/, "||__||").split("||__||");
+          html += '<small><span class="badge '+(config[i].default == j?'bg-secondary':'bg-light text-dark')+'">'+label_arr[0] + '<br>' +label_arr[1] +'</span></small> ';
+        }
+        html += ' </span></p>';
+        // html += '<i class="fa-solid fa-pen-to-square text-warning" onclick="createEditConfigView(&#39;'+ind+'&#39;)"></i>';
+        html += '</li>';
+      }
+
+    }
+  }
+
+
+  config_table.innerHTML = html;
+}
+
 function getNavHtml() {
   var userinfo = getUserInfo();
   var html = '';
@@ -108,6 +194,60 @@ function getNavHtml() {
   return html;
 }
 
+function getFooterHtml() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-1 my-1">';
+  html += '    <div class="container navbar-brand col-12">';
+  html += '    <div class="row">';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa-regular fa-house" style="font-size:28px;" onclick="return createMainView();"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return gasMenu();"><i class="fa fa-coffee" style="font-size:28px;"></i>';
+  html += '</button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa-regular fa-calendar-days" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa-solid fa-ellipsis" style="font-size:28px;"></i></button></div>';
+  html += '    </div>';
+  html += '    </div>';
+
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+
+}
+
+function getNavHtml_adminOper() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-4 my-1">';
+  html += '    <a class="navbar-brand" onclick="createMemEnquiryView()">';
+  html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
+  html += '    </a>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('shopOper'))?'onclick="window.location.href = &#39;shopOper.html&#39;"':'')+'>Admin</span>';
+  html += '    </div>';
+  
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+}
+
+function getFooterHtml_adminOper() {
+  var userinfo = getUserInfo();
+  var html = '';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '  <div class="container-fluid mx-1 my-1">';
+  html += '    <div class="container navbar-brand col-12">';
+  html += '    <div class="row">';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;"><i class="fa-solid fa-circle-chevron-left" style="font-size:28px;"></i></button></div>';
+  html += '    </div>';
+  html += '    </div>';
+
+  html += '  </div>';
+  html += '</nav>';
+  return html;
+
+}
+
 function getNavHtml_memEnq() {
   var userinfo = getUserInfo();
   var html = '';
@@ -116,7 +256,7 @@ function getNavHtml_memEnq() {
   html += '    <a class="navbar-brand" onclick="createMemEnquiryView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
-  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('memOper'))?'onclick="window.location.href = &#39;shopOper.html&#39;"':'')+'>Member</span>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('shopOper'))?'onclick="window.location.href = &#39;shopOper.html&#39;"':'')+'>Member</span>';
   html += '    </div>';
   
   html += '  </div>';
@@ -150,7 +290,7 @@ function getNavHtml_shopOper() {
   html += '    <a class="navbar-brand" onclick="createShopOrdersView()">';
   html += '      <img src="img/cafe_logo_2.png" height="40px" alt="">  ';
   html += '    </a>';
-  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('memOper'))?'onclick="window.location.href = &#39;memOper.html&#39;"':'')+'>Order</span>';
+  html += '<span class="badge text-bg-warning my-2 my-sm-0" '+(userinfo.acl && (userinfo.acl.includes('admin'))?'onclick="window.location.href = &#39;adminOper.html&#39;"':'')+'>Order</span>';
   html += '    </div>';
   
   html += '  </div>';
@@ -166,27 +306,6 @@ function getFooterHtml_shopOper() {
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;"><i class="fa-solid fa-circle-chevron-left" style="font-size:28px;"></i></button></div>';
-  html += '    </div>';
-  html += '    </div>';
-
-  html += '  </div>';
-  html += '</nav>';
-  return html;
-
-}
-
-function getFooterHtml() {
-  var userinfo = getUserInfo();
-  var html = '';
-  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
-  html += '  <div class="container-fluid mx-1 my-1">';
-  html += '    <div class="container navbar-brand col-12">';
-  html += '    <div class="row">';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button"><i class="fa-regular fa-house" style="font-size:28px;" onclick="return createMainView();"></i></button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning position-relative" type="button" onclick="return gasMenu();"><i class="fa fa-coffee" style="font-size:28px;"></i>';
-  html += '</button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createTxView();"><i class="fa-regular fa-calendar-days" style="font-size:28px;"></i></button></div>';
-  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="return createMoreView();"><i class="fa-solid fa-ellipsis" style="font-size:28px;"></i></button></div>';
   html += '    </div>';
   html += '    </div>';
 
@@ -284,6 +403,9 @@ function createMoreView() {
   }
   if (userinfo.acl && (userinfo.acl.includes('memOper'))){
     html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="window.location.href = &#39;memOper.html&#39;">All Members</button>';
+  }
+  if (userinfo.acl && (userinfo.acl.includes('admin'))){
+    html += '<button type="button" class="btn btn-warning col-12 col-lg-4 my-3" onclick="window.location.href = &#39;adminOper.html&#39;">Admin Console</button>';
   }
   html += '<button type="button" class="btn btn-danger col-12 col-lg-4 my-3" onclick="return logout();">下次見 See you soon</button>';
   html += '</div>';
@@ -426,6 +548,154 @@ function createVoucherView() {
   html += '</div>';
   div.innerHTML = html;
 
+}
+
+function createEditConfigView(ind) {
+
+  var ind_arr = ind.split('|');
+  var item = ind_arr[0];
+  var index = ind_arr[1];
+  var e_config = null;
+  if (ind == 'menu|new') {
+    e_config = {};
+    e_config.number = 'new';
+    e_config.name = '';
+    e_config.points = 0;
+    e_config.active = true;
+
+    Object.keys(menu_opt).forEach(opt => {
+      e_config[opt] = false;
+    });
+
+  }else if (ind == 'menu_opt|new') {
+    e_config = {};
+    e_config.option = 'opt_';
+    e_config.choice_list = ["1", "2"];
+    e_config.default = 0;
+
+    Object.keys(menu_opt).forEach(opt => {
+      e_config[opt] = false;
+    });
+
+  }else{
+    e_config = a_config[item][index];
+  }
+
+  var body = '';
+  if (item == 'menu') {
+    body += '<div class="input-group mb-3">';
+    body += '  <span class="input-group-text" id="name">Name</span>';
+    body += '  <input type="text" class="form-control" placeholder="name" aria-label="name" aria-describedby="name" id="e_config_name" value="'+e_config.name+'">';
+    body += '</div>';
+
+
+    body += '<div class="input-group mb-3">';
+    body += '  <span class="input-group-text" id="points">Points</span>';
+    body += '  <input type="text" class="form-control" placeholder="points" aria-label="points" aria-describedby="points" id="e_config_points" value="'+e_config.points+'">';
+    body += '</div>';
+
+    body += '<div class="input-group mb-3">';
+    body += '  <div class="input-group-text">';
+    body += '    <input class="form-check-input mt-0" type="checkbox" id="e_config_active" value="" aria-label="active" '+(e_config.active?'checked':'')+'>';
+    body += '  </div>';
+    body += '  <span class="input-group-text" id="active">Active</span>';
+    body += '</div>';
+
+    Object.keys(menu_opt).forEach(opt => {
+
+      body += '<div class="input-group mb-3">';
+      body += '  <div class="input-group-text">';
+      body += '    <input class="form-check-input mt-0" type="checkbox" id="e_config_'+opt+'" value="" aria-label="'+opt+'" '+(e_config[opt]?'checked':'')+'>';
+      body += '  </div>';
+      body += '  <span class="input-group-text" id="'+opt+'">'+opt+': |';
+
+      for (var i = 0; i < menu_opt[opt].choice_list.length; i++){
+
+        var label_arr = menu_opt[opt].choice_list[i].replace(/\s/, "||__||").split("||__||");
+        if (menu_opt[opt].default == i) {
+
+          body += '<small><span class="badge bg-transparent text-dark">**'+label_arr[0] + '**</span></small>|';
+        }else{
+
+          body += '<small><span class="badge bg-transparent text-dark">'+label_arr[0] + '</span></small>|';
+        }
+      }
+
+      body += '</span>';
+      body += '</div>';
+    });
+  }
+
+
+  if (item == 'menu_opt') {
+    body += '<div class="input-group mb-3">';
+    body += '  <span class="input-group-text" id="option">Option</span>';
+    body += '  <input type="text" class="form-control" placeholder="name" aria-label="name" aria-describedby="option" id="e_config_option" value="'+e_config.option+'">';
+    body += '</div>';
+
+
+    body += '<div class="input-group mb-3">';
+    body += '  <span class="input-group-text" id="points">choice_list</span>';
+    body += '  <textarea class="form-control" placeholder="choice_list" aria-label="choice_list" aria-describedby="choice_list" id="e_config_choice_list" value="">'+e_config.choice_list+'</textarea>';
+    body += '</div>';
+
+    body += '<div class="input-group mb-3">';
+    body += '  <span class="input-group-text" id="points">default</span>';
+    body += '  <input type="text" class="form-control" placeholder="default" aria-label="default" aria-describedby="default" id="e_config_default" value="'+e_config.default+'">';
+    body += '</div>';
+
+  }
+
+  var title = (index=="new"?"New: ":"Edit: ") + item;
+
+  var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="submitConfigEdit(&#39;'+ind+'&#39;);">Save</button></div>';
+
+  showInputModal(title,body,footer);
+
+}
+
+function createAdminOperView() {
+  var userinfo = getUserInfo();
+  if (userinfo.acl && userinfo.acl.includes('admin')){
+    if (!a_config) {
+      gasAdminConfig();
+    }
+
+    initViews();
+    if (userinfo.name == null){
+      setHeaderTitle('h2', 'Invalid User');
+      return;
+    }
+    header.innerHTML = getNavHtml_adminOper();
+    footer.innerHTML = getFooterHtml_adminOper();
+
+    var div = createCustomElement('div', 'container col_11');
+    content.appendChild(div);
+    div.id = 'adminPage';
+    var html = '<div class="container col-11 mt-5 pb-5">';
+
+    if (a_config) {
+
+      html += '<div class="input-group mb-3">';
+      html += '  <label class="input-group-text" for="inputGroupSelect01">Config</label>';
+      html += '  <select class="form-select" id="selected_config" onchange="selectConfig()">';
+      html += '    <option selected>Choose...</option>';
+      Object.keys(a_config).forEach(key => {
+        html += '    <option>'+key+'</option>';
+      });
+      html += '  </select>';
+      html += '</div>';
+
+      html += '<div id="config_table"></div>';
+
+    }
+
+    html += '</div>';
+    div.innerHTML = html;
+    
+  }else{
+    window.location.href = 'index.html';
+  }
 }
 
 

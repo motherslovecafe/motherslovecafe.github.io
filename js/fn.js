@@ -223,6 +223,32 @@ function calcPoints() {
   document.getElementById('calcPoints').innerHTML = points;
 }
 
+function submitConfigEdit(ind) {
+  var ind_arr = ind.split('|');
+  var item = ind_arr[0];
+  var index = ind_arr[1];
+  input_config = null;
+  if (item == 'menu') {
+    input_config = {};
+    input_config.item = item;
+    input_config.id = (index=='new') ? 'new' : a_config[item][index].number;
+    var value = ((index=='new') ? '' : a_config[item][index].number)+'|';
+    value += document.getElementById('e_config_name').value+'|';
+    value += document.getElementById('e_config_points').value+'|';
+    value += document.getElementById('e_config_active').checked+'|';
+    Object.keys(menu_opt).forEach(opt => {
+      value += document.getElementById('e_config_'+opt).checked+'|';
+    });
+    if (value.endsWith('|')) {
+      value = value.slice(0, -1);
+    }
+    input_config.value = value;
+  }
+  if (input_config) {
+    gasEditConfig();
+  }
+}
+
 function encodeFormStr() {
   var str = '';
   str += orderForm.ut + '|';
@@ -496,6 +522,30 @@ function gasMemberEnquiry(code) {
   });
 }
 
+function gasAdminConfig() {
+  on();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=a_config&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        a_config = data.res;
+        if (a_config.menu_opt) {
+          menu_opt = {};
+          a_config.menu_opt.forEach(opt => {
+            menu_opt[opt.option] = opt;
+          });
+        }
+        createAdminOperView();
+      }else{
+        member = null;
+        window.location.href = "index.html";
+      }
+    }
+    off();
+  });
+}
+
 function gasGetAllOrders() {
   // on();
   // inputModal.hide();
@@ -529,5 +579,30 @@ function gasAcceptOrder(code) {
       }
     }
     // off();
+  });
+}
+
+
+function gasEditConfig(code) {
+  on();
+  inputModal.hide();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=e_config&content='+JSON.stringify(input_config)+'&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        a_config = data.res;
+        if (a_config.menu_opt) {
+          menu_opt = {};
+          a_config.menu_opt.forEach(opt => {
+            menu_opt[opt.option] = opt;
+          });
+        }
+        createAdminOperView();
+      }else{
+        createErrorView(data.error_msg);
+      }
+    }
+    off();
   });
 }

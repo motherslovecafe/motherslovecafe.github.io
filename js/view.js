@@ -137,7 +137,7 @@ function selectConfig() {
                 html += '<small><span class="badge bg-transparent text-dark">**'+label_arr[0] + '**</span></small>|';
               }else{
 
-                html += '<small><span class="badge bg-transparent text-dark">'+label_arr[0] + '</span></small>|';
+                html += '<small><span class="badge bg-transparent text-muted">'+label_arr[0] + '</span></small>|';
               }
             }
             html += '<br>';

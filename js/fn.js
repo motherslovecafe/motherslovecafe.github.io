@@ -80,6 +80,12 @@ function selectOrderFlag(flag) {
   createShopOrdersView();
 }
 
+function selectMenuType(mtype) {
+  selected_menu_type = mtype;
+  alertModal.hide();
+  createUseVoucherView();
+}
+
 function selectPref() {
   // orderForm.coffee_pref=(orderForm.coffee_pref=='H' && !prefHotOnlyList.includes(orderForm.coffee_id))?'C':'H';
   orderForm.coffee_pref=(orderForm.coffee_pref=='H' && getDefaultOpt().hasOwnProperty('opt_ice'))?'C':'H';
@@ -125,7 +131,7 @@ function selectCoffee() {
   var id = select.value;
   setDefaultOderForm(id);
   setOptInput();
-  if (prefHotOnlyList.includes(id)) {
+  if (selected_menu_type=='Beverage' && prefHotOnlyList.includes(id)) {
     selectPref();
   }
 }
@@ -197,8 +203,7 @@ function getDefaultOpt() {
 function calcPoints() {
   var cid = orderForm.coffee_id;
   var userinfo = getUserInfo();
-  var byoc = document.getElementById('byoc').checked;
-  var useCoupon = (userinfo.available_coupons > 0) ? document.getElementById('useCoupon').checked : false;
+  var useCoupon = (selected_menu_type == 'Beverage' && userinfo.available_coupons > 0) ? document.getElementById('useCoupon').checked : false;
   var points = useCoupon ? 0 : coffeeList[cid].points;
   var userinfo = getUserInfo();
   if (userinfo.add_on) {
@@ -217,8 +222,11 @@ function calcPoints() {
     }
   }
 
-  orderForm.byoc = byoc;
-  orderForm.useCoupon = useCoupon;
+  if (selected_menu_type == 'Beverage') {
+    var byoc = document.getElementById('byoc').checked;
+    orderForm.byoc = byoc;
+    orderForm.useCoupon = useCoupon;
+  }
 
   document.getElementById('calcPoints').innerHTML = points;
 }
@@ -420,7 +428,7 @@ function gasMenu() {
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('userinfo', JSON.stringify(data.res));
-        createUseVoucherView();
+        createBeforeUseVoucherView();
       }
     }
     off();

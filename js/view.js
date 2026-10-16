@@ -137,7 +137,7 @@ function selectConfig() {
                 html += '<small><span class="badge bg-transparent text-dark">**'+label_arr[0] + '**</span></small>|';
               }else{
 
-                html += '<small><span class="badge bg-transparent text-muted">'+label_arr[0] + '</span></small>|';
+                html += '<small><span class="badge bg-transparent text-dark">'+label_arr[0] + '</span></small>|';
               }
             }
             html += '<br>';
@@ -413,6 +413,36 @@ function createMoreView() {
   div.innerHTML = html;
 }
 
+function createBeforeUseVoucherView() {
+  var userinfo = getUserInfo();
+  if (userinfo.is_freeze) {
+    showAlertModal('沒有服務 No Services','請聯絡我們的工作人員管理您的會籍。<br>Please contact our staff to manage your membership.','');
+    return;
+  }
+  if (!userinfo.acceptOrder) {
+    showAlertModal('沒有服務 No Services','請留意最新的營業時間，謝謝。<br>Please note the latest operating hours. Thanks.','');
+    return;
+  }
+  if (userinfo.menu) {
+    coffeeList = userinfo.menu;
+    getPrefHotOnlyList();
+  }else{
+    showAlertModal('錯誤','未能取得餐牌','');
+    return;
+  }
+
+  selected_menu_type = 'Beverage';
+
+  var body = '';
+  body += '<div class="container col-12 text-center my-2 px-1 py-2">';
+  body += '<button class="btn btn-light text-warning mx-3 my-3" onclick="return selectMenuType(&#39;Beverage&#39;);" style="height:100px; width:100px;"><span class="text-warning"><i class="fa-solid fa-mug-hot" style="font-size:48px;"></i></span></button>';
+  body += '<button class="btn btn-light text-warning mx-3 my-3" onclick="return selectMenuType(&#39;Others&#39;);" style="height:100px; width:100px;"><span class="text-warning"><i class="fa-solid fa-cookie-bite" style="font-size:48px;"></i></span></button>';
+  body += '</div>';
+
+  showAlertModal('',body,'');
+
+}
+
 function createUseVoucherView() {
   var userinfo = getUserInfo();
   if (userinfo.is_freeze) {
@@ -433,10 +463,12 @@ function createUseVoucherView() {
 
   var body = '';
   body += '<div class="input-group my-3 mb-3">';
-  body += '  <button class="btn btn-danger" type="button" id="btn_coffee_pref" onclick="selectPref()">熱 Hot</button>';
+  if (selected_menu_type == 'Beverage') {
+    body += '  <button class="btn btn-danger" type="button" id="btn_coffee_pref" onclick="selectPref()">熱 Hot</button>';
+  }
   body += '  <select class="form-select" id="input_select_coffee" onchange="selectCoffee()">';
   Object.keys(coffeeList).forEach(key => {
-    if (coffeeList[key]['active']) {
+    if (coffeeList[key]['active'] && coffeeList[key]['type']==selected_menu_type) {
       body += '    <option value='+`${key}`+'>'+`${coffeeList[key]['name']}`+' '+coffeeList[key]['points']+'</option>';
     }
   });
@@ -447,7 +479,13 @@ function createUseVoucherView() {
   var footer = '<div class="d-flex col flex-column align-items"><button type="button" class="btn btn-warning" onclick="createVoucherQRview();">就咁話！👍 Espresso-ly Yes!</button></div>';
 
   showInputModal('你的選擇 Your Choice',body,footer);
-  orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false, 'opt':null, 'useCoupon':false, 'add_on':null}; // set default
+  // set default
+  if (selected_menu_type == 'Beverage') {
+    orderForm = {'coffee_id':'cf001','coffee_pref':'H','byoc':false, 'opt':null, 'useCoupon':false, 'add_on':null}; 
+  }
+  if (selected_menu_type == 'Others') {
+    orderForm = {'coffee_id':'al001', 'add_on':null}; 
+  }
   selectCoffee();
 }
 
@@ -460,7 +498,10 @@ function createVoucherQRview() {
   var body = '';
   body += '<div class="container col-12 mt-3 mb-3"><strong>';
   body += coffeeList[orderForm.coffee_id]['name'];
-  body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
+  if (selected_menu_type == 'Beverage') {
+    body += ' <span class="badge rounded-pill bg-'+(pref=='H'?'danger':'primary')+'">'+pref+'</span>';
+  }
+  
   body += '</strong>';
   if (orderForm.opt) {
     body += '<ul>';
@@ -473,25 +514,28 @@ function createVoucherQRview() {
 
   body += '<div class="text-center"><p>Points: <strong id="calcPoints"></strong></p></div>';
 
-  body += '<div class="alert alert-success" role="alert">';
+  if (selected_menu_type == 'Beverage') {
 
-  body += '<div class="form-check">';
-  body += '  <input class="form-check-input" type="checkbox" value="" id="byoc" onclick="calcPoints()">';
-  body += '  <label class="form-check-label" for="byoc">';
-  body += '    自攜杯 Bring Your Own Cup';
-  body += '  </label>';
-  body += '</div>';
+    body += '<div class="alert alert-success" role="alert">';
 
-  if (userinfo.available_coupons > 0) {
     body += '<div class="form-check">';
-    body += '  <input class="form-check-input" type="checkbox" value="" id="useCoupon" onclick="calcPoints()" checked>';
-    body += '  <label class="form-check-label" for="useCoupon">';
-    body += '    享用免費咖啡 Enjoy Free Coffee';
+    body += '  <input class="form-check-input" type="checkbox" value="" id="byoc" onclick="calcPoints()">';
+    body += '  <label class="form-check-label" for="byoc">';
+    body += '    自攜杯 Bring Your Own Cup';
     body += '  </label>';
     body += '</div>';
-  }
 
-  body += '</div>';
+    if (userinfo.available_coupons > 0) {
+      body += '<div class="form-check">';
+      body += '  <input class="form-check-input" type="checkbox" value="" id="useCoupon" onclick="calcPoints()" checked>';
+      body += '  <label class="form-check-label" for="useCoupon">';
+      body += '    享用免費咖啡 Enjoy Free Coffee';
+      body += '  </label>';
+      body += '</div>';
+    }
+
+    body += '</div>';
+  }
 
   if (userinfo.add_on) {
 
@@ -816,9 +860,10 @@ function createShopOrdersView() {
         }else{
           li += '<p><strong>'+allOrders[key].oid+'<br> <span class="text-warning">'+allOrders[key].user+'</span></strong><br>'+allOrders[key].item;
         }
-        li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
-        // li += (allOrders[key].extra)?' <span class="badge rounded-pill bg-dark">EX</span>':'';
-        li += (allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+        if (allOrders[key].hasOwnProperty('pref')) {
+          li += ' <span class="badge rounded-pill bg-'+(allOrders[key].pref=='H'?'danger':'primary')+'">'+allOrders[key].pref+'</span>';
+        }
+        li += (allOrders[key].hasOwnProperty('byoc') && allOrders[key].byoc)?' <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
 
         if (allOrders[key].opt) {
           for (var opt in allOrders[key].opt) {
@@ -870,8 +915,10 @@ function createTxView() {
       html += '<div class="alert alert-'+(isPend?'warning':'success')+'" role="alert">';
       html += '<strong>'+(isPend?'⏳':'✅')+' ['+oid+'] </strong><br>';
       html += o[oid].item;
-      html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
-      html += (o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
+      if (o[oid].hasOwnProperty('pref')) {
+        html += ' <span class="badge rounded-pill bg-'+(o[oid].pref=='H'?'danger':'primary')+'">'+o[oid].pref+'</span>';
+      }
+      html += (o[oid].hasOwnProperty('byoc') && o[oid].byoc)?'  <span class="badge rounded-pill bg-success"><i class="fa fa-coffee"></i></span>':'';
       if (o[oid].opt) {
         html += '<ul>';
         for (var opt in o[oid].opt) {

@@ -5,6 +5,7 @@ var memForm = {'ut':'', 'item' : 'pi01', 'pt':50, 'desc':'愛心 Points', 'remar
 var gid = '';
 var coffeeList = {};
 var prefHotOnlyList = [];
+var selected_menu_type = null;
 var ptlist = {};
 var member = null;
 var a_config = null;

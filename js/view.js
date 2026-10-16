@@ -509,6 +509,8 @@ function createVoucherQRview() {
       body += '</div>';
     });
 
+    body += '</div>';
+
   }
 
 

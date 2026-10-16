@@ -506,7 +506,6 @@ function createVoucherQRview() {
       body += '  </label>';
       body += '</div>';
       
-      body += '</div>';
     });
 
     body += '</div>';

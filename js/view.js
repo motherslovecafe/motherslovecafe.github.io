@@ -239,6 +239,8 @@ function getFooterHtml_adminOper() {
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
   html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="window.location.href = &#39;index.html&#39;"><i class="fa-solid fa-circle-chevron-left" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="createStatView()"><i class="fa-solid fa-chart-line" style="font-size:28px;"></i></button></div>';
+  html += '      <div class="col text-center px-0"><button class="btn btn-light text-warning" type="button" onclick="createAdminOperView()"><i class="fa-solid fa-gear" style="font-size:28px;"></i></button></div>';
   html += '    </div>';
   html += '    </div>';
 
@@ -743,6 +745,276 @@ function createAdminOperView() {
   }
 }
 
+function renderStatCanvas_byoc() {
+  const ctx = document.getElementById('byoc');
+  const DATA_COUNT = 3;
+  const DATA_MAX = stat.header.byoc['Accumulated'];
+  const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: DATA_MAX};
+  const labels = ['BYOC', 'Coupon Issued', 'Coupon Used'];
+
+  var data_input = {};
+  Object.keys(stat.header.byoc).forEach(k => {
+    data_input[k] = [];
+  });
+  Object.keys(stat.header.byoc).forEach(k => {
+    data_input[k].push(stat.header.byoc[k]);
+    data_input[k].push(stat.header.coupon_issued[k]);
+    data_input[k].push(stat.header.coupon_used[k]);
+  });
+
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: Object.keys(stat.header.byoc)[0],
+        data: data_input[Object.keys(stat.header.byoc)[0]],
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderWidth: 1
+      },
+      {
+        label: Object.keys(stat.header.byoc)[1],
+        data: data_input[Object.keys(stat.header.byoc)[1]],
+        borderColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderWidth: 1
+      }
+    ]
+  };
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+function renderStatCanvas_byoc() {
+  const ctx = document.getElementById('byoc');
+  const DATA_COUNT = 3;
+  const DATA_MAX = stat.header.byoc['Accumulated'];
+  const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: DATA_MAX};
+  const labels = ['BYOC', 'Coupon Issued', 'Coupon Used'];
+  var data_input = {};
+  Object.keys(stat.header.byoc).forEach(k => {
+    data_input[k] = [];
+  });
+  Object.keys(stat.header.byoc).forEach(k => {
+    data_input[k].push(stat.header.byoc[k]);
+    data_input[k].push(stat.header.coupon_issued[k]);
+    data_input[k].push(stat.header.coupon_used[k]);
+  });
+
+  // Generate an array of RGB colors matching the data length
+  const dynamicBackgroundColors = [];
+  const dynamicBorderColors = [];
+  
+  Object.keys(stat.header.byoc).forEach(() => {
+    // Generate the RGB channels once per data point
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+
+    // Use the exact same R, G, B values for both properties
+    dynamicBackgroundColors.push(`rgba(${r}, ${g}, ${b}, 0.5)`); // Shaded fill
+    dynamicBorderColors.push(`rgb(${r}, ${g}, ${b})`);           // Solid border
+  });
+
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: Object.keys(stat.header.byoc)[0],
+        data: data_input[Object.keys(stat.header.byoc)[0]],
+        borderColor: dynamicBorderColors[0],
+        backgroundColor: dynamicBackgroundColors[0],
+        borderWidth: 1
+      },
+      {
+        label: Object.keys(stat.header.byoc)[1],
+        data: data_input[Object.keys(stat.header.byoc)[1]],
+        borderColor: dynamicBorderColors[1],
+        backgroundColor: dynamicBackgroundColors[1],
+        borderWidth: 1
+      }
+    ]
+  };
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+
+function renderStatCanvas_sales() {
+  const ctx = document.getElementById('sales');
+  const DATA_COUNT = Object.keys(stat.sales).length;
+  const DATA_MAX = 10;
+  const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: DATA_MAX};
+  const labels = Object.keys(stat.sales);
+  var data_input = {};
+  Object.keys(stat.sales).forEach(date => {
+    Object.keys(stat.sales[date]).forEach(item => {
+      data_input[item] = [];
+    });
+  });
+  Object.keys(data_input).forEach(item => {
+    labels.forEach(date => {
+      if (stat.sales[date].hasOwnProperty(item)) {
+        data_input[item].push(stat.sales[date][item]);
+      }else{
+        data_input[item].push(0);
+      }
+    });
+  });
+
+  // Generate an array of RGB colors matching the data length
+  const dynamicBackgroundColors = [];
+  const dynamicBorderColors = [];
+  
+  Object.keys(data_input).forEach(() => {
+    // Generate the RGB channels once per data point
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+
+    // Use the exact same R, G, B values for both properties
+    dynamicBackgroundColors.push(`rgba(${r}, ${g}, ${b}, 0.5)`); // Shaded fill
+    dynamicBorderColors.push(`rgb(${r}, ${g}, ${b})`);           // Solid border
+  });
+
+  var datasets = [];
+  var i = 0;
+  Object.keys(data_input).forEach(d => {
+    var obj = {};
+    obj.label = d;
+    obj.data = data_input[d];
+    obj.borderColor = dynamicBorderColors[i];
+    obj.backgroundColor = dynamicBackgroundColors[i];
+    obj.borderWidth = 1;
+    datasets.push(obj);
+    i++;
+  });
+
+  const data = {
+    labels: labels,
+    datasets: datasets
+  };
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false, // Allows the chart to fill the parent container's height
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 5 // Forces ticks to generate at 0, 0.1, 0.2, 0.3...
+          }
+        }
+      }
+    }
+  });
+
+  chart.data.datasets.forEach((dataset, index) => {
+    chart.setDatasetVisibility(index, false); // Hide the dataset
+  });
+
+  chart.setDatasetVisibility(0, true); // show the first dataset
+}
+
+
+function createStatView() {
+  var userinfo = getUserInfo();
+  if (userinfo.acl && userinfo.acl.includes('admin')){
+    if (!stat) {
+      gasStat();
+    }
+
+    initViews();
+    if (userinfo.name == null){
+      setHeaderTitle('h2', 'Invalid User');
+      return;
+    }
+    header.innerHTML = getNavHtml_adminOper();
+    footer.innerHTML = getFooterHtml_adminOper();
+
+    var div = createCustomElement('div', 'container col_11');
+    content.appendChild(div);
+    div.id = 'adminPage';
+    var html = '<div class="container col-11 mt-5 pb-5">';
+
+    if (stat) {
+      // console.log(JSON.stringify(stat,0,2));
+      if (stat.header) {
+
+        if (stat.header.pt_flow) {
+          html += '<ul class="list-group pb-5 mb-5">';
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-light text-dark">';
+          html += '<strong>Points</strong>';
+          html += '<span class="badge rounded-pill bg-white text-muted">'+stat.timestamp+'</span>';
+          html += '</li>';
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+          html += '<p>'
+          Object.keys(stat.header.pt_flow).forEach(k => {
+            html += k+': '+stat.header.pt_flow[k]+'<br>';
+          });
+          html += '</p>';
+          html += '</li>';
+        }
+        if (stat.header.byoc) {
+          html += '<br>';
+          html += '<ul class="list-group pb-5 mb-5">';
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-light text-dark">';
+          html += '<strong>BYOC</strong>';
+          html += '<span class="badge rounded-pill bg-white text-muted">'+stat.timestamp+'</span>';
+          html += '</li>';
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+          html += '<div><canvas id="byoc"></canvas></div>';
+          html += '</li>';
+        }
+
+        if (stat.sales) {
+          html += '<br>';
+          html += '<ul class="list-group pb-5 mb-5">';
+          html += '<li class="list-group-item d-flex justify-content-between align-items-center text-bg-light text-dark">';
+          html += '<strong>Sales (This Month)</strong>';
+          html += '<span class="badge rounded-pill bg-white text-muted">'+stat.timestamp+'</span>';
+          html += '</li>';
+          html += '<li class="list-group-item">';
+          html += '<div style="width: 100%; height: 400px; overflow-x: auto;"><canvas id="sales"></canvas></div>';
+          html += '</li>';
+        }
+      }
+    }
+    // }
+
+    html += '</div>';
+    div.innerHTML = html;
+    renderStatCanvas_byoc();
+    renderStatCanvas_sales();
+    
+  }else{
+    window.location.href = 'index.html';
+  }
+}
+
 
 function createMemEnquiryView() {
   var userinfo = getUserInfo();
@@ -773,7 +1045,7 @@ function createMemEnquiryView() {
       if (member.tx) {
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-ticket"></i> '+member.available_coupons+'</span>';
         html+='<span class="badge rounded-pill bg-light text-dark"><i class="fa fa-coffee"></i> '+member.byoc+'</span>';
-        html+='<span class="badge rounded-pill bg-warning text-dark"onclick="return createMemOperView();">'+member.points+'</span>';
+        html+='<span class="badge rounded-pill bg-warning text-dark" onclick="return createMemOperView();">'+member.points+'</span>';
 
         html += '</li>';
         // if (member.tx) {

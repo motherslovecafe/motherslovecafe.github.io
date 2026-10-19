@@ -17,7 +17,7 @@ $(document).ready(function() {
     access_token = sessionStorage.getItem('access_token');
   }
   if (access_token !== null) {
-    createAdminOperView();
+    createStatView();
   }else{
     off();
     createGLoginView();

@@ -12,6 +12,7 @@ var a_config = null;
 var input_config = null;
 var selected_config = null;
 var menu_opt = null;
+var stat = null;
 var o_flag_list = ['All','Pending','Completed'];
 var o_flag = 0;
 var header = document.getElementById('container_header');

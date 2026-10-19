@@ -1,19 +1,15 @@
-function selectLang(input) {
-  lang = input;
-  setInnerHTMLById('container','');
-  gasGetLabels();
+function getRandomRgbColor() {
+  const r = Math.floor(Math.random() * 255);
+  const g = Math.floor(Math.random() * 255);
+  const b = Math.floor(Math.random() * 255);
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
-function lab(id) {
-  return id ? labels[id] : '';
-}
-
-function labArr(arr) {
-  var res = [];
-  for (var i = 0; i < arr.length; i++) {
-    res.push(lab(arr[i]));
-  }
-  return res;
+function getRandomRgbaColor(alpha = 0.5) {
+  const r = Math.floor(Math.random() * 255);
+  const g = Math.floor(Math.random() * 255);
+  const b = Math.floor(Math.random() * 255);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function backForm() {
@@ -546,7 +542,27 @@ function gasAdminConfig() {
         }
         createAdminOperView();
       }else{
-        member = null;
+        a_config = null;
+        menu_opt = null;
+        window.location.href = "index.html";
+      }
+    }
+    off();
+  });
+}
+
+function gasStat() {
+  on();
+  var userinfo = getUserInfo();
+  var url = GAS_URL+'?action=stat&ut='+userinfo.ut;
+  $.getJSON(url, function(data) {
+    if (data !== null) {
+      if (data.status=='0') {
+        stat = data.res;
+        createStatView();
+      }else{
+        alert(JSON.stringify(data,0,2));
+        stat = null;
         window.location.href = "index.html";
       }
     }

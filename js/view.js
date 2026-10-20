@@ -234,7 +234,7 @@ function getNavHtml_adminOper() {
 function getFooterHtml_adminOper() {
   var userinfo = getUserInfo();
   var html = '';
-  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary">';
+  html += '<nav class="navbar navbar-expand-lg bg-body-tertiary" style="z-index: 1050;">';
   html += '  <div class="container-fluid mx-1 my-1">';
   html += '    <div class="container navbar-brand col-12">';
   html += '    <div class="row">';
@@ -768,80 +768,15 @@ function renderStatCanvas_byoc() {
       {
         label: Object.keys(stat.header.byoc)[0],
         data: data_input[Object.keys(stat.header.byoc)[0]],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderWidth: 1
-      },
-      {
-        label: Object.keys(stat.header.byoc)[1],
-        data: data_input[Object.keys(stat.header.byoc)[1]],
         borderColor: 'rgb(54, 162, 235)',
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderWidth: 1
-      }
-    ]
-  };
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-}
-
-/*
-function renderStatCanvas_byoc() {
-  const ctx = document.getElementById('byoc');
-  const DATA_COUNT = 3;
-  const DATA_MAX = stat.header.byoc['Accumulated'];
-  const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: DATA_MAX};
-  const labels = ['BYOC', 'Coupon Issued', 'Coupon Used'];
-  var data_input = {};
-  Object.keys(stat.header.byoc).forEach(k => {
-    data_input[k] = [];
-  });
-  Object.keys(stat.header.byoc).forEach(k => {
-    data_input[k].push(stat.header.byoc[k]);
-    data_input[k].push(stat.header.coupon_issued[k]);
-    data_input[k].push(stat.header.coupon_used[k]);
-  });
-
-  // Generate an array of RGB colors matching the data length
-  const dynamicBackgroundColors = [];
-  const dynamicBorderColors = [];
-  
-  Object.keys(stat.header.byoc).forEach(() => {
-    // Generate the RGB channels once per data point
-    const r = Math.floor(Math.random() * 255);
-    const g = Math.floor(Math.random() * 255);
-    const b = Math.floor(Math.random() * 255);
-
-    // Use the exact same R, G, B values for both properties
-    dynamicBackgroundColors.push(`rgba(${r}, ${g}, ${b}, 0.5)`); // Shaded fill
-    dynamicBorderColors.push(`rgb(${r}, ${g}, ${b})`);           // Solid border
-  });
-
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: Object.keys(stat.header.byoc)[0],
-        data: data_input[Object.keys(stat.header.byoc)[0]],
-        borderColor: dynamicBorderColors[0],
-        backgroundColor: dynamicBackgroundColors[0],
-        borderWidth: 1
       },
       {
         label: Object.keys(stat.header.byoc)[1],
         data: data_input[Object.keys(stat.header.byoc)[1]],
-        borderColor: dynamicBorderColors[1],
-        backgroundColor: dynamicBackgroundColors[1],
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderWidth: 1
       }
     ]
@@ -858,8 +793,10 @@ function renderStatCanvas_byoc() {
       }
     }
   });
+
+  chart.setDatasetVisibility(1, false);
+  chart.update();
 }
-*/
 
 function renderStatCanvas_sales() {
   const ctx = document.getElementById('sales');
@@ -876,7 +813,7 @@ function renderStatCanvas_sales() {
   Object.keys(data_input).forEach(item => {
     labels.forEach(date => {
       if (stat.sales[date].hasOwnProperty(item)) {
-        data_input[item].push(stat.sales[date][item]);
+        data_input[item].push(stat.sales[date][item].qty);
       }else{
         data_input[item].push(0);
       }
@@ -924,7 +861,7 @@ function renderStatCanvas_sales() {
       maintainAspectRatio: false, // Allows the chart to fill the parent container's height
       scales: {
         x: {
-          stacked: true
+          stacked: true,
         },
         y: {
           beginAtZero: true,
@@ -936,16 +873,99 @@ function renderStatCanvas_sales() {
       }
     }
   });
-  
-  /*
-  chart.data.datasets.forEach((dataset, index) => {
-    chart.setDatasetVisibility(index, false); // Hide the dataset
-  });
 
-  chart.setDatasetVisibility(0, true); // show the first dataset
-  */
+
+  // 2. Add Action Button Event Listener
+  const deselectAllBtn = document.getElementById('deselectAllBtn');
+  deselectAllBtn.addEventListener('click', () => {
+    chart.data.datasets.forEach((dataset, index) => {
+      chart.setDatasetVisibility(index, false); // Hide the dataset
+    });
+    chart.update();
+  });
+  const selectAllBtn = document.getElementById('selectAllBtn');
+  selectAllBtn.addEventListener('click', () => {
+    chart.data.datasets.forEach((dataset, index) => {
+      chart.setDatasetVisibility(index, true); // Hide the dataset
+    });
+    chart.update();
+  });
 }
 
+function renderStatTables_sales() {
+
+  var keys = ['qty', 'points'];
+
+  keys.forEach(k => {
+
+  var ind = 1;
+  var data_input = {};
+  var total_arr = [];
+  Object.keys(stat.sales).forEach(date => {
+    var total = 0;
+    Object.keys(stat.sales[date]).forEach(item => {
+      data_input[item] = [];
+      total += stat.sales[date][item][k];
+    });
+    total_arr.push(total);
+  });
+  Object.keys(data_input).forEach(item => {
+    Object.keys(stat.sales).forEach(date => {
+      if (stat.sales[date].hasOwnProperty(item)) {
+        data_input[item].push(stat.sales[date][item][k]);
+      }else{
+        data_input[item].push(0);
+      }
+    });
+  });
+  data_input['Grand Total'] = total_arr;
+
+  console.log(JSON.stringify(data_input,0,2));
+
+  var div = document.getElementById('sales_'+k+'_table');
+  var table = '';
+  table += '<table class="table table-hover table-sm table-striped-columns">';
+  table += '  <thead>';
+  table += '    <tr>';
+
+  table += '      <th scope="col">'+k+'</th>';
+  Object.keys(stat.sales).forEach(date => {
+    table += '      <th scope="col">'+date+'</th>';
+  });
+  table += '      <th scope="col"><strong>Total</strong></th>';
+  table += '    </tr>';
+  table += '  </thead>';
+
+  table += '  <tbody>';
+  Object.keys(data_input).forEach(item => {
+
+    table += '    <tr>';
+    if (item == 'Grand Total') {
+      table += '      <th scope="row"><strong class="text-primary">'+item+'</strong></th>';
+    }else{
+      table += '      <th scope="row">'+ind+'. '+item+'</th>';
+    }
+    
+    for (var i = 0; i < data_input[item].length; i++) {
+      if (item == 'Grand Total') {
+        table += '      <td><strong class="text-primary">'+data_input[item][i]+'</strong></td>';
+      }else{
+        table += '      <td>'+data_input[item][i]+'</td>';
+      }
+    }
+    table += '      <td><strong '+(item == 'Grand Total'?'class="text-primary"':'')+'>'+Math.sumPrecise(data_input[item])+'</strong></td>';
+    table += '    </tr>';
+    ind++;
+  });
+  table += '  </tbody>';
+  table += '</table>';
+
+  div.innerHTML = table;
+
+  });
+
+  
+}
 
 function createStatView() {
   var userinfo = getUserInfo();
@@ -968,7 +988,6 @@ function createStatView() {
     var html = '<div class="container col-11 mt-5 pb-5">';
 
     if (stat) {
-      // console.log(JSON.stringify(stat,0,2));
       if (stat.header) {
 
         if (stat.header.pt_flow) {
@@ -1005,7 +1024,22 @@ function createStatView() {
           html += '<span class="badge rounded-pill bg-white text-muted">'+stat.timestamp+'</span>';
           html += '</li>';
           html += '<li class="list-group-item">';
-          html += '<div style="width: 100%; height: 400px; overflow-x: auto;"><canvas id="sales"></canvas></div>';
+          html += '<div style="width: 75vw; height: 60vh; overflow-x: auto;"><canvas id="sales"></canvas></div>';
+          html += '<div class="text-center">';
+          html += '<button class="btn btn-light text-muted mx-1" id="selectAllBtn">Select All</button>';
+          html += '<button class="btn btn-light text-muted mx-1" id="deselectAllBtn">Deselect All</button>';
+          html += '</div>';
+          html += '<br>';
+          html += '</li>';
+          html += '<li class="list-group-item">';
+          html += '<br>';
+          html += '<div class="table-responsive table-container" id="sales_qty_table"></div>';
+          html += '<br>';
+          html += '</li>';
+          html += '<li class="list-group-item">';
+          html += '<br>';
+          html += '<div class="table-responsive table-container" id="sales_points_table"></div>';
+          html += '<br>';
           html += '</li>';
         }
       }
@@ -1016,6 +1050,7 @@ function createStatView() {
     div.innerHTML = html;
     renderStatCanvas_byoc();
     renderStatCanvas_sales();
+    renderStatTables_sales();
     
   }else{
     window.location.href = 'index.html';

@@ -7,7 +7,7 @@ html, body {
   width: 100%;
   overflow: hidden;
   font-size: 1rem;
-  font-family: 'Noto Sans HK', sans-serif;
+  font-family: 'Noto Sans HK', sans-serif !important;
   color: #1B1725;
   margin-bottom:50px;
 
@@ -17,6 +17,11 @@ html, body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* Force the font using !important and target text containers specifically */
+html, body, p, span, div, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Sans HK', sans-serif !important;
 }
 
 img {
@@ -86,4 +91,32 @@ th {
 .fadein_1s {
   opacity: 1;
   animation: fadeIn 1s ease-in-out;
+}
+
+/* Container to constrain height for vertical scrolling */
+.table-container {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+/* 1. Freeze the Top Row (thead th) */
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 0; /* Sits above the body cells */
+}
+
+/* 2. Freeze the First Column (tbody th) */
+.table tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 0; /* Sits below the header but above body cells */
+}
+
+/* 3. Freeze the Intersection Cell (Top-Left corner) */
+.table thead tr th:first-child {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Highest priority so it covers both headers when diagonal scrolling occurs */
 }

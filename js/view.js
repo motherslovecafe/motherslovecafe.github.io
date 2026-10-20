@@ -935,12 +935,14 @@ function renderStatCanvas_sales() {
       }
     }
   });
-
+  
+  /*
   chart.data.datasets.forEach((dataset, index) => {
     chart.setDatasetVisibility(index, false); // Hide the dataset
   });
 
   chart.setDatasetVisibility(0, true); // show the first dataset
+  */
 }
 
 

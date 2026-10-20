@@ -928,6 +928,7 @@ function renderStatCanvas_sales() {
         },
         y: {
           beginAtZero: true,
+          stacked: true,
           ticks: {
             stepSize: 5 // Forces ticks to generate at 0, 0.1, 0.2, 0.3...
           }

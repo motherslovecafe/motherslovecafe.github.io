@@ -795,6 +795,7 @@ function renderStatCanvas_byoc() {
   });
 }
 
+/*
 function renderStatCanvas_byoc() {
   const ctx = document.getElementById('byoc');
   const DATA_COUNT = 3;
@@ -858,7 +859,7 @@ function renderStatCanvas_byoc() {
     }
   });
 }
-
+*/
 
 function renderStatCanvas_sales() {
   const ctx = document.getElementById('sales');
@@ -922,6 +923,9 @@ function renderStatCanvas_sales() {
       responsive: true,
       maintainAspectRatio: false, // Allows the chart to fill the parent container's height
       scales: {
+        x: {
+          stacked: true
+        },
         y: {
           beginAtZero: true,
           ticks: {

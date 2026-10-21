@@ -924,7 +924,7 @@ function renderStatTables_sales() {
 
   var div = document.getElementById('sales_'+k+'_table');
   var table = '';
-  table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary">';
+  table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary" style="--bs-table-color: inherit;">';
   table += '  <thead>';
   table += '    <tr>';
 
@@ -941,7 +941,7 @@ function renderStatTables_sales() {
 
     table += '    <tr>';
     if (item == 'Grand Total') {
-      table += '      <th scope="row"><strong class="text-primary">'+item+'</strong></th>';
+      table += '      <th scope="row"><strong class="text-dark">'+item+'</strong></th>';
     }else{
       table += '      <th scope="row">'+ind+'. '+item+'</th>';
     }

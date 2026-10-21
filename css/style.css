@@ -97,6 +97,8 @@ th {
 .table-container {
   max-height: 60vh;
   overflow: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 /* 1. Freeze the Top Row (thead th) */
@@ -104,6 +106,7 @@ th {
   position: sticky;
   top: 0;
   z-index: 0; /* Sits above the body cells */
+  background-color: #ffc107;
 }
 
 /* 2. Freeze the First Column (tbody th) */
@@ -119,4 +122,12 @@ th {
   top: 0;
   left: 0;
   z-index: 1; /* Highest priority so it covers both headers when diagonal scrolling occurs */
+}
+
+.table tbody tr:hover {
+  background-color: #fff3cd;
+}
+
+.table tbody tr:last-of-type {
+  border-bottom: 3px solid #ffc107;
 }

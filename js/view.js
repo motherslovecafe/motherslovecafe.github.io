@@ -924,7 +924,7 @@ function renderStatTables_sales() {
 
   var div = document.getElementById('sales_'+k+'_table');
   var table = '';
-  table += '<table class="table table-hover table-sm table-striped-columns">';
+  table += '<table class="table table-hover table-sm table-striped-columns table-striped-tbody-columns">';
   table += '  <thead>';
   table += '    <tr>';
 

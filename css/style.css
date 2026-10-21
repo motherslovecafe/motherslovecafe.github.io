@@ -101,10 +101,6 @@ th {
   border-radius: 10px;
 }
 
-.table-striped-columns thead th {
-  --bs-table-accent-bg: initial;
-}
-
 /* 1. Freeze the Top Row (thead th) */
 .table thead th {
   position: sticky;
@@ -126,6 +122,10 @@ th {
   top: 0;
   left: 0;
   z-index: 1; /* Highest priority so it covers both headers when diagonal scrolling occurs */
+}
+
+.table-striped-columns thead th {
+  --bs-table-accent-bg: initial;
 }
 
 .table-hover tbody tr:hover{

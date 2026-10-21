@@ -924,7 +924,7 @@ function renderStatTables_sales() {
 
   var div = document.getElementById('sales_'+k+'_table');
   var table = '';
-  table += '<table class="table table-light table-hover table-sm table-striped-columns table-striped-tbody-columns text-muted">';
+  table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary">';
   table += '  <thead>';
   table += '    <tr>';
 
@@ -948,12 +948,12 @@ function renderStatTables_sales() {
     
     for (var i = 0; i < data_input[item].length; i++) {
       if (item == 'Grand Total') {
-        table += '      <td><strong class="text-primary">'+data_input[item][i]+'</strong></td>';
+        table += '      <td><strong class="text-dark">'+data_input[item][i]+'</strong></td>';
       }else{
         table += '      <td>'+data_input[item][i]+'</td>';
       }
     }
-    table += '      <td><strong '+(item == 'Grand Total'?'class="text-primary"':'')+'>'+Math.sumPrecise(data_input[item])+'</strong></td>';
+    table += '      <td><strong '+(item == 'Grand Total'?'class="text-dark"':'')+'>'+Math.sumPrecise(data_input[item])+'</strong></td>';
     table += '    </tr>';
     ind++;
   });

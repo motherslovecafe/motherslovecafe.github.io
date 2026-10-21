@@ -106,7 +106,6 @@ th {
   position: sticky;
   top: 0;
   z-index: 0; /* Sits above the body cells */
-  background-color: #ffc107;
 }
 
 /* 2. Freeze the First Column (tbody th) */
@@ -133,5 +132,5 @@ th {
 }
 
 .table tbody tr:last-of-type {
-  border-bottom: 3px solid #ffc107;
+  border-bottom: 3px solid #f8f9fa;
 }

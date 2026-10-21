@@ -897,70 +897,68 @@ function renderStatTables_sales() {
   var keys = ['qty', 'points'];
 
   keys.forEach(k => {
-
-  var ind = 1;
-  var data_input = {};
-  var total_arr = [];
-  Object.keys(stat.sales).forEach(date => {
-    var total = 0;
-    Object.keys(stat.sales[date]).forEach(item => {
-      data_input[item] = [];
-      total += stat.sales[date][item][k];
-    });
-    total_arr.push(total);
-  });
-  Object.keys(data_input).forEach(item => {
+    const k_title = capitalize(k);
+    var ind = 1;
+    var data_input = {};
+    var total_arr = [];
     Object.keys(stat.sales).forEach(date => {
-      if (stat.sales[date].hasOwnProperty(item)) {
-        data_input[item].push(stat.sales[date][item][k]);
-      }else{
-        data_input[item].push(0);
-      }
+      var total = 0;
+      Object.keys(stat.sales[date]).forEach(item => {
+        data_input[item] = [];
+        total += stat.sales[date][item][k];
+      });
+      total_arr.push(total);
     });
-  });
-  data_input['Grand Total'] = total_arr;
+    Object.keys(data_input).forEach(item => {
+      Object.keys(stat.sales).forEach(date => {
+        if (stat.sales[date].hasOwnProperty(item)) {
+          data_input[item].push(stat.sales[date][item][k]);
+        }else{
+          data_input[item].push(0);
+        }
+      });
+    });
+    data_input['Grand Total'] = total_arr;
 
-  console.log(JSON.stringify(data_input,0,2));
-
-  var div = document.getElementById('sales_'+k+'_table');
-  var table = '';
-  table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary" style="color:inherit; --bs-table-color: inherit; --bs-table-striped-color:inherit;">';
-  table += '  <thead>';
-  table += '    <tr>';
-
-  table += '      <th scope="col"><strong  class="text-dark">'+k+'</strong></th>';
-  Object.keys(stat.sales).forEach(date => {
-    table += '      <th scope="col">'+date+'</th>';
-  });
-  table += '      <th scope="col"><strong>Total</strong></th>';
-  table += '    </tr>';
-  table += '  </thead>';
-
-  table += '  <tbody>';
-  Object.keys(data_input).forEach(item => {
-
+    var div = document.getElementById('sales_'+k+'_table');
+    var table = '';
+    table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary" style="color:inherit; --bs-table-color: inherit; --bs-table-striped-color:inherit;">';
+    table += '  <thead>';
     table += '    <tr>';
-    if (item == 'Grand Total') {
-      table += '      <th scope="row"><strong class="text-dark">'+item+'</strong></th>';
-    }else{
-      table += '      <th scope="row">'+ind+'. '+item+'</th>';
-    }
-    
-    for (var i = 0; i < data_input[item].length; i++) {
-      if (item == 'Grand Total') {
-        table += '      <td><strong class="text-dark">'+data_input[item][i]+'</strong></td>';
-      }else{
-        table += '      <td>'+data_input[item][i]+'</td>';
-      }
-    }
-    table += '      <td><strong'+(item == 'Grand Total'?' class="text-dark">':'>')+Math.sumPrecise(data_input[item])+'</strong></td>';
-    table += '    </tr>';
-    ind++;
-  });
-  table += '  </tbody>';
-  table += '</table>';
 
-  div.innerHTML = table;
+    table += '      <th scope="col"><strong  class="text-dark">'+k_title+'</strong></th>';
+    Object.keys(stat.sales).forEach(date => {
+      table += '      <th scope="col">'+date+'</th>';
+    });
+    table += '      <th scope="col"><strong>Total '+k_title+'</strong></th>';
+    table += '    </tr>';
+    table += '  </thead>';
+
+    table += '  <tbody>';
+    Object.keys(data_input).forEach(item => {
+
+      table += '    <tr>';
+      if (item == 'Grand Total') {
+        table += '      <th scope="row" style="--bs-table-bg: #fcfcfd"><strong class="text-dark">'+item+' '+k_title+'</strong></th>';
+      }else{
+        table += '      <th scope="row">'+ind+'. '+item+'</th>';
+      }
+      
+      for (var i = 0; i < data_input[item].length; i++) {
+        if (item == 'Grand Total') {
+          table += '      <td><strong class="text-dark">'+data_input[item][i]+'</strong></td>';
+        }else{
+          table += '      <td>'+data_input[item][i]+'</td>';
+        }
+      }
+      table += '      <td><strong'+(item == 'Grand Total'?' class="text-dark">':'>')+Math.sumPrecise(data_input[item])+'</strong></td>';
+      table += '    </tr>';
+      ind++;
+    });
+    table += '  </tbody>';
+    table += '</table>';
+
+    div.innerHTML = table;
 
   });
 

@@ -12,6 +12,11 @@ function getRandomRgbaColor(alpha = 0.5) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+function capitalize(str) {
+    if (!str) return ''; // Optional safety check for empty strings
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function backForm() {
   confirmModal.hide();
   inputModal.show();

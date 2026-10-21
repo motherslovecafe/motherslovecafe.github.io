@@ -123,8 +123,9 @@ th {
   z-index: 1; /* Highest priority so it covers both headers when diagonal scrolling occurs */
 }
 
-.table-striped-tbody-columns thead th {
-  --bs-table-accent-bg: initial;
+.table-striped-columns thead th {
+  --bs-table-bg-state: transparent;
+  --bs-table-bg-type: transparent;
 }
 
 .table-hover tbody tr:hover{

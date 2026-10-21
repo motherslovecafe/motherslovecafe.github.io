@@ -924,11 +924,11 @@ function renderStatTables_sales() {
 
   var div = document.getElementById('sales_'+k+'_table');
   var table = '';
-  table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary" style="--bs-table-color: inherit;">';
+  table += '<table class="table table-light table-hover table-sm table-striped-columns text-body-secondary" style="color:inherit; --bs-table-color: inherit; --bs-table-striped-color:inherit;">';
   table += '  <thead>';
   table += '    <tr>';
 
-  table += '      <th scope="col">'+k+'</th>';
+  table += '      <th scope="col"><strong  class="text-dark">'+k+'</strong></th>';
   Object.keys(stat.sales).forEach(date => {
     table += '      <th scope="col">'+date+'</th>';
   });
@@ -953,7 +953,7 @@ function renderStatTables_sales() {
         table += '      <td>'+data_input[item][i]+'</td>';
       }
     }
-    table += '      <td><strong '+(item == 'Grand Total'?'class="text-dark"':'')+'>'+Math.sumPrecise(data_input[item])+'</strong></td>';
+    table += '      <td><strong'+(item == 'Grand Total'?' class="text-dark">':'>')+Math.sumPrecise(data_input[item])+'</strong></td>';
     table += '    </tr>';
     ind++;
   });

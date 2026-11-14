@@ -65,6 +65,18 @@ function showByocFreeModal(title, body, footer) {
   byocFreeModal.show();
 }
 
+function showAdsModal(title, body, footer) {
+  // setInnerHTMLById('byocFreeModalTitle', '');
+  setInnerHTMLById('adsModalBody', '');
+  // setInnerHTMLById('byocFreeModalFooter', '');
+
+  // setInnerHTMLById('byocFreeModalTitle', title);
+  setInnerHTMLById('adsModalBody', body);
+  // setInnerHTMLById('byocFreeModalFooter', footer);
+
+  adsModal.show();
+}
+
 function showScanModal() {
   scanModal.hide();
   scanModal.show();
@@ -378,6 +390,17 @@ function createFreeForBYOCView() {
   body += '</div></div>';
 
   showByocFreeModal('',body,'');
+
+}
+
+function createAdsView() {
+  var body ='';
+  body += '<div style="width: 100%; aspect-ratio: 610 / 810;">';
+  body += '<div class="text-end">';
+  body += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+  body += '</div></div>';
+
+  showAdsModal('',body,'');
 
 }
 

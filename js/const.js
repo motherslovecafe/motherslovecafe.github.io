@@ -11,3 +11,4 @@ const inputModal = new bootstrap.Modal(document.getElementById('inputModal'), {b
 const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'), {backdrop: 'static', keyboard: false});
 const scanModal = new bootstrap.Modal(document.getElementById('scanModal'), {backdrop: 'static', keyboard: false});
 const byocFreeModal = new bootstrap.Modal(document.getElementById('byocFreeModal'), {backdrop: 'static', keyboard: false});
+const adsModal = new bootstrap.Modal(document.getElementById('adsModal'), {backdrop: 'static', keyboard: false});

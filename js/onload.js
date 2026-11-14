@@ -237,6 +237,7 @@ $(document).ready(function() {
           if (userinfo.available_coupons > 0) {
             createFreeForBYOCView();
           }
+          createAdsView();
           off();
         }else if (data.error_code=='106') {
           alert('您需要存取權限。<br>請求存取權限，或切換具有存取權限的帳戶。');

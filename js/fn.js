@@ -32,11 +32,6 @@ function submitTopUp() {
   gasTopUp();
 }
 
-function submitRefresh() {
-  confirmModal.hide();
-  gasRefresh();
-}
-
 function submitOrder() {
   confirmModal.hide();
   gasOrder();
@@ -244,6 +239,7 @@ function submitConfigEdit(ind) {
     var value = ((index=='new') ? '' : a_config[item][index].number)+'|';
     value += document.getElementById('e_config_name').value+'|';
     value += document.getElementById('e_config_points').value+'|';
+    value += document.getElementById('e_config_type').value+'|';
     value += document.getElementById('e_config_active').checked+'|';
     Object.keys(menu_opt).forEach(opt => {
       value += document.getElementById('e_config_'+opt).checked+'|';
@@ -400,32 +396,61 @@ function getScanData(data) {
   }
 }
 
-function gasRefresh() {
+async function gasRefresh() {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=mm&content='+userinfo.ut+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'mm',
+    content: userinfo.ut,
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('userinfo', JSON.stringify(data.res));
         var callback = sessionStorage.getItem('callback');
         window[callback](); 
-        // createTxView();
-      // }else{
-      //   createErrorView(data.error_msg);
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasMenu() {
+async function gasMenu() {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=mm&content='+userinfo.ut+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'mm',
+    content: userinfo.ut,
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('userinfo', JSON.stringify(data.res));
@@ -433,34 +458,32 @@ function gasMenu() {
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasMember(code) {
-  var content = code;
+async function gasOrder(code) {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=mm&content='+content+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
-    if (data !== null) {
-      if (data.status=='0') {
-        sessionStorage.setItem('member', JSON.stringify(data.res));
-        createMemOperView();
-      }else{
-        createErrorView(data.error_msg);
-      }
-    }
-    off();
-  });
-}
 
-function gasOrder(code) {
-  on();
-  inputModal.hide();
-  var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=order&content='+JSON.stringify(orderForm)+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+  const payload = {
+    action: 'order',
+    content: JSON.stringify(orderForm),
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('userinfo', JSON.stringify(data.res));
@@ -470,15 +493,32 @@ function gasOrder(code) {
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasCompleteOrder(code) {
+async function gasCompleteOrder(code) {
   on();
   // inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=co&content='+code+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'co',
+    content: code,
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('allOrders', JSON.stringify(data.res));
@@ -488,16 +528,33 @@ function gasCompleteOrder(code) {
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasTopUp() {
+async function gasTopUp() {
   on();
   inputModal.hide();
   memForm.topup_code = sessionStorage.getItem('topup_code');
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=topup&content='+JSON.stringify(memForm)+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'topup',
+    content: JSON.stringify(memForm),
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         member = data.res;
@@ -508,30 +565,47 @@ function gasTopUp() {
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasMemberEnquiry(code) {
+async function gasMemberEnquiry(code) {
   var content = code;
   on();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=mem_enq&content='+content+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'mem_enq',
+    content: content,
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         member = data.res;
         createMemEnquiryView();
       }else{
         createErrorView(data.error_msg);
-        member = null;
-        createMemEnquiryView();
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasAdminConfig() {
+async function gasAdminConfig() {
   on();
   var userinfo = getUserInfo();
   var url = GAS_URL+'?action=a_config&ut='+userinfo.ut;
@@ -554,13 +628,62 @@ function gasAdminConfig() {
     }
     off();
   });
+  const payload = {
+    action: 'a_config',
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (data !== null) {
+      if (data.status=='0') {
+        a_config = data.res;
+        if (a_config.menu_opt) {
+          menu_opt = {};
+          a_config.menu_opt.forEach(opt => {
+            menu_opt[opt.option] = opt;
+          });
+        }
+        createAdminOperView();
+      }else{
+        a_config = null;
+        menu_opt = null;
+        window.location.href = "index.html";
+      }
+    }
+    off();
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasStat() {
+async function gasStat() {
   on();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=stat&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'stat',
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         stat = data.res;
@@ -572,33 +695,61 @@ function gasStat() {
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
-function gasGetAllOrders() {
-  // on();
-  // inputModal.hide();
+async function gasGetAllOrders() {
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=getorders&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'getorders',
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('allOrders', JSON.stringify(data.res));
         createShopOrdersView();
       }
     }
-    // off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
 
 
-function gasAcceptOrder(code) {
-  // on();
-  // inputModal.hide();
+async function gasAcceptOrder(code) {
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=ao&content='+code+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'ao',
+    content: code,
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         sessionStorage.setItem('allOrders', JSON.stringify(data.res));
@@ -607,17 +758,33 @@ function gasAcceptOrder(code) {
         createErrorView(data.error_msg);
       }
     }
-    // off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }
 
 
-function gasEditConfig(code) {
+async function gasEditConfig(code) {
   on();
   inputModal.hide();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=e_config&content='+JSON.stringify(input_config)+'&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
+
+  const payload = {
+    action: 'e_config',
+    content: JSON.stringify(input_config),
+    ut: userinfo.ut
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
     if (data !== null) {
       if (data.status=='0') {
         a_config = data.res;
@@ -633,5 +800,52 @@ function gasEditConfig(code) {
       }
     }
     off();
-  });
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
+}
+
+
+async function gasLogin(access_token) {
+  
+  const payload = {
+    action: 'login',
+    token: access_token
+  };
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+
+      if (data !== null) {
+        if (data.status=='0') {
+          window.history.pushState({}, document.title, "?");
+          sessionStorage.setItem('userinfo', JSON.stringify(data.res));
+          sessionStorage.setItem('access_token', access_token);
+          createMainView();
+          var userinfo = getUserInfo();
+          if (userinfo.available_coupons > 0) {
+            createFreeForBYOCView();
+          }
+          createAdsView();
+          off();
+        }else if (data.error_code=='106') {
+          alert('No access. 您需要存取權限。');
+          logout();
+        }else{
+          alert('Timeout, please login again. 已過期，請重新登入');
+          logout();
+        }
+      }
+
+  } catch (error) {
+    console.error('Failed to read response:', error);
+  }
 }

@@ -130,7 +130,7 @@ function selectConfig() {
         if (config[i].active) {
 
           html += '<li class="list-group-item d-flex justify-content-between align-items-center">'
-          html += '<p><strong>'+config[i].name+'</strong> <span class="badge rounded-pill  bg-light text-dark">'+config[i].points+' pt</span><br><br>';
+          html += '<p><small>['+config[i].type+']</small><br><strong>'+config[i].name+'</strong> <span class="badge rounded-pill  bg-light text-dark">'+config[i].points+' pt</span><br><br>';
         } else {
 
           html += '<li class="list-group-item d-flex justify-content-between align-items-center bg-light">'
@@ -631,6 +631,7 @@ function createEditConfigView(ind) {
     e_config.number = 'new';
     e_config.name = '';
     e_config.points = 0;
+    e_config.type = 'Beverage';
     e_config.active = true;
 
     Object.keys(menu_opt).forEach(opt => {
@@ -663,6 +664,15 @@ function createEditConfigView(ind) {
     body += '  <span class="input-group-text" id="points">Points</span>';
     body += '  <input type="text" class="form-control" placeholder="points" aria-label="points" aria-describedby="points" id="e_config_points" value="'+e_config.points+'">';
     body += '</div>';
+
+    body += '<div class="input-group mb-3">';
+    body += '  <label class="input-group-text">Type</label>';
+    body += '  <select class="form-select" id="e_config_type">';
+    body += '    <option selected>'+e_config.type+'</option>';
+    body += '    <option>'+(e_config.type=='Beverage'?'Others':'Beverage')+'</option>';
+    body += '  </select>';
+    body += '</div>';
+
 
     body += '<div class="input-group mb-3">';
     body += '  <div class="input-group-text">';

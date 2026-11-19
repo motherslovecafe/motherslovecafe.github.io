@@ -608,26 +608,7 @@ async function gasMemberEnquiry(code) {
 async function gasAdminConfig() {
   on();
   var userinfo = getUserInfo();
-  var url = GAS_URL+'?action=a_config&ut='+userinfo.ut;
-  $.getJSON(url, function(data) {
-    if (data !== null) {
-      if (data.status=='0') {
-        a_config = data.res;
-        if (a_config.menu_opt) {
-          menu_opt = {};
-          a_config.menu_opt.forEach(opt => {
-            menu_opt[opt.option] = opt;
-          });
-        }
-        createAdminOperView();
-      }else{
-        a_config = null;
-        menu_opt = null;
-        window.location.href = "index.html";
-      }
-    }
-    off();
-  });
+  
   const payload = {
     action: 'a_config',
     ut: userinfo.ut

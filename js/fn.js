@@ -205,10 +205,12 @@ function calcPoints() {
   if (userinfo.add_on) {
     var arr = [];
     Object.keys(userinfo.add_on).forEach(key => {
-      var add_on = document.getElementById(key).checked;
-      points += add_on ? userinfo.add_on[key].points : 0;
-      if (add_on) {
-        arr.push(key);
+      if (userinfo.add_on[key].active) {
+        var add_on = document.getElementById(key).checked;
+        points += add_on ? userinfo.add_on[key].points : 0;
+        if (add_on) {
+          arr.push(key);
+        }
       }
     });
     if (arr.length>0) {

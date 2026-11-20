@@ -567,13 +567,14 @@ function createVoucherQRview() {
     body += '<div class="alert alert-primary" role="alert">';
 
     Object.keys(userinfo.add_on).forEach(key => {
-
-      body += '<div class="form-check">';
-      body += '  <input class="form-check-input" type="checkbox" value="" id="'+key+'" onclick="calcPoints()">';
-      body += '  <label class="form-check-label" for="'+key+'">';
-      body += '    +'+userinfo.add_on[key].points+' pt '+userinfo.add_on[key].name;
-      body += '  </label>';
-      body += '</div>';
+      if (userinfo.add_on[key].active) {
+        body += '<div class="form-check">';
+        body += '  <input class="form-check-input" type="checkbox" value="" id="'+key+'" onclick="calcPoints()">';
+        body += '  <label class="form-check-label" for="'+key+'">';
+        body += '    +'+userinfo.add_on[key].points+' pt '+userinfo.add_on[key].name;
+        body += '  </label>';
+        body += '</div>';
+      }
       
     });
 

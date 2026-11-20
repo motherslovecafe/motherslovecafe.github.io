@@ -17,6 +17,20 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function getImageDimensions(path) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({
+        width: img.naturalWidth,
+        height: img.naturalHeight
+      });
+    };
+    img.onerror = (err) => reject(err);
+    img.src = path;
+  });
+}
+
 function backForm() {
   confirmModal.hide();
   inputModal.show();
@@ -817,13 +831,15 @@ async function gasLogin(access_token) {
           if (userinfo.available_coupons > 0) {
             createFreeForBYOCView();
           }
-          createAdsView();
+          getImageDimensions('img/ads.JPG')
+          .then(({ width, height }) => createAdsView(`${width}`, `${height}`))
+          .catch((err) => console.error('Failed to load image', err));
           off();
         }else if (data.error_code=='106') {
           alert('No access. 您需要存取權限。');
           logout();
         }else{
-          alert('Timeout, please login again. 已過期，請重新登入');
+          alert('Timeout, please login again. 已逾時，請重新登入');
           logout();
         }
       }

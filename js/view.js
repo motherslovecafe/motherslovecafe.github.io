@@ -383,8 +383,11 @@ function createUserQRView() {
 
 
 function createFreeForBYOCView() {
+
+  var modal = document.getElementById('byocFreeModalBody');
+  modal.style = 'width: 100%; aspect-ratio: 610 / 810;';
+
   var body ='';
-  body += '<div style="width: 100%; aspect-ratio: 610 / 810;">';
   body += '<div class="text-end">';
   body += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
   body += '</div></div>';
@@ -393,9 +396,12 @@ function createFreeForBYOCView() {
 
 }
 
-function createAdsView() {
+function createAdsView(w, h) {
+
+  var modal = document.getElementById('adsModalBody');
+  modal.style = 'width: 100%; aspect-ratio: '+w+' / '+h+';';
+
   var body ='';
-  body += '<div style="width: 100%; aspect-ratio: 610 / 810;">';
   body += '<div class="text-end">';
   body += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
   body += '</div></div>';

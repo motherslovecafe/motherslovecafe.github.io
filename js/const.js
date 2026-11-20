@@ -1,4 +1,4 @@
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwnTxm4Ka7zUJNWV3m-HS_5D7-uhOpdanaugwXMGikJnbc6Xrt7KFXGEyaAiZFxzK2t/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyqLxW85etYKCAgT4wW-Sg3ZiB1ooUmdebcLr3so8pgIrwT8mlUqUdYYAEWWSdgC7Ad/exec';
 const YOUR_CLIENT_ID = '223887521833-37kdjp7rfucrpsidm1acciabl1soeegq.apps.googleusercontent.com'; 
 const YOUR_REDIRECT_URI = 'https://motherslovecafe.github.io';
 const lang_op = {

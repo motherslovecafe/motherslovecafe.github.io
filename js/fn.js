@@ -817,7 +817,7 @@ async function gasLogin(access_token) {
           if (userinfo.available_coupons > 0) {
             createFreeForBYOCView();
           }
-          // createAdsView();
+          createAdsView();
           off();
         }else if (data.error_code=='106') {
           alert('No access. 您需要存取權限。');
